@@ -1,0 +1,123 @@
+<div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden central" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1">{{t('auth-register-heading')}}</div>
+        </div>
+        <div class="filled-major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+                    <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+                          name="registerForm" [formGroup]="registerForm"
+                          (ngSubmit)="register()">
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                <mat-label>Your name</mat-label>
+                                <input matInput #name formControlName="name" autocomplete="do-not-autofill" required>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.name, 'Your name')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Email address</mat-label>
+                                <input matInput formControlName="email" autocomplete="do-not-autofill" required>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.email, 'Email address')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Password</mat-label>
+                                <input matInput formControlName="password" autocomplete="do-not-autofill" type="password" required>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.password, 'Password')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Confirm Password</mat-label>
+                                <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill" type="password"
+                                       required
+                                       [errorStateMatcher]="errorMatcher">
+                                <mat-error>{{ getErrorMessage(registerForm.controls.confirmPassword, 'Password confirmation')}}</mat-error>
+                                <mat-error>{{ getErrorMessage(registerForm, '')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Company Name</mat-label>
+                                <input matInput formControlName="clientName" autocomplete="do-not-autofill" required>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.clientName, 'Company name')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Plan</mat-label>
+                                <mat-select formControlName="clientPlan" required
+                                            (selectionChange)="setPlan($event)">
+                                    <mat-option [value]="'free'">
+                                        Free
+                                    </mat-option>
+                                    <mat-option [value]="'standard'">
+                                        Standard
+                                    </mat-option>
+                                    <mat-option [value]="'professional'">
+                                        Professional
+                                    </mat-option>
+                                </mat-select>
+                                <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.clientPlan, 'Plan')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div *ngIf="registerForm.controls.clientPlan.value !=='free'" class="flex flex-col gt-xs:flex-row">
+
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Billed</mat-label>
+                                <mat-select formControlName="clientBillingType" required>
+                                    <mat-option [value]="'annual'">
+                                        Annual - 20% discount
+                                    </mat-option>
+                                    <mat-option [value]="'monthly'">
+                                        Monthly
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{ getErrorMessage(registerForm.controls.clientBillingType, 'Billing frequency')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="mb-2" [hidden]="!needStripe">
+                            <div id="card-element" class="field"></div>
+                        </div>
+
+                        <div class="flex items-center justify-end">
+                            <button
+                                type="submit"
+                                class="fuse-mat-button-large w-50 mt-2"
+                                mat-flat-button
+                                [color]="'primary'">
+                                Submit
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-4 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>

@@ -1,0 +1,57 @@
+<div class="page-layout blank p-12" fusePerfectScrollbar>
+    <div class="cards" *transloco="let t">
+        <div class="fuse-card wide-card-form"  *ngIf="errors.length > 0">
+            <div id="errorforms" class="page-layout simple fullwidth" fxLayout="column">
+                <div class="content p-12" fusePerfectScrollbar>
+                    <div>
+                        <div class="content p-12 alert alert-danger" (click)="clearErrors()">
+                            <div class="card-header">
+                                <strong>Errors</strong>
+                            </div>
+                            <ul>
+                                <li *ngFor="let message of errors">
+                                    {{ message }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fuse-card card-form">
+            <div class="p-8 card-header">
+                <div class="h1">{{t('integration-shopify-customer-heading')}}</div>
+            </div>
+
+            <div class="major-item" fusePerfectScrollbar>
+
+                <div id="customerforms" class="page-layout simple fullwidth" fxLayout="column">
+
+                    <div class="content p-12" fusePerfectScrollbar>
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                <button mat-raised-button type="button" class="purple-300 mr-4" (click)="syncCustomers()">
+                                    {{ syncCustomersTitle }}
+                                </button>
+                                <button mat-raised-button type="button" class="purple-300 mr-4" (click)="syncOrders()">
+                                    {{ syncOrdersTitle }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row">
+                            <p></p>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

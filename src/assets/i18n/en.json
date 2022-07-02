@@ -1,0 +1,20 @@
+{
+    "welcome-back": "Welcome back",
+    "Project": "Project",
+    "Analytics": "Analytics",
+
+    "account-profile-heading": "Profile",
+
+    "auth-register-heading": "Sign Up",
+    "auth-login": "Login",
+
+    "data-import-header": "import",
+
+    "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
+    "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",
+    "integration-mailchimp-list-heading": "Mailchimp Lists",
+    "integration-shopify-customer-heading": "Shopify  - Sales and Customers",
+    "integration-sourcesetting-heading": "Current Integrations",
+
+    "segmentation-header": "Segmentation"
+}

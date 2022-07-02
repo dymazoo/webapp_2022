@@ -1,0 +1,24 @@
+<div class="page-layout blank p-12" fusePerfectScrollbar>
+    <div class="cards">
+
+        <div class="fuse-card card-form card-centre">
+            <div class="navbar-header">
+                <div class="logo">
+                    <img class="logo-wide-icon" src="assets/images/logo/dymazoo-flat.png">
+                </div>
+            </div>
+            <div fxLayout="row">
+                <p> {{ resultMessage }}</p>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end end">
+                <button mat-raised-button type="button" class="cyan mr-4" (click)="onClose()">
+                    Close and Continue
+                </button>
+            </div>
+            <div fxLayout="row">
+                <p></p>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,169 @@
+<div class="page-layout blank p-12" fusePerfectScrollbar>
+    <div class="cards" *transloco="let t">
+        <div class="fuse-card wide-card-form"  *ngIf="errors.length > 0">
+            <div id="errorforms" class="page-layout simple fullwidth" fxLayout="column">
+                <div class="content p-12" fusePerfectScrollbar>
+                    <div>
+                        <div class="content p-12 alert alert-danger" (click)="clearErrors()">
+                            <div class="card-header">
+                                <strong>Errors</strong>
+                            </div>
+                            <ul>
+                                <li *ngFor="let message of errors">
+                                    {{ message }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fuse-card card-form">
+            <div class="p-8 card-header">
+                <div class="h1">{{t('integration-mailchimp-list-heading')}}</div>
+            </div>
+
+            <div class="major-item" fusePerfectScrollbar>
+
+                <div id="listforms" class="page-layout simple fullwidth" fxLayout="column">
+
+                    <div class="content p-12" fusePerfectScrollbar>
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="syncMembers()">
+                                    Sync Members
+                                </button>
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="syncLists()">
+                                    {{ syncListsTitle }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" class="p-8">
+                            <div fxFlex="100">
+                                <table mat-table #listTable matSort
+                                       [dataSource]="paginatedListsDataSource"
+                                       [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="description">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                        <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="count">
+                                        <th mat-header-cell *matHeaderCellDef>Count</th>
+                                        <td mat-cell *matCellDef="let row">{{row.count}}</td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedListColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedListColumns; let i=index;"
+                                        tabindex="999"
+                                        class="cursor-pointer"
+                                        (click)="onListSelect(row, i)"
+                                        (keydown.arrowdown)="onListArrowDown()"
+                                        (keydown.arrowup)="onListArrowUp()"
+                                        (keydown.enter)="onSelectList()"
+                                        [ngClass]="{'selected' : row == selectedListsRow}"
+                                        matRipple [@animate]="{value:'*',params:{y:'100%'}}"
+                                    >
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field fxFlex="60%">
+                                <input matInput #listFilter type="text" (keyup)="filterLists($event.target.value)"
+                                       placeholder="Filter" autocomplete="do-not-autofill">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <mat-paginator #listPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fuse-card card-form">
+            <div class="p-8 card-header">
+                <div class="h1">{{t('integration-mailchimp-campaign-heading')}}</div>
+            </div>
+
+            <div class="major-item" fusePerfectScrollbar>
+
+                <div id="campaignforms" class="page-layout simple fullwidth" fxLayout="column">
+
+                    <div class="content p-12" fusePerfectScrollbar>
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="syncActivity()">
+                                    Sync Activity
+                                </button>
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="syncCampaigns()">
+                                    {{ syncCampaignsTitle }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" class="p-8">
+                            <div fxFlex="100">
+                                <table mat-table #campaignTable matSort
+                                       [dataSource]="paginatedCampaignsDataSource"
+                                       [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="description">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                        <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="campaignDate">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Campaign Date</th>
+                                        <td mat-cell *matCellDef="let row">{{row.campaignDate}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="sent">
+                                        <th mat-header-cell *matHeaderCellDef>Sent</th>
+                                        <td mat-cell *matCellDef="let row">{{row.sent}}</td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedCampaignColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedCampaignColumns; let i=index;"
+                                        tabindex="999"
+                                        class="cursor-pointer"
+                                        (click)="onCampaignSelect(row, i)"
+                                        (keydown.arrowdown)="onCampaignArrowDown()"
+                                        (keydown.arrowup)="onCampaignArrowUp()"
+                                        (keydown.enter)="onSelectCampaign()"
+                                        [ngClass]="{'selected' : row == selectedCampaignsRow}"
+                                        matRipple [@animate]="{value:'*',params:{y:'100%'}}"
+                                    >
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field fxFlex="60%">
+                                <input matInput #campaignFilter type="text" (keyup)="filterCampaigns($event.target.value)"
+                                       placeholder="Filter" autocomplete="do-not-autofill">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <mat-paginator #campaignPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="end end">
+                            <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

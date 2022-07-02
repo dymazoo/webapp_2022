@@ -1,0 +1,43 @@
+<!-- Button -->
+<button
+    mat-icon-button
+    [matMenuTriggerFor]="userActions">
+    <span class="relative">
+        <img ngxGravatar [email]="userData.email" fallback="mp"/>
+        <span
+            class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px"
+        ></span>
+    </span>
+</button>
+
+<mat-menu
+    [xPosition]="'before'"
+    #userActions="matMenu">
+    <button mat-menu-item>
+        <span class="flex flex-col leading-none">
+            <span>Signed in as</span>
+            <span class="mt-1.5 text-md font-medium">{{userData.userName}}</span>
+        </span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item
+            (click)="profile()">
+        <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+        <span>Profile</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon [svgIcon]="'heroicons_outline:cog'"></mat-icon>
+        <span>Settings</span>
+    </button>
+    <button mat-menu-item *ngIf="canClientAdmin" (click)="userManagement($event)">
+        <mat-icon [svgIcon]="'heroicons_outline:user-group'"></mat-icon>
+        <span>User management</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button
+        mat-menu-item
+        (click)="signOut()">
+        <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
+        <span>Log out</span>
+    </button>
+</mat-menu>

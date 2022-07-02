@@ -1,0 +1,502 @@
+<div class="page-layout blank p-12" fusePerfectScrollbar>
+
+    <div class="fuse-card card-major" *transloco="let t">
+        <div class="p-8 card-header">
+            <div class="h1">{{t('segmentation-header')}}</div>
+        </div>
+        <div class="major-item">
+            <div id="forms" class="page-layout simple fullwidth div-full-height" fxLayout="column"
+                 fxFlexAlign="flex-start">
+
+                <div class="content p-12">
+                    <form class="mat-card mat-elevation-z4 div-pad-vertical-12" fxLayout="column"
+                          *ngIf="hasSelectionNodes"
+                          fxLayoutAlign="start" fxFlex="1 0 auto" name="selectionForm" [formGroup]="selectionForm">
+
+                        <div *ngIf="errors.length > 0">
+                            <div class="content p-12 alert alert-danger" (click)="clearErrors()">
+                                <div class="card-header">
+                                    <strong>Errors</strong>
+                                </div>
+                                <ul>
+                                    <li *ngFor="let message of errors">
+                                        {{ message }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id" id="id" formControlName="id">
+                        <input type="hidden" name="listId" id="listId" formControlName="listId">
+                        <input type="hidden" name="layoutId" id="layoutId" formControlName="layoutId">
+
+                        <div class="flex flex-col gt-xs:flex-row" fxFlexAlign="flex-start">
+                            <div class='div-block'>
+                                <div fxFlex="none" fxLayout="row" fxFlexAlign="flex-start">
+                                    <div id='remove-item' class='div-left div-block'
+                                         [ngClass]="removingSelection ? 'red' : ''"
+                                         cdkDropList
+                                         [cdkDropListConnectedTo]="getCardIds()"
+                                         (cdkDropListDropped)="removeDrop($event)"
+                                         (cdkDropListEntered)="removeEntered($event)"
+                                         (cdkDropListExited)="removeExited($event)"
+                                    >
+                                        <mat-icon style="font-size: 4rem;">
+                                            delete
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                                <div fxFlex="none" fxLayout="row" fxFlexAlign="flex-start">
+                                    <div fxFlex="none 0 0" class="selection-space">
+                                    </div>
+                                    <div fxFlex="none 0 0" class="selection-tree" fusePerfectScrollbar>
+                                        <div id="master-nodes"
+                                             cdkDropList cdkDropListSortingDisabled
+                                             [cdkDropListConnectedTo]="getCardIds()"
+                                             [cdkDropListEnterPredicate]="noReturnPredicate"
+                                        >
+                                            <mat-tree [dataSource]="nodeDataSource" [treeControl]="nodeTreeControl"
+                                                      class="node-tree">
+                                                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle
+                                                               class="select-tree-node">
+                                                    <li class="mat-tree-node cursor-pointer select-tree-node" cdkDrag
+                                                        [cdkDragData]="{node:node}"
+                                                        (dblclick)="nodeAddToCard($event, node)"
+                                                        (contextmenu)="onSelectionContextMenu($event, node)">
+                                                        <span class="text-bold">{{node.value}}</span>
+                                                        <span *cdkDragPreview>
+                                                            <ng-container
+                                                                *ngIf="node.select || node.list">{{node.title}}
+                                                                : {{node.value}}</ng-container>
+                                                            <ng-container *ngIf="node.entry">{{node.title}} : value to be entered</ng-container>
+                                                        </span>
+                                                    </li>
+                                                </mat-tree-node>
+                                                <!-- This is the tree node template for expandable nodes -->
+                                                <mat-nested-tree-node *matTreeNodeDef="let node; when: isHeader"
+                                                                      class="select-tree-group">
+                                                    <li>
+                                                        <div class="mat-tree-node select-tree-group">
+                                                            <button mat-icon-button matTreeNodeToggle
+                                                                    [attr.aria-label]="'Toggle ' + node.value">
+                                                                <mat-icon class="mat-icon-rtl-mirror">
+                                                                    {{nodeTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                                                </mat-icon>
+                                                            </button>
+                                                            {{node.value}}
+                                                        </div>
+                                                        <ul [class.node-tree-invisible]="!nodeTreeControl.isExpanded(node)">
+                                                            <ng-container matTreeNodeOutlet></ng-container>
+                                                        </ul>
+                                                    </li>
+                                                </mat-nested-tree-node>
+                                            </mat-tree>
+                                        </div>
+                                        <div id="master-cards"
+                                             cdkDropList cdkDropListSortingDisabled
+                                             [cdkDropListConnectedTo]="getLaneIds()"
+                                             [cdkDropListEnterPredicate]="noReturnPredicate"
+                                        >
+                                            <mat-tree [dataSource]="cardDataSource" [treeControl]="cardTreeControl"
+                                                      class="node-tree">
+                                                <mat-tree-node *matTreeNodeDef="let card" matTreeNodeToggle
+                                                               class="select-tree-node">
+                                                    <li class="mat-tree-node cursor-pointer select-tree-node" cdkDrag
+                                                        [cdkDragData]="{card:card}"
+                                                        (dblclick)="cardAddToLane($event, card)"
+                                                        (contextmenu)="onCardContextMenu($event, card)">
+                                                        <span class="text-bold">{{card.value}}</span>
+                                                        <div class="select-card select-card-preview" *cdkDragPreview>
+                                                            <div class="select-card-header blue-100">
+                                                                <span>{{card.value}}</span>
+                                                            </div>
+                                                            <div class="cdk-drop-list select-card-body">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </mat-tree-node>
+                                                <!-- This is the tree node template for expandable nodes -->
+                                                <mat-nested-tree-node *matTreeNodeDef="let node; when: isHeader"
+                                                                      class="select-tree-group">
+                                                    <li>
+                                                        <div class="mat-tree-node select-tree-group">
+                                                            <button mat-icon-button matTreeNodeToggle
+                                                                    [attr.aria-label]="'Toggle ' + node.value">
+                                                                <mat-icon class="mat-icon-rtl-mirror">
+                                                                    {{cardTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                                                </mat-icon>
+                                                            </button>
+                                                            {{node.value}}
+                                                        </div>
+                                                        <ul [class.node-tree-invisible]="!cardTreeControl.isExpanded(node)">
+                                                            <ng-container matTreeNodeOutlet></ng-container>
+                                                        </ul>
+                                                    </li>
+                                                </mat-nested-tree-node>
+
+                                            </mat-tree>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="select-lanes">
+                                <div *ngFor="let lane of lanes"
+                                     fxFlex="20 1 0" class="select-lane teal-50"
+                                     id="lane-{{ lane.id}}"
+                                     [ngClass]="{'teal-100': lane.id == currentLaneId}" cdkDropList
+                                     [cdkDropListConnectedTo]="getLaneIds()"
+                                     (cdkDropListDropped)="laneDrop($event)"
+                                     [cdkDropListData]="{laneId: lane.id}">
+                                    <div class="select-lane-header teal" (click)="selectLane($event, lane.id)">
+                                        <div class="select-lane-header-text">
+                                            <mat-icon
+                                                matTooltip="Add new selection to group"
+                                                class="float-left cursor-pointer"
+                                                (click)="addCard($event, lane.id)">
+                                                playlist_add
+                                            </mat-icon>
+                                            <span class="text-bold">Group {{lane.sequence}}</span> [{{ lane.count }}]
+                                            <mat-icon
+                                                matTooltip="Insert group after" class="float-right cursor-pointer"
+                                                (click)="addLane($event, lane.id)">
+                                                add_circle_outline
+                                            </mat-icon>
+                                            <mat-icon
+                                                matTooltip="Remove group" class="float-right cursor-pointer"
+                                                *ngIf="lane.selections.length === 0"
+                                                (click)="removeLane($event, lane.id)">
+                                                remove_circle_outline
+                                            </mat-icon>
+                                        </div>
+                                    </div>
+                                    <div class="select-lane-cards" fxLayout="column">
+                                        <div *ngFor="let card of lane.selections"
+                                             class="select-card"
+                                             [ngClass]="card.id == currentCardId ? 'yellow-100' : card.invert === 1 ? 'purple-50' : ''"
+                                             (click)="selectCard($event, card.id, lane.id)"
+                                             cdkDrag [cdkDragData]="{laneId: lane.id, card: card}">
+                                            <div class="select-card-header"
+                                                 [ngClass]="card.id == currentCardId ? card.invert === 1 ? 'red-200' : 'blue-200' : card.invert === 1 ? 'red-100' : 'blue-100'">
+                                                <button mat-icon-button [disabled]="card.title.length == 0"
+                                                        (click)="saveCard($event, card.id, false)"
+                                                        class="float-left cursor-pointer mat-icon-button-tight">
+                                                    <mat-icon
+                                                        matTooltip="Save selection">
+                                                        save
+                                                    </mat-icon>
+                                                </button>
+                                                <button mat-icon-button [disabled]="card.title.length == 0"
+                                                        (click)="saveCard($event, card.id, true)"
+                                                        class="float-left cursor-pointer mat-icon-button-tight">
+                                                    <mat-icon
+                                                        matTooltip="Save as new selection">
+                                                        queue
+                                                    </mat-icon>
+                                                </button>
+                                                <input class="select-card-title"
+                                                       placeholder="Enter name to save selection"
+                                                       matTooltip="{{card.invert === 1 ? 'Excluded' : ''}}"
+                                                       [ngClass]="card.id == currentCardId ? card.invert === 1 ? 'red-200' : 'blue-200' : card.invert === 1 ? 'red-100' : 'blue-100'"
+                                                       value="{{card.title}}"
+                                                       (change)="cardTitle($event, card.id)"
+                                                       autocomplete="do-not-autofill"
+                                                >
+                                                [{{ card.count }}]
+                                                <mat-icon
+                                                    matTooltip="{{card.invert === 0 ? 'Exclude Selection' : 'Include Selection'}}"
+                                                    class="float-right cursor-pointer"
+                                                    (click)="invertCard($event, card.id)">
+                                                    {{card.invert === 1 ? "person_add" : "person_add_disabled"}}
+                                                </mat-icon>
+                                                <mat-icon
+                                                    matTooltip="Remove selection" class="float-right cursor-pointer"
+                                                    (click)="removeCard($event, card.id)">
+                                                    delete
+                                                </mat-icon>
+                                            </div>
+                                            <div class="select-card-body"
+                                                 id="card-{{card.id}}"
+                                                 cdkDropList [cdkDropListConnectedTo]="getCardIds()"
+                                                 (cdkDropListDropped)="cardDrop($event)"
+                                                 [cdkDropListData]="{cardId: card.id}">
+                                                <div *ngFor="let selection of card.selections" class="cursor-pointer"
+                                                     cdkDrag
+                                                     [cdkDragData]="{cardId: card.id, selection: selection}">
+                                                    {{ selection.title }} :
+                                                    <ng-container *ngIf="selection.select || selection.list">
+                                                        <span *ngFor="let value of selection.values; let i = index"
+                                                              class="cursor-not-allowed"
+                                                              (dblclick)="removeSelectionValue($event, card.id, selection.parentSelectionNodeId, value)">
+                                                            {{ i === 0 ? "" : ", " }} {{ value.value }}
+                                                        </span>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="selection.entry">
+                                                        <input class="entry-value"
+                                                               value="{{selection.value}}" autocomplete="do-not-autofill"
+                                                               (change)="entryValue($event, card.id, selection.parentSelectionNodeId, selection.entryId)"
+                                                        >
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="finalLane > 0"
+                                     fxFlex="20 1 0" class="select-lane blue-50"
+                                >
+                                    <div class="select-lane-header blue">
+                                        <div class="select-lane-header-text">
+                                            <span class="text-bold">Final Result</span> [{{ finalCount }}]
+                                        </div>
+                                    </div>
+                                    <div class="select-lane-cards" fxLayout="column">
+                                        <div class="select-card blue-100">
+                                            <div class="select-card-header yellow-100" style="height: 4rem;">
+                                                <div *ngIf="finalAction == 'segment'" class="float-left" style="line-height: 4rem;">
+                                                    <span style="font-weight: bold">Action : </span><span>Segment existing list</span>
+                                                </div>
+                                                <div *ngIf="finalAction == 'update'" class="float-left" style="line-height: 4rem;">
+                                                    <span style="font-weight: bold">Action : </span><span>Update existing list</span>
+                                                </div>
+                                                <div *ngIf="finalAction == 'create'" class="float-left" style="line-height: 4rem;">
+                                                    <span style="font-weight: bold">Action : </span><span>Create new list</span>
+                                                </div>
+                                                <div *ngIf="finalAction == 'export'" class="float-left" style="line-height: 4rem;">
+                                                    <span style="font-weight: bold">Action : </span><span>Export</span>
+                                                </div>
+                                                <div class="float-right">
+                                                    <mat-icon
+                                                        matTooltip="Change action" class="cursor-pointer" style="line-height: 4rem;"
+                                                        (click)="segmentActionChange()">
+                                                        list
+                                                    </mat-icon>
+                                                </div>
+                                            </div>
+                                            <div class="select-card-body">
+                                                <div *ngIf="finalAction == 'segment'" fxLayout="column">
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>List:</mat-label>
+                                                            <mat-select formControlName="listId" required
+                                                                        (selectionChange)="listSelect($event)">
+                                                                <mat-option *ngFor="let list of lists"
+                                                                            [value]="list.value">
+                                                                    {{ list.label }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Segment:</mat-label>
+                                                            <input matInput id="segment" type="text" value="{{selectionSegment}}" autocomplete="do-not-autofill"
+                                                                   (keyup)="segmentChange($event)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Limit:</mat-label>
+                                                            <input matInput id = "limit" type="text" value="{{selectionLimit}}" autocomplete="do-not-autofill"
+                                                                   (keyup)="limitChange($event)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <p>
+                                                        <button mat-raised-button type="button"
+                                                                [disabled]="!canSegment" class="teal mr-4 float-right"
+                                                                (click)="doSegment()">Segment
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                                <div *ngIf="finalAction == 'update'" fxLayout="column">
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>List:</mat-label>
+                                                            <mat-select formControlName="listId" required
+                                                                        (selectionChange)="listSelect($event)">
+                                                                <mat-option *ngFor="let list of lists"
+                                                                            [value]="list.value">
+                                                                    {{ list.label }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <p>
+                                                        <button mat-raised-button type="button"
+                                                                [disabled]="!canUpdate" class="teal mr-4 float-right"
+                                                                (click)="listUpdate()">Update
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                                <div *ngIf="finalAction == 'create'" fxLayout="column">
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Layout:</mat-label>
+                                                            <mat-select formControlName="layoutId" required
+                                                                        (selectionChange)="layoutSelect($event)">
+                                                                <mat-option *ngFor="let layout of layouts"
+                                                                            [value]="layout.value">
+                                                                    {{ layout.label }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Name:</mat-label>
+                                                            <input matInput id="listname" type="text" value="{{selectionListName}}" autocomplete="do-not-autofill"
+                                                                   (keyup)="listNameChange($event)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <p>
+                                                        <button mat-raised-button type="button"
+                                                                [disabled]="!canCreate" class="teal mr-4 float-right"
+                                                                (click)="listCreate()">Create
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                                <div *ngIf="finalAction == 'export'" fxLayout="column">
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Layout:</mat-label>
+                                                            <mat-select formControlName="layoutId" required
+                                                                        (selectionChange)="layoutSelect($event)">
+                                                                <mat-option *ngFor="let layout of layouts"
+                                                                            [value]="layout.value">
+                                                                    {{ layout.label }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                        <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Password:</mat-label>
+                                                            <input matInput type="password" value="{{exportPassword}}" autocomplete="do-not-autofill"
+                                                                   (keyup)="passwordChange($event)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <p>
+                                                        <button mat-raised-button type="button"
+                                                                [disabled]="!canExport" class="teal mr-4 float-right"
+                                                                (click)="listExport()">Export
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row">
+                            <div *ngIf="!getSelectionName" fxFlex="50">
+                            </div>
+                            <div *ngIf="getSelectionName" fxFlex="65">
+                                <div>
+                                    <div fxFlex="70">
+                                        <div fxLayout="row">
+                                            <mat-form-field fxFlex="80">
+                                                <mat-label>Selection name</mat-label>
+                                                <input matInput id="selectionName" formControlName="name" autocomplete="do-not-autofill">
+                                                <mat-error>{{ getErrorMessage(selectionForm.controls.name, 'Selection Name')}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row">
+                                            <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                                                <mat-label>Description</mat-label>
+                                                <input matInput id="description" formControlName="description" autocomplete="do-not-autofill">
+                                                <mat-error>{{ getErrorMessage(selectionForm.controls.description, 'Selection Description')}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="30" class="float-right">
+                                        <div fxLayout="row" class="div-pad-vertical-12">
+                                            <button mat-raised-button type="button"
+                                                    [disabled]="!selectionForm.controls.name.value" class="teal mr-4"
+                                                    (click)="doSaveSelection(false)">Save selection
+                                            </button>
+                                        </div>
+                                        <div fxLayout="row" class="div-pad-vertical-12">
+                                            <button mat-raised-button type="button"
+                                                    [disabled]="!selectionForm.controls.name.value"
+                                                    class="purple-300 mr-4"
+                                                    (click)="doSaveSelection(true)"
+                                                    *ngIf="selectionForm.controls.id.value">
+                                                Save selection to new name
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="getSelectionName" fxFlex="35" fxLayoutAlign="end end">
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                                    Back
+                                </button>
+                                <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div *ngIf="!getSelectionName" fxFlex="50" fxLayoutAlign="end end">
+                                <button mat-raised-button type="button"
+                                        class="teal mr-4"
+                                        (click)="doGetSelectionName()">Save segment
+                                </button>
+                                <button mat-raised-button type="button"
+                                        *ngIf="!openedSelection" class="purple-300 mr-4"
+                                        (click)="doOpenSelection()">Use saved segment
+                                </button>
+                                <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                                    Back
+                                </button>
+                                <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div #selectionTrigger="matMenuTrigger" style="visibility: hidden; position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="selectionContextMenu">
+</div>
+<mat-menu #selectionContextMenu="matMenu">
+    <ng-template matMenuContent let-node="node">
+        <button mat-menu-item (click)="nodeAddToCard(null, node)">Add to Current Selection</button>
+    </ng-template>
+</mat-menu>
+<div #cardTrigger="matMenuTrigger" style="visibility: hidden; position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="cardContextMenu">
+</div>
+<mat-menu #cardContextMenu="matMenu">
+    <ng-template matMenuContent let-card="card">
+        <button mat-menu-item (click)="cardAddToLane(null, card)">Add to Current Lane</button>
+        <button mat-menu-item (click)="onContextMenuRemoveSavedCard(card)">Delete Saved Selection</button>
+    </ng-template>
+</mat-menu>

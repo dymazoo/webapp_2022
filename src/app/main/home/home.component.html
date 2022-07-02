@@ -1,0 +1,36 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden">
+    <div class="home-header">
+        <div class="home-logo">
+            <a href="https://dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
+        </div>
+        <div class="home-get-started">
+            <span class="home-website home-header-link"><a href="https://dymazoo.com">Website</a></span>
+            <span *ngIf="action!=='registerComplete' && !isLoggedIn" class="cursor-pointer home-header-link" (click)="toggleRegister($event)">
+                Sign Up
+            </span>
+            <span *ngIf="!isLoggedIn" class="cursor-pointer" (click)="toggleLogin($event)">
+                Log In
+            </span>
+        </div>
+
+    </div>
+
+    <div *ngIf="action=='none'" class="home-message">
+        <div class="home-message-top">
+            BETTER DIGITAL MARKETING
+        </div>
+        <div class="home-message-main">
+            Technology for a 360 degree customer view, in real time
+        </div>
+        <div class="home-message-bottom">
+            Targeted Marketing campaigns and customer insights at your fingertips.
+        </div>
+    </div>
+
+    <register [plan]="plan" *ngIf="action=='register'" (registered)="registered($event)"></register>
+
+    <registercomplete *ngIf="action=='registerComplete'"></registercomplete>
+
+    <login [plan]="plan" *ngIf="action=='login'"></login>
+
+</div>

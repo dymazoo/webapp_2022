@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Confirm</h1>
+<div mat-dialog-content>
+    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+
+        <div class="content p-12">
+            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="confirmForm" [formGroup]="confirmForm"
+                  (submit)="onConfirm()">
+
+                <p class="text-center text-bold">{{ confirmMessage }}</p>
+                <p class="text-center" *ngIf="informationMessage.length > 0">{{ informationMessage }}</p>
+
+                <div fxLayout="row" fxLayoutAlign="end end">
+                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">No</button>
+                    <button mat-raised-button type="submit" class="teal mr-4">Yes</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

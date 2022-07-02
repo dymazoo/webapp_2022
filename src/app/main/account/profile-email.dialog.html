@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>Change Email</h1>
+<div mat-dialog-content>
+    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+
+        <div class="content p-12">
+            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="emailForm" [formGroup]="emailForm"
+                  (submit)="saveEmail()">
+
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password" type="password" required>
+                        <mat-error>{{ getErrorMessage(emailForm.controls.password, 'Password')}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                        <mat-label>New Email</mat-label>
+                        <input matInput formControlName="email" required>
+                        <mat-error>{{ getErrorMessage(emailForm.controls.email, 'Email')}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field
+
+                        class="flex-auto gt-xs:pr-3">
+                        <mat-label>Confirm Email</mat-label>
+                        <input matInput formControlName="confirmEmail" required
+                               [errorStateMatcher]="errorMatcher">
+                        <mat-error>{{ getErrorMessage(emailForm.controls.confirmEmail, 'Email confirmation')}}</mat-error>
+                        <mat-error>{{ getErrorMessage(emailForm, '')}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="end end">
+                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
+                    <button mat-raised-button type="submit" class="accent mr-4" [disabled]="!emailForm.valid" >Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
