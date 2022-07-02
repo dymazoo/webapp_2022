@@ -20,13 +20,8 @@ export class HttpService {
     protected appHost = window.location.host;
     protected appPort = window.location.port;
     private timeout = 60000;
-    private loading: boolean = false;
-    private updates: any = [];
-    private refreshingUpdates: boolean = false;
-    private lastUpdateRefresh = 0;
     private loggedinSubject = new Subject<any>();
     private userSubject = new Subject<any>();
-    private updateSubject = new Subject<any>();
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -196,12 +191,6 @@ export class HttpService {
         return resultHeaders;
     }
 
-    public setLoading(state: boolean): void {
-        this.loading = state;
-        if (!state && !this.refreshingUpdates) {
-            this.refreshUpdates();
-        }
-    }
 
 
     // Authorisation
@@ -216,7 +205,6 @@ export class HttpService {
             setTimeout(() => {
                 this._fuseSplashScreenService.hide();
             }, 1);
-            this.refreshUpdates();
         } else {
             this.loggedIn = false;
             this.homeUrl = '';
@@ -436,11 +424,6 @@ export class HttpService {
         return result;
     }
 
-    public doSetLoading(): any {
-        this.setLoading(true);
-
-    }
-
     // Data Fetching and Saving
     /**
      * Fetch a data entity
@@ -448,7 +431,6 @@ export class HttpService {
      * @param params
      */
     public getEntity(entity: string, params: any): any {
-        this.setLoading(true);
         const headers = this.createAuthorizationHeader();
         let paramsString = '';
         if (params) {
@@ -465,11 +447,9 @@ export class HttpService {
         }).pipe(
             timeout(this.timeout),
             map (pipeResult => {
-                this.setLoading(false);
                 return pipeResult['data'];
             }),
             catchError((error: any) => {
-                this.setLoading(false);
                 if (error.status === 401) {
                     this.setLoggedInState(false);
                 }
@@ -487,18 +467,15 @@ export class HttpService {
      * @param data
      */
     public saveEntity(entity: string, data: any): any {
-        this.setLoading(true);
         const headers = this.createAuthorizationHeader();
         const result = this.http.post(this.apiUrl + entity, data, {
             headers: headers
         }).pipe(
             timeout(this.timeout),
             map(pipeResult => {
-                this.setLoading(false);
                 return pipeResult['data'];
             }),
             catchError((error: any) => {
-                this.setLoading(false);
                 if (error.status === 401) {
                     this.setLoggedInState(false);
                 }
@@ -523,18 +500,15 @@ export class HttpService {
      * @param formData
      */
     public saveEntityFormData(entity: string, formData: FormData): any {
-        this.setLoading(true);
         const headers = this.createAuthorizationHeader(false);
         const result = this.http.post(this.apiUrl + entity, formData, {
             headers: headers
         }).pipe(
             timeout(600000),
             map(data => {
-                this.setLoading(false);
                 return data;
             }),
             catchError((error: any) => {
-                this.setLoading(false);
                 if (error.status === 401) {
                     this.setLoggedInState(false);
                 }
@@ -559,18 +533,15 @@ export class HttpService {
      * @param id
      */
     public deleteEntity(entity: string, id: string): any {
-        this.setLoading(true);
         const headers = this.createAuthorizationHeader();
         return this.http.delete(this.apiUrl + entity + '/' + id, {
             headers: headers
         }).pipe(
             timeout(this.timeout),
             map(data => {
-                this.setLoading(false);
                 return true;
             }),
             catchError((error: any) => {
-                this.setLoading(false);
                 if (error.status === 401) {
                     this.setLoggedInState(false);
                 }
@@ -612,30 +583,4 @@ export class HttpService {
     public setCurrentTheme($theme): void {
         this.userData.theme = $theme;
     }
-
-    public getUpdates(): Observable<any> {
-        return this.updateSubject.asObservable();
-    }
-
-    public refreshUpdates(force = false): void {
-        const now = Date.now();
-        if (this.loggedIn &&
-            ((!this.refreshingUpdates &&
-            !this.loading &&
-            now > this.lastUpdateRefresh + 2000) || force)
-        ) {
-            this.lastUpdateRefresh = now;
-            this.refreshingUpdates = true;
-            this.setLoading(true);
-            this.getEntity('updates', '')
-                .subscribe(result => {
-                    this.updates = result;
-                    this.refreshingUpdates = false;
-                    this.updateSubject.next({updates: this.updates});
-                }, (errors) => {
-                    this.refreshingUpdates = false;
-                });
-        }
-    }
-
 }

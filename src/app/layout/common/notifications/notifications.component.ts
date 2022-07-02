@@ -97,6 +97,8 @@ export class NotificationsComponent implements OnInit, OnDestroy
             this._createOverlay();
         }
 
+        this._notificationsService.getAll().subscribe();
+
         // Attach the portal to the overlay
         this._overlayRef.attach(new TemplatePortal(this._notificationsPanel, this._viewContainerRef));
     }
