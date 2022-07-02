@@ -2,12 +2,12 @@
 <div mat-dialog-content>
     <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
 
-        <div class="content p-12">
+        <div class="content p-3">
 
-            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="sourceSettingsForm" [formGroup]="sourceSettingsForm"
+            <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="sourceSettingsForm" [formGroup]="sourceSettingsForm"
                   (submit)="save()">
 
-                <div *ngIf="errors.length > 0" class="content p-12 alert alert-danger">
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
                     <ul>
                         <li *ngFor="let message of errors">
                             {{ message }}
@@ -104,7 +104,7 @@
                     <p></p>
                 </div>
                 <ng-container *ngIf="!oAuthInProgress" >
-                    <div fxLayout="row" fxLayoutAlign="end end">
+                    <div class="flex items-center justify-end">
                         <button mat-raised-button type="button" class="warn mr-4"
                                 (click)="onCancel()">
                             Cancel
@@ -117,7 +117,7 @@
                     </div>
                 </ng-container>
                 <ng-container *ngIf="oAuthInProgress" >
-                    <div fxLayout="row" fxLayoutAlign="end end">
+                    <div class="flex items-center justify-end">
                         <button mat-raised-button type="button" class="teal mr-4"
                                 (click)="onClose()">
                             Continue

@@ -1,20 +1,27 @@
-<h1 mat-dialog-title>Confirm</h1>
-<div mat-dialog-content>
-    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">Confirm</div>
+    <div mat-dialog-content>
+        <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
 
-        <div class="content p-12">
-            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="confirmForm" [formGroup]="confirmForm"
-                  (submit)="onConfirm()">
+            <div class="content p-3">
+                <form class="flex flex-col mt-1 p-1 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="confirmForm"
+                      [formGroup]="confirmForm"
+                      (submit)="onConfirm()">
 
-                <p class="text-center text-bold">{{ confirmMessage }}</p>
-                <p class="text-center" *ngIf="informationMessage.length > 0">{{ informationMessage }}</p>
+                    <p class="text-center text-bold">{{ confirmMessage }}</p>
+                    <p class="text-center" *ngIf="informationMessage.length > 0">{{ informationMessage }}</p>
 
-                <div fxLayout="row" fxLayoutAlign="end end">
-                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">No</button>
-                    <button mat-raised-button type="submit" class="teal mr-4">Yes</button>
-                </div>
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button type="button" (click)="onCancel()">No
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-flat-button [color]="'primary'" type="submit">Yes
+                        </button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

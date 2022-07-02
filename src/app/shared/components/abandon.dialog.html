@@ -1,19 +1,26 @@
-<h1 mat-dialog-title>Abandon changes</h1>
-<div mat-dialog-content>
-    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">Abandon changes</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple">
 
-        <div class="content p-12">
-            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="abandonForm" [formGroup]="abandonForm"
-                  (submit)="onConfirm()">
+            <div class="content p-3">
+                <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="abandonForm"
+                      [formGroup]="abandonForm"
+                      (submit)="onConfirm()">
 
-                <p>Unsaved data will be lost</p>
+                    <p>Unsaved data will be lost</p>
 
-                <div fxLayout="row" fxLayoutAlign="end end">
-                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Stop</button>
-                    <button mat-raised-button type="submit" class="teal mr-4">Continue</button>
-                </div>
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button type="button" (click)="onCancel()">Stop
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-flat-button [color]="'primary'" type="submit">Ok
+                        </button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

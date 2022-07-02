@@ -1,49 +1,54 @@
-<h1 mat-dialog-title>Change Email</h1>
-<div mat-dialog-content>
-    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">Change Email</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
 
-        <div class="content p-12">
-            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="emailForm" [formGroup]="emailForm"
-                  (submit)="saveEmail()">
+            <div class="content p-3">
+                <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="emailForm"
+                      [formGroup]="emailForm"
+                      (submit)="saveEmail()">
 
-                <div class="flex flex-col gt-xs:flex-row">
-                    <mat-form-field
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="password" type="password" required>
+                            <mat-error>{{ getErrorMessage(emailForm.controls.password, 'Password')}}</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                        class="flex-auto gt-xs:pr-3">
-                        <mat-label>Password</mat-label>
-                        <input matInput formControlName="password" type="password" required>
-                        <mat-error>{{ getErrorMessage(emailForm.controls.password, 'Password')}}</mat-error>
-                    </mat-form-field>
-                </div>
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>New Email</mat-label>
+                            <input matInput formControlName="email" required>
+                            <mat-error>{{ getErrorMessage(emailForm.controls.email, 'Email')}}</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                <div class="flex flex-col gt-xs:flex-row">
-                    <mat-form-field
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Confirm Email</mat-label>
+                            <input matInput formControlName="confirmEmail" required
+                                   [errorStateMatcher]="errorMatcher">
+                            <mat-error>{{ getErrorMessage(emailForm.controls.confirmEmail, 'Email confirmation')}}</mat-error>
+                            <mat-error>{{ getErrorMessage(emailForm, '')}}</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                        class="flex-auto gt-xs:pr-3">
-                        <mat-label>New Email</mat-label>
-                        <input matInput formControlName="email" required>
-                        <mat-error>{{ getErrorMessage(emailForm.controls.email, 'Email')}}</mat-error>
-                    </mat-form-field>
-                </div>
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button type="button" (click)="onCancel()">Cancel
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-flat-button
+                                [color]="'primary'" type="submit" [disabled]="!emailForm.valid">Save
+                        </button>
+                    </div>
 
-                <div class="flex flex-col gt-xs:flex-row">
-                    <mat-form-field
-
-                        class="flex-auto gt-xs:pr-3">
-                        <mat-label>Confirm Email</mat-label>
-                        <input matInput formControlName="confirmEmail" required
-                               [errorStateMatcher]="errorMatcher">
-                        <mat-error>{{ getErrorMessage(emailForm.controls.confirmEmail, 'Email confirmation')}}</mat-error>
-                        <mat-error>{{ getErrorMessage(emailForm, '')}}</mat-error>
-                    </mat-form-field>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="end end">
-                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
-                    <button mat-raised-button type="submit" class="accent mr-4" [disabled]="!emailForm.valid" >Save</button>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

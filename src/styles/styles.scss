@@ -75,6 +75,11 @@ ul {
 // -----------------------------------------------------------------------------------------------------
 // @ Cards
 // -----------------------------------------------------------------------------------------------------
+.component {
+    align-items: center;
+    padding-top: 1rem;
+}
+
 .cards {
     display: flex;
     flex-direction: row;
@@ -88,6 +93,17 @@ ul {
     flex-direction: column;
     min-width: 50% !important;
     max-width: 99% !important;
+    text-align: center;
+    ul {
+        list-style-type: none;
+    }
+}
+
+.card-minor {
+    display: flex !important;
+    flex-direction: column;
+    min-width: 30% !important;
+    max-width: 60% !important;
     text-align: center;
 
     ul {
@@ -908,6 +924,9 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     .card-major {
         min-width: 80% !important;
     }
+    .card-minor {
+        min-width: 80% !important;
+    }
     .card-major-form {
         min-width: 80% !important;
         margin-right: 0px;
@@ -928,6 +947,9 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 @media screen and (max-width: 1024px) {
     .card-major {
+        min-width: 80% !important;
+    }
+    .card-minor {
         min-width: 80% !important;
     }
     .card-major-form {

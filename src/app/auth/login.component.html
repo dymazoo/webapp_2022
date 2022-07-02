@@ -1,7 +1,7 @@
-<div id="login" class="relative flex flex-col flex-auto min-w-0 overflow-hidden central" *transloco="let t">
-    <fuse-card class="card-major">
+<div id="login" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-minor">
         <div class="p-4">
-            <div class="h1">{{t('auth-login')}}</div>
+            <div class="h1 text-white bg-primary-400">{{t('auth-login')}}</div>
         </div>
         <div class="filled-major-item" fuseScrollbar>
 
@@ -31,9 +31,8 @@
                         <div class="flex items-center justify-end">
                             <button
                                 type="submit"
-                                class="fuse-mat-button-large w-50 mt-2"
-                                mat-flat-button
-                                [color]="'primary'">
+                                class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
+                                mat-flat-button>
                                 Submit
                             </button>
                         </div>
@@ -41,7 +40,7 @@
 
                     </form>
                 </div>
-                <div *ngIf="errors.length > 0" class="content p-12 alert alert-danger">
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
                     <ul>
                         <li *ngFor="let message of errors">
                             {{ message }}

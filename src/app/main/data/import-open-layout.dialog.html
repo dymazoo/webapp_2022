@@ -2,8 +2,8 @@
 <div mat-dialog-content>
     <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
 
-        <div class="content p-12">
-            <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" name="openLayoutForm" [formGroup]="openLayoutForm"
+        <div class="content p-3">
+            <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="openLayoutForm" [formGroup]="openLayoutForm"
                   (submit)="onConfirm()">
 
                 <div fxLayout="row" class="p-8">
@@ -36,7 +36,7 @@
                         </table>
                     </div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="end end">
+                <div class="flex items-center justify-end">
                     <mat-form-field fxFlex="40%">
                         <input matInput #filter type="text" (keyup)="filterLayouts($event.target.value)" autocomplete="do-not-autofill"
                                placeholder="Filter">
@@ -45,7 +45,7 @@
                     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                 </div>
 
-                <div fxLayout="row" fxLayoutAlign="end end">
+                <div class="flex items-center justify-end">
                     <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
                     <button mat-raised-button  class="teal mr-4" [disabled]="!selectedLayout" type="submit">Ok</button>
                 </div>

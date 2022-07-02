@@ -405,7 +405,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             hasOrigin = true;
         }
         const dialogRef = this.dialog.open(ImportConfirmDialogComponent, {
-            minWidth: '80%',
+            minWidth: '50%',
             data: {'hasIgnore': hasIgnore, 'hasOrigin': hasOrigin}
         });
 

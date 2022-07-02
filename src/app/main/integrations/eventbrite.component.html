@@ -2,9 +2,9 @@
     <div class="cards" *transloco="let t">
         <div class="fuse-card wide-card-form"  *ngIf="errors.length > 0">
             <div id="errorforms" class="page-layout simple fullwidth" fxLayout="column">
-                <div class="content p-12" fusePerfectScrollbar>
+                <div class="content p-3" fusePerfectScrollbar>
                     <div>
-                        <div class="content p-12 alert alert-danger" (click)="clearErrors()">
+                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
                             <div class="card-header">
                                 <strong>Errors</strong>
                             </div>
@@ -28,8 +28,8 @@
 
                 <div id="customerforms" class="page-layout simple fullwidth" fxLayout="column">
 
-                    <div class="content p-12" fusePerfectScrollbar>
-                        <div fxLayout="row" fxLayoutAlign="end end">
+                    <div class="content p-3" fusePerfectScrollbar>
+                        <div class="flex items-center justify-end">
                             <div *ngIf="canClientAdmin" class="pull-right" align="right">
                                 <button mat-raised-button type="button" class="purple-300 mr-4" (click)="syncCustomers()">
                                     {{ syncCustomersTitle }}
@@ -44,7 +44,7 @@
                             <p></p>
                         </div>
 
-                        <div fxLayout="row" fxLayoutAlign="end end">
+                        <div class="flex items-center justify-end">
                             <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
                                 Back
                             </button>

@@ -14,16 +14,16 @@ import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { TranslocoService } from '@ngneat/transloco';
+import {TranslocoService} from '@ngneat/transloco';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Observable} from 'rxjs';
 
-import {HttpService} from '../../shared/services/http.service';
-import {AbandonDialogService} from '../../shared/services/abandon-dialog.service';
-import {GlobalValidator} from '../../shared/global-validator';
-import {User} from '../../shared/models/user';
-import {Contact} from '../../shared/models/contact';
-import {CrossFieldErrorMatcher} from '../../shared/cross-field-errormatcher';
+import {HttpService} from 'app/shared/services/http.service';
+import {AbandonDialogService} from 'app/shared/services/abandon-dialog.service';
+import {GlobalValidator} from 'app/shared/global-validator';
+import {User} from 'app/shared/models/user';
+import {Contact} from 'app/shared/models/contact';
+import {CrossFieldErrorMatcher} from 'app/shared/cross-field-errormatcher';
 
 @Component({
     selector: 'profile',
@@ -74,8 +74,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.Names.changes.subscribe((comps: QueryList <ElementRef>) =>
-        {
+        this.Names.changes.subscribe((comps: QueryList<ElementRef>) => {
             this.nameElement = comps.first;
             setTimeout(() => {
                 this.nameElement.nativeElement.focus();
@@ -151,7 +150,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     openPasswordDialog(): void {
         this.errors = [];
         const dialogRef = this.dialog.open(ProfilePasswordDialogComponent, {
-            minWidth: '80%',
+            minWidth: '50%',
             data: {}
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -171,7 +170,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     openEmailDialog(): void {
         this.errors = [];
         const dialogRef = this.dialog.open(ProfileEmailDialogComponent, {
-            minWidth: '80%',
+            minWidth: '50%',
             data: {}
         });
         dialogRef.afterClosed().subscribe(result => {

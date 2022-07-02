@@ -19,7 +19,7 @@ export class AbandonDialogService {
 
     public showDialog(): Observable<any> {
         const dialogRef = this.dialog.open(AbandonDialogComponent, {
-            minWidth: '80%',
+            minWidth: '60%',
             data: {'service': this}
         });
         dialogRef.afterClosed().subscribe(result => {
