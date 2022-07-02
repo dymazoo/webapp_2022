@@ -33,12 +33,21 @@
             <div class="ml-auto">
                 <button
                     mat-icon-button
+                    [matTooltip]="'Delete all'"
+                    [disabled]="totalCount === 0"
+                    (click)="deleteAll()">
+                    <mat-icon
+                        class="icon-size-5 text-current"
+                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                </button>
+                <button
+                    mat-icon-button
                     [matTooltip]="'Mark all as read'"
                     [disabled]="unreadCount === 0"
                     (click)="markAllAsRead()">
                     <mat-icon
                         class="icon-size-5 text-current"
-                        [svgIcon]="'heroicons_solid:mail-open'"></mat-icon>
+                        [svgIcon]="'heroicons_solid:badge-check'"></mat-icon>
                 </button>
             </div>
         </div>

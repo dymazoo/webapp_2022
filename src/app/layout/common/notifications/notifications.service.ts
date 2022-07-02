@@ -174,4 +174,32 @@ export class NotificationsService
             ))
         );
     }
+
+    /**
+     * Delete all notifications
+     */
+    deleteAll(): Observable<boolean>
+    {
+        const headers = this.httpService.createAuthorizationHeader();
+        return this.notifications$.pipe(
+            take(1),
+            switchMap(notifications => this._httpClient.post(
+                this.apiUrl + 'updateAcknowledgeAll',
+                {},
+                {headers: headers}
+            ).pipe(
+                map((isUpdated: boolean) => {
+
+                    notifications = [];
+
+                    // Update the notifications
+                    this._notifications.next(notifications);
+
+                    // Return the updated status
+                    return isUpdated;
+                })
+            ))
+        );
+    }
+
 }

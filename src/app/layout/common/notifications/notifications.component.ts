@@ -20,6 +20,7 @@ export class NotificationsComponent implements OnInit, OnDestroy
 
     notifications: Notification[];
     unreadCount: number = 0;
+    totalCount: number = 0;
     private _overlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -121,6 +122,15 @@ export class NotificationsComponent implements OnInit, OnDestroy
     }
 
     /**
+     * Delete all notifications
+     */
+    deleteAll(): void
+    {
+        // Mark all as read
+        this._notificationsService.deleteAll().subscribe();
+    }
+
+    /**
      * Toggle read status of the given notification
      */
     toggleRead(notification: Notification): void
@@ -212,12 +222,12 @@ export class NotificationsComponent implements OnInit, OnDestroy
     private _calculateUnreadCount(): void
     {
         let count = 0;
-
         if ( this.notifications && this.notifications.length )
         {
             count = this.notifications.filter(notification => !notification.read).length;
         }
 
         this.unreadCount = count;
+        this.totalCount = this.notifications.length;
     }
 }
