@@ -1,12 +1,12 @@
-<div class="page-layout blank p-12" fusePerfectScrollbar>
+<div class="page-layout blank p-12">
 
     <div class="fuse-card card-major" *transloco="let t">
         <div class="p-8 card-header">
             <div class="h1">{{t('data-import-header')}}</div>
         </div>
-        <div class="major-item" fusePerfectScrollbar>
+        <div class="major-item">
 
-            <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+            <div id="forms" class="simple fullwidth">
 
                 <div class="content p-3" cdkDropListGroup>
                     <form *ngIf="hasData" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow" fxLayout="column"
@@ -62,7 +62,7 @@
                                 </div>
                                 <div *ngIf="hasLayout">
                                     <div fxFlex="50" *ngIf="getLayoutName">
-                                        <div fxLayout="row">
+                                        <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -71,7 +71,7 @@
                                                 <mat-error>{{ getErrorMessage(importForm.controls.name, 'Layout Name')}}</mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div fxLayout="row">
+                                        <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div align="left" fxFlex="100">
+                                    <div align="left">
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +213,9 @@
                         </div>
 
                         <div class="flex items-center justify-end">
-                            <button mat-raised-button type="button" class="cyan mr-4" (click)="onBack()">
+                            <button class="fuse-mat-button-large w-20 mt-2"
+                                    mat-button
+                                    type="button" (click)="onBack()">
                                 Back
                             </button>
                             <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">

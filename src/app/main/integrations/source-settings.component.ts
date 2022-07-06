@@ -185,7 +185,7 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
     onSelectSourceSetting(row): void {
         const selectedSourceSetting = new SourceSetting(row);
         const dialogRef = this.dialog.open(SourceSettingsValuesDialogComponent, {
-            width: '80%',
+            width: '70%',
             minWidth: '1000px',
             data: {'sourceSetting' : selectedSourceSetting}
         });

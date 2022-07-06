@@ -1,4 +1,4 @@
-<div class="page-layout blank p-12" fusePerfectScrollbar>
+<div class="page-layout blank p-12">
 
     <div class="fuse-card card-major" *transloco="let t">
         <div class="p-8 card-header">
@@ -32,7 +32,7 @@
 
                         <div class="flex flex-col gt-xs:flex-row" fxFlexAlign="flex-start">
                             <div class='div-block'>
-                                <div fxFlex="none" fxLayout="row" fxFlexAlign="flex-start">
+                                <div fxFlex="none" class="flex flex-col gt-xs:flex-row" fxFlexAlign="flex-start">
                                     <div id='remove-item' class='div-left div-block'
                                          [ngClass]="removingSelection ? 'red' : ''"
                                          cdkDropList
@@ -46,10 +46,10 @@
                                         </mat-icon>
                                     </div>
                                 </div>
-                                <div fxFlex="none" fxLayout="row" fxFlexAlign="flex-start">
+                                <div fxFlex="none" class="flex flex-col gt-xs:flex-row" fxFlexAlign="flex-start">
                                     <div fxFlex="none 0 0" class="selection-space">
                                     </div>
-                                    <div fxFlex="none 0 0" class="selection-tree" fusePerfectScrollbar>
+                                    <div fxFlex="none 0 0" class="selection-tree">
                                         <div id="master-nodes"
                                              cdkDropList cdkDropListSortingDisabled
                                              [cdkDropListConnectedTo]="getCardIds()"
@@ -274,7 +274,7 @@
                                             </div>
                                             <div class="select-card-body">
                                                 <div *ngIf="finalAction == 'segment'" fxLayout="column">
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -288,7 +288,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -297,7 +297,7 @@
                                                                    (keyup)="segmentChange($event)">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -314,7 +314,7 @@
                                                     </p>
                                                 </div>
                                                 <div *ngIf="finalAction == 'update'" fxLayout="column">
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -336,7 +336,7 @@
                                                     </p>
                                                 </div>
                                                 <div *ngIf="finalAction == 'create'" fxLayout="column">
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -350,7 +350,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -367,7 +367,7 @@
                                                     </p>
                                                 </div>
                                                 <div *ngIf="finalAction == 'export'" fxLayout="column">
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -381,7 +381,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start" fxFlex="1 0 auto">
                                                         <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -404,20 +404,20 @@
                             </div>
                         </div>
 
-                        <div fxLayout="row">
+                        <div class="flex flex-col gt-xs:flex-row">
                             <div *ngIf="!getSelectionName" fxFlex="50">
                             </div>
                             <div *ngIf="getSelectionName" fxFlex="65">
                                 <div>
                                     <div fxFlex="70">
-                                        <div fxLayout="row">
+                                        <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field fxFlex="80">
                                                 <mat-label>Selection name</mat-label>
                                                 <input matInput id="selectionName" formControlName="name" autocomplete="do-not-autofill">
                                                 <mat-error>{{ getErrorMessage(selectionForm.controls.name, 'Selection Name')}}</mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div fxLayout="row">
+                                        <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
 
                         class="flex-auto gt-xs:pr-3">
@@ -428,13 +428,13 @@
                                         </div>
                                     </div>
                                     <div fxFlex="30" class="float-right">
-                                        <div fxLayout="row" class="div-pad-vertical-12">
+                                        <div class="flex flex-col gt-xs:flex-row" class="div-pad-vertical-12">
                                             <button mat-raised-button type="button"
                                                     [disabled]="!selectionForm.controls.name.value" class="teal mr-4"
                                                     (click)="doSaveSelection(false)">Save selection
                                             </button>
                                         </div>
-                                        <div fxLayout="row" class="div-pad-vertical-12">
+                                        <div class="flex flex-col gt-xs:flex-row" class="div-pad-vertical-12">
                                             <button mat-raised-button type="button"
                                                     [disabled]="!selectionForm.controls.name.value"
                                                     class="purple-300 mr-4"
