@@ -1,6 +1,6 @@
-<div class="page-layout blank p-12">
-    <div class="cards" *transloco="let t">
-        <div class="fuse-card wide-card-form"  *ngIf="errors.length > 0">
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <div class="cards">
+        <fuse-card class="card-major" *ngIf="errors.length > 0">
             <div id="errorforms" class="simple fullwidth">
                 <div class="content p-3">
                     <div>
@@ -17,12 +17,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fuse-card>
 
-        <div class="fuse-card card-form">
-            <div class="p-8 card-header">
-                <div class="h1">{{t('integration-eventbrite-customer-heading')}}</div>
-            </div>
+       <fuse-card class="card-form">
+           <div class="p-4">
+               <div class="h1 text-white bg-primary">{{t('integration-eventbrite-customer-heading')}}</div>
+           </div>
 
             <div class="major-item">
 
@@ -31,10 +31,14 @@
                     <div class="content p-3">
                         <div class="flex items-center justify-end">
                             <div *ngIf="canClientAdmin" class="pull-right" align="right">
-                                <button mat-raised-button type="button" class="purple-300 mr-4" (click)="syncCustomers()">
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-200"
+                                        mat-flat-button type="button"
+                                        (click)="syncCustomers()">
                                     {{ syncCustomersTitle }}
                                 </button>
-                                <button mat-raised-button type="button" class="purple-300 mr-4" (click)="syncEvents()">
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-200"
+                                        mat-flat-button type="button"
+                                        (click)="syncEvents()">
                                     {{ syncEventsTitle }}
                                 </button>
                             </div>
@@ -54,6 +58,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+       </fuse-card>
     </div>
 </div>

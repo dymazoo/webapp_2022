@@ -88,6 +88,17 @@ ul {
     align-items: flex-start;
 }
 
+.card-error {
+    display: flex !important;
+    flex-direction: column;
+    min-width: 80% !important;
+    max-width: 99% !important;
+    text-align: center;
+    ul {
+        list-style-type: none;
+    }
+}
+
 .card-major {
     display: flex !important;
     flex-direction: column;
