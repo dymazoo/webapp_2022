@@ -8,7 +8,7 @@
     "auth-register-heading": "Sign Up",
     "auth-login": "Login",
 
-    "data-import-header": "import",
+    "data-import-heading": "File import",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",
@@ -19,5 +19,5 @@
     "source-settings-heading": "Integrations",
 
 
-    "segmentation-header": "Segmentation"
+    "segmentation-heading": "Segmentation"
 }

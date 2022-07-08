@@ -1,20 +1,20 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
 
-    <div class="fuse-card card-major" *transloco="let t">
-        <div class="p-8 card-header">
-            <div class="h1">{{t('data-import-header')}}</div>
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('data-import-heading')}}</div>
         </div>
         <div class="major-item">
 
             <div id="forms" class="simple fullwidth">
 
                 <div class="content p-3" cdkDropListGroup>
-                    <form *ngIf="hasData" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow" fxLayout="column"
-                          fxLayoutAlign="start" fxFlex="1 0 auto" name="importForm" [formGroup]="importForm"
+                    <form *ngIf="hasData" class="flex flex-col"
+                          name="importForm" [formGroup]="importForm"
                           (ngSubmit)="doImport()">
 
                         <div *ngIf="errors.length > 0">
-                            <div class="content p-3 alert alert-danger"  (click)="clearErrors()">
+                            <div class="content p-3 alert alert-danger" (click)="clearErrors()">
                                 <div class="card-header">
                                     <strong>Errors</strong>
                                 </div>
@@ -29,10 +29,10 @@
                         <input type="hidden" name="id" id="id" formControlName="id">
                         <input type="hidden" name="file-name" id="file-name" formControlName="file-name">
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <div fxFlex="55">
-                                <div>
-                                    <mat-form-field fxFlex="50" appearance="outline">
+                        <div class="flex gt-xs:flex-row">
+                            <div class="basis-7/12">
+                                <div class="flex gt-xs:flex-row">
+                                    <mat-form-field class="basis-6/12" appearance="outline">
                                         <mat-label>Select file to import</mat-label>
                                         <ngx-mat-file-input #fileInput placeholder="Select file to import (csv,txt)"
                                                             formControlName="file-input" [accept]="'.csv,.txt'"
@@ -41,56 +41,61 @@
                                         <mat-icon matSuffix>folder</mat-icon>
                                         <mat-error>{{ getErrorMessage(importForm.get('file-input'), 'File to import')}}</mat-error>
                                     </mat-form-field>
-                                    <div fxFlex="30" align="right">
+                                    <div class="basis-4/12">
                                         <mat-checkbox #header name="header" [formControl]="importForm.get('header')"
-                                                      value="1" (change)="headerChange(header)">Skip first row</mat-checkbox>
+                                                      value="1" (change)="headerChange(header)">Skip first row
+                                        </mat-checkbox>
                                     </div>
                                 </div>
-                                <div>
-                                    <div align="left" fxFlex="50" *ngIf="!openedLayout">
-                                        <button mat-raised-button type="button" class="purple-300 mr-4"
+                                <div class="flex gt-xs:flex-row">
+                                    <div align="left" class="basis-6/12" *ngIf="!openedLayout">
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
+                                                mat-flat-button type="button"
                                                 (click)="doOpenLayout()">Use saved layout
                                         </button>
                                     </div>
                                     <div *ngIf="hasLayout">
-                                        <div align="right" fxFlex="50" *ngIf="!getLayoutName">
-                                            <button mat-raised-button type="button" class="teal mr-4"
+                                        <div align="right" class="basis-6/12" *ngIf="!getLayoutName">
+                                            <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
+                                                    mat-flat-button type="button"
                                                     (click)="doGetLayoutName()">Save layout
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div *ngIf="hasLayout">
-                                    <div fxFlex="50" *ngIf="getLayoutName">
+                                    <div class="basis-6/12" *ngIf="getLayoutName">
                                         <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
-
-                        class="flex-auto gt-xs:pr-3">
+                                                class="flex-auto gt-xs:pr-3">
                                                 <mat-label>Layout name</mat-label>
-                                                <input matInput formControlName="name" autocomplete="do-not-autofill" focus>
+                                                <input matInput formControlName="name" autocomplete="do-not-autofill"
+                                                       focus>
                                                 <mat-error>{{ getErrorMessage(importForm.controls.name, 'Layout Name')}}</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
-
-                        class="flex-auto gt-xs:pr-3">
+                                                class="flex-auto gt-xs:pr-3">
                                                 <mat-label>Description</mat-label>
-                                                <input matInput formControlName="description" autocomplete="do-not-autofill" focus>
+                                                <input matInput formControlName="description"
+                                                       autocomplete="do-not-autofill" focus>
                                                 <mat-error>{{ getErrorMessage(importForm.controls.description, 'Layout Description')}}</mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <div fxFlex="50" align="right" *ngIf="getLayoutName">
-                                        <button mat-raised-button type="button"
-                                                [disabled]="!importForm.controls.name.value" class="teal mr-4"
-                                                (click)="doSaveLayout(false)">Save layout
+                                    <div class="basis-6/12" fxLayoutAlign="right" *ngIf="getLayoutName">
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
+                                                mat-flat-button type="button"
+                                                [disabled]="!importForm.controls.name.value"
+                                                (click)="doSaveLayout(false)">
+                                            Save layout
                                         </button>
-                                        <button mat-raised-button type="button"
-                                                [disabled]="!importForm.controls.name.value" class="purple-300"
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
+                                                mat-flat-button type="button"
+                                                [disabled]="!importForm.controls.name.value"
                                                 (click)="doSaveLayout(true)" *ngIf="importForm.controls.id.value">
-                                            Save
-                                            layout to new name
+                                            Save layout to new name
                                         </button>
                                     </div>
                                 </div>
@@ -100,13 +105,13 @@
                                 </div>
                             </div>
 
-                            <div fxFlex="5">
+                            <div class="basis-1/12">
                             </div>
 
-                            <div fxFlex="40">
+                            <div class="basis-4/12">
                                 <div style="margin-bottom: 0.25rem !important;">
                                     <div class="card-header">
-                                        <strong>Available fields (drag to layout)</strong>
+                                        <strong>Available fields</strong>
                                     </div>
                                     <div id="available-field-container"
                                          class="fields-drag-list"
@@ -116,7 +121,7 @@
                                     >
                                         <div *ngFor="let field of fields; let i=index">
                                             <button *ngIf="!field.inLayout" cdkDrag mat-stroked-button
-                                                    class="indigo-fg"
+                                                    class="bg-cyan-300"
                                                     [matTooltip]="field.description"
                                                     [cdkDragData]="{id:field.id, index:i}">
                                                 {{ field.name }}
@@ -168,7 +173,7 @@
                                         <div class="card">
                                             <div class="card-header card-primary">
                                                 <div class="div-field-header">
-                                                    <button cdkDrag mat-flat-button class="indigo"
+                                                    <button cdkDrag mat-flat-button class="bg-cyan-500"
                                                             [matTooltip]="layoutFields[i].fieldDescription"
                                                             [cdkDragData]="{id:layoutFields[i].fieldId, index:i}">
                                                         {{ layoutFields[i].fieldName }}
@@ -183,16 +188,16 @@
                                             </div>
                                             <div class="card-block div-field-container-import" [formGroupName]="i">
                                                 <div class="scroll-field-items">
-                                                    <select class="form-tight" formControlName="transformId"
-                                                            size="1">
-                                                        <option value="">None</option>
-                                                        <option *ngFor="let transform of transforms"
-                                                                value="{{ transform.id }}">{{ transform.name }}</option>
-                                                    </select>
+                                                    <mat-select formControlName="transformId"
+                                                            size="1" class="basis-11/12">
+                                                        <mat-option value="">None</mat-option>
+                                                        <mat-option *ngFor="let transform of transforms"
+                                                                value="{{ transform.id }}">{{ transform.name }}</mat-option>
+                                                    </mat-select>
                                                 </div>
                                                 <div class="scroll-field-items">
-                                                    <input fxFlex="95" matInput
-                                                           class="scroll-field-input form-tight"
+                                                    <input matInput
+                                                           class="basis-11/12 input-boxed scroll-field-input"
                                                            formControlName="default"
                                                            value="{{ layoutFields[i].default }}">
                                                 </div>
@@ -218,11 +223,15 @@
                                     type="button" (click)="onBack()">
                                 Back
                             </button>
-                            <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">
+                            <button class="fuse-mat-button-large w-20 mt-2"
+                                    mat-stroked-button
+                                    type="button" (click)="onCancel()">
                                 Cancel
                             </button>
-                            <button mat-raised-button [disabled]="!hasLayout || !importForm.valid" type="submit"
-                                    class="teal">
+                            <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                    mat-flat-button
+                                    [disabled]="!hasLayout || !importForm.valid"
+                                    type="submit">
                                 Import
                             </button>
                         </div>
@@ -231,5 +240,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </fuse-card>
 </div>

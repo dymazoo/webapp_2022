@@ -31,13 +31,13 @@
                         </div>
 
                         <div class="flex gt-xs:flex-row">
-                            <mat-form-field style="width: 60%"
-                                class="flex-auto gt-xs:pr-3">
+                            <mat-form-field
+                                class="basis-7/12 flex-auto gt-xs:pr-3">
                                 <mat-label>Email address</mat-label>
                                 <input matInput formControlName="email" autocomplete="do-not-autofill" required>
                                 <mat-error>{{ getErrorMessage(profileForm.controls.email, 'Email address')}}</mat-error>
                             </mat-form-field>
-                            <div class="flex-auto gt-xs:pr-3">
+                            <div class="basis-5/12 flex-auto gt-xs:pr-3">
                                 <button mat-stroked-button type="button" (click)="openEmailDialog()">
                                     Change
                                     email

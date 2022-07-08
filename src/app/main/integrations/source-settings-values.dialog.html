@@ -44,7 +44,7 @@
                                 <th style="width: 30%;" class="table-header table-framed">Field name</th>
                                 <th style="width: 30%;" class="table-header table-framed">Value</th>
                                 <th style="width: 10%;" class="table-header table-framed">
-                                    <button class="fuse-mat-button-large w-20 bg-primary-200"
+                                    <button class="fuse-mat-button-large w-20 bg-primary-300"
                                             mat-flat-button type="button"
                                             (click)="addSetting()">
                                         Add
@@ -88,7 +88,7 @@
                                             </button>
                                         </div>
                                         <div *ngIf="sourceSetting.controls.oauth.value === 1">
-                                            <button class="fuse-mat-button-large w-50 bg-primary-200"
+                                            <button class="fuse-mat-button-large w-50 bg-primary-300"
                                                     mat-flat-button type="button"
                                                     (click)="doAuth(sourceSetting.controls.oauth_url.value)">
                                                 Grant API Access
@@ -122,7 +122,7 @@
                     </ng-container>
                     <ng-container *ngIf="oAuthInProgress">
                         <div class="flex items-center justify-end">
-                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-200"
+                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
                                     mat-flat-button type="button"
                                     (click)="onClose()">
                                 Continue

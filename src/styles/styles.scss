@@ -77,7 +77,7 @@ ul {
 // -----------------------------------------------------------------------------------------------------
 .component {
     align-items: center;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 .cards {
@@ -102,7 +102,7 @@ ul {
 .card-major {
     display: flex !important;
     flex-direction: column;
-    min-width: 50% !important;
+    min-width: 60% !important;
     max-width: 99% !important;
     text-align: center;
     ul {
@@ -233,10 +233,6 @@ ul {
     text-align: left;
 }
 
-.mat-table .mat-row.selected {
-    background: #e1f5fe;
-}
-
 // -----------------------------------------------------------------------------------------------------
 // @Material snackbar
 // -----------------------------------------------------------------------------------------------------
@@ -321,6 +317,10 @@ ul {
 .div-block {
     display: block !important;
     vertical-align: top;
+}
+
+.div-inline {
+    display: inline-block !important;
 }
 
 .div-left {
@@ -797,8 +797,14 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 // -----------------------------------------------------------------------------------------------------
 // @Selection lanes
 // -----------------------------------------------------------------------------------------------------
-.div-full-height {
-    min-height: calc(100vh - 150px) !important;
+.div-full-height-130 {
+    min-height: calc(100vh - 130px) !important;
+}
+.div-full-height-180 {
+    min-height: calc(100vh - 180px) !important;
+}
+.div-full-height-290 {
+    min-height: calc(100vh - 290px) !important;
 }
 
 .selection-space {
@@ -807,21 +813,44 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .selection-tree {
-    min-width: 26rem;
-    max-width: 26rem;
-    min-height: calc(100vh - 360px) !important;
-    max-height: calc(100vh - 360px) !important;
+    min-width: 20rem;
+    max-width: 20rem;
     border: #D9DCE3;
     border-width: medium;
     border-style: solid;
     border-radius: 10px;
+    overflow-y: auto;
+}
+
+.selection-tree-320 {
+    min-height: calc(100vh - 320px) !important;
+    max-height: calc(100vh - 320px) !important;
+}
+
+.selection-tree-360 {
+    min-height: calc(100vh - 360px) !important;
+    max-height: calc(100vh - 360px) !important;
+}
+
+.selection-tree-400 {
+    min-height: calc(100vh - 400px) !important;
+    max-height: calc(100vh - 400px) !important;
+}
+
+.selection-tree-440 {
+    min-height: calc(100vh - 440px) !important;
+    max-height: calc(100vh - 440px) !important;
+}
+
+.selection-tree-480{
+    min-height: calc(100vh - 480px) !important;
+    max-height: calc(100vh - 480px) !important;
 }
 
 .select-lanes {
     overflow-x: auto;
     overflow-y: hidden;
-    width: calc(95vw - 560px);
-    max-height: calc(100vh - 320px);
+    width: calc(95vw - 400px);
     margin: 0px;
 }
 
@@ -832,11 +861,12 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .select-lane {
-    min-width: 20rem;
-    max-width: 40rem;
+    min-width: 18rem;
     margin-left: 5px;
     margin-right: 5px;
     border-radius: 10px;
+    display: inline-block;
+    min-height: 100%
 }
 
 .select-lane-header {
@@ -867,7 +897,6 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .select-card-header {
-    color: #FFFFFF;
     border: #000000;
     border-style: solid;
     border-width: thin;
@@ -917,16 +946,28 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     opacity: 0;
 }
 
+// -----------------------------------------------------------------------------------------------------
+// @General modifications for themes and schemes
+// -----------------------------------------------------------------------------------------------------
+.input-boxed {
+    padding: 1px !important;
+    text-align: center !important;
+    text-overflow: ellipsis !important;
+    border-color: #d0e9c6 !important;
+    border-style: solid !important;
+    border-width: thin !important;
+}
+
 
 // -----------------------------------------------------------------------------------------------------
 // @Specific id items
 // -----------------------------------------------------------------------------------------------------
 
 #remove-item {
-    min-width: 26rem;
-    max-width: 26rem;
-    min-height: 4rem;
-    max-height: 4rem;
+    min-width: 20rem;
+    max-width: 20rem;
+    min-height: 3rem;
+    max-height: 3rem;
 }
 
 

@@ -8,7 +8,7 @@ import {FormBuilder, FormGroup, FormArray, Validators, Form} from '@angular/form
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {Subject} from 'rxjs';
+import {combineLatest, map, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
@@ -27,7 +27,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {SourceSetting} from '../../shared/models/sourceSetting';
-import {Layout} from '../../shared/models/layout';
+import {FuseConfigService} from '@fuse/services/config';
+import {FuseMediaWatcherService} from '@fuse/services/media-watcher';
 
 interface SelectionNode {
     id: string;
@@ -72,6 +73,9 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     public canUpdate = false;
     public canExport = false;
     public contextMenuPosition = {x: '0px', y: '0px'};
+    public scheme;
+    public theme;
+    public layout;
 
     nodeTreeControl = new NestedTreeControl<SelectionNode>(node => node.children);
     nodeDataSource = new MatTreeNestedDataSource<SelectionNode>();
@@ -84,11 +88,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     @ViewChild('selectionTrigger') selectionContextMenu: MatMenuTrigger;
     @ViewChild('cardTrigger') cardContextMenu: MatMenuTrigger;
 
-    /**
-     * Constructor
-     *
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     */
+
     constructor(
         private _formBuilder: FormBuilder,
         private httpService: HttpService,
@@ -97,7 +97,9 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         private _snackBar: MatSnackBar,
         private router: Router,
-        private location: Location
+        private location: Location,
+        private _fuseConfigService: FuseConfigService,
+        private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
         this._translocoService.setActiveLang('en');
         this._unsubscribeAll = new Subject();
@@ -139,8 +141,208 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             'listId': [''],
             'layoutId': [''],
         });
+        combineLatest([
+            this._fuseConfigService.config$,
+            this._fuseMediaWatcherService.onMediaQueryChange$(['(prefers-color-scheme: dark)', '(prefers-color-scheme: light)'])
+        ]).pipe(
+            takeUntil(this._unsubscribeAll),
+            map(([config, mql]) => {
+
+                const options = {
+                    scheme: config.scheme,
+                    theme: config.theme,
+                    layout: config.layout
+                };
+
+                // If the scheme is set to 'auto'...
+                if (config.scheme === 'auto') {
+                    // Decide the scheme using the media query
+                    options.scheme = mql.breakpoints['(prefers-color-scheme: dark)'] ? 'dark' : 'light';
+                }
+
+                return options;
+            })
+        ).subscribe((options) => {
+            this.scheme = options.scheme;
+            this.theme = options.theme;
+            this.layout = options.layout;
+        });
 
         this.resetSelections();
+    }
+
+    getFullHeight(): string {
+        let fullHeight = 'div-full-height-130';
+        if (this.layout === 'modern') {
+            fullHeight = 'div-full-height-180';
+        }
+        if (this.layout === 'enterprise') {
+            fullHeight = 'div-full-height-290';
+        }
+        return fullHeight;
+    }
+
+    getSelectionTree(): string {
+        let selectTree = 'selection-tree-320';
+        if (!this.getSelectionName) {
+            if (this.layout === 'modern') {
+                selectTree = 'selection-tree-360';
+            }
+            if (this.layout === 'enterprise') {
+                selectTree = 'selection-tree-440';
+            }
+        } else {
+            selectTree = 'selection-tree-360';
+            if (this.layout === 'modern') {
+                selectTree = 'selection-tree-400';
+            }
+            if (this.layout === 'enterprise') {
+                selectTree = 'selection-tree-480';
+            }
+
+        }
+        return selectTree;
+    }
+
+    getLaneClass(laneId): string {
+        let laneClass;
+        if (this.scheme === 'light') {
+            if (this.theme=== 'theme-teal'){
+                laneClass = 'bg-blue-100';
+                if (laneId === this.currentLaneId) {
+                    laneClass = 'bg-blue-200';
+                }
+            } else {
+                laneClass = 'bg-teal-100';
+                if (laneId === this.currentLaneId) {
+                    laneClass = 'bg-teal-200';
+                }
+            }
+        } else {
+            if (this.theme=== 'theme-teal') {
+                laneClass = 'bg-blue-800';
+                if (laneId === this.currentLaneId) {
+                    laneClass = 'bg-blue-600';
+                }
+            } else {
+                laneClass = 'bg-teal-700';
+                if (laneId === this.currentLaneId) {
+                    laneClass = 'bg-teal-500';
+                }
+            }
+        }
+        return laneClass;
+    }
+
+    getLaneHeaderClass(): string {
+        let laneClass;
+        if (this.scheme === 'light') {
+            if (this.theme=== 'theme-teal') {
+                laneClass = 'bg-blue-400';
+            } else {
+                laneClass = 'bg-teal-400';
+            }
+        } else {
+            if (this.theme=== 'theme-teal') {
+                laneClass = 'bg-blue-900';
+            } else {
+                laneClass = 'bg-teal-900';
+            }
+        }
+        return laneClass;
+    }
+
+    getCardClass(cardId, cardInvert): string {
+        let cardClass='';
+        if (this.scheme === 'light') {
+            if (this.currentCardId === cardId) {
+                cardClass = 'bg-yellow-100';
+            } else {
+                if (cardInvert) {
+                    cardClass = 'bg-purple-100';
+                }
+            }
+        } else {
+            cardClass='bg-accent-800';
+            if (this.currentCardId === cardId) {
+                cardClass = 'bg-yellow-700';
+            } else {
+                if (cardInvert) {
+                    cardClass = 'bg-accent-600';
+                }
+            }
+        }
+        return cardClass;
+    }
+
+    getCardHeaderClass(cardId, cardInvert): string {
+        let cardClass='';
+        if (this.scheme === 'light') {
+            if (this.currentCardId === cardId) {
+                cardClass = 'bg-blue-300';
+                if (cardInvert) {
+                    cardClass = 'bg-red-300';
+                }
+            } else {
+                cardClass = 'bg-blue-200';
+                if (cardInvert) {
+                    cardClass = 'bg-red-200';
+                }
+            }
+        } else {
+            if (this.currentCardId === cardId) {
+                cardClass = 'bg-blue-800';
+                if (cardInvert) {
+                    cardClass = 'bg-red-800';
+                }
+            } else {
+                cardClass = 'bg-blue-700';
+                if (cardInvert) {
+                    cardClass = 'bg-red-700';
+                }
+            }
+        }
+        return cardClass;
+    }
+
+    getFinalLaneClass(): string {
+        let laneClass;
+        if (this.scheme === 'light') {
+            laneClass = 'bg-primary-100';
+        } else {
+            laneClass = 'bg-primary-700';
+        }
+        return laneClass;
+    }
+
+    getFinalLaneHeaderClass(): string {
+        let laneClass;
+        if (this.scheme === 'light') {
+            laneClass = 'bg-primary-500';
+        } else {
+            laneClass = 'bg-primary-600';
+        }
+        return laneClass;
+    }
+
+    getFinalCardClass(): string {
+        let cardClass;
+        if (this.scheme === 'light') {
+            cardClass = 'bg-primary-300';
+        } else {
+            cardClass = 'bg-primary-900';
+        }
+        return cardClass;
+    }
+
+    getFinalCardHeaderClass(): string {
+        let cardClass;
+        if (this.scheme === 'light') {
+            cardClass = 'bg-primary-300';
+        } else {
+            cardClass = 'bg-primary-800';
+        }
+        return cardClass;
     }
 
     getSavedSelectionCards(): void {
@@ -340,7 +542,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
     doOpenSelection(): void {
         const dialogRef = this.dialog.open(SegmentationOpenSegmentDialogComponent, {
-            minWidth: '80%',
+            minWidth: '70%',
             data: {}
         });
 

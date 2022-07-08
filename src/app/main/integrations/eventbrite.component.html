@@ -1,6 +1,6 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
     <div class="cards">
-        <fuse-card class="card-major" *ngIf="errors.length > 0">
+        <fuse-card class="card-error" *ngIf="errors.length > 0">
             <div id="errorforms" class="simple fullwidth">
                 <div class="content p-3">
                     <div>
@@ -31,12 +31,12 @@
                     <div class="content p-3">
                         <div class="flex items-center justify-end">
                             <div *ngIf="canClientAdmin" class="pull-right" align="right">
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-200"
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
                                         mat-flat-button type="button"
                                         (click)="syncCustomers()">
                                     {{ syncCustomersTitle }}
                                 </button>
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-200"
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
                                         mat-flat-button type="button"
                                         (click)="syncEvents()">
                                     {{ syncEventsTitle }}
