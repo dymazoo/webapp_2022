@@ -5,6 +5,8 @@ export class User {
     public name: string = '';
     public token: string = '';
     public layout: string ='';
+    public scheme: string = '';
+    public theme: string = '';
 
     public constructor(init?: Partial<User>) {
         Object.assign(this, init);

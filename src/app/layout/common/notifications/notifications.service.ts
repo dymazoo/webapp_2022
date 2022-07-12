@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable, ReplaySubject, switchMap, take, tap } from 'rxjs';
-import { Notification } from 'app/layout/common/notifications/notifications.types';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {map, Observable, ReplaySubject, switchMap, take, tap} from 'rxjs';
+import {Notification} from 'app/layout/common/notifications/notifications.types';
 import {HttpService} from 'app/shared/services/http.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class NotificationsService
-{
+export class NotificationsService {
     private apiUrl: string;
     private _notifications: ReplaySubject<Notification[]> = new ReplaySubject<Notification[]>(1);
 
@@ -18,8 +17,7 @@ export class NotificationsService
     constructor(
         private _httpClient: HttpClient,
         private httpService: HttpService
-    )
-    {
+    ) {
         this.apiUrl = this.httpService.apiUrl;
     }
 
@@ -30,8 +28,7 @@ export class NotificationsService
     /**
      * Getter for notifications
      */
-    get notifications$(): Observable<Notification[]>
-    {
+    get notifications$(): Observable<Notification[]> {
         return this._notifications.asObservable();
     }
 
@@ -42,11 +39,11 @@ export class NotificationsService
     /**
      * Get all notifications
      */
-    getAll(): Observable<Notification[]>
-    {
+    getAll(): Observable<Notification[]> {
         const headers = this.httpService.createAuthorizationHeader();
-        return this._httpClient.get<Notification[]>(this.apiUrl + 'updates',{
-        headers: headers}).pipe(
+        return this._httpClient.get<Notification[]>(this.apiUrl + 'updates', {
+            headers: headers
+        }).pipe(
             tap((notifications) => {
                 this._notifications.next(notifications);
             })
@@ -58,8 +55,7 @@ export class NotificationsService
      *
      * @param notification
      */
-    create(notification: Notification): Observable<Notification>
-    {
+    create(notification: Notification): Observable<Notification> {
         const headers = this.httpService.createAuthorizationHeader();
         return this.notifications$.pipe(
             take(1),
@@ -84,8 +80,7 @@ export class NotificationsService
      * @param id
      * @param notification
      */
-    update(id: string, notification: Notification): Observable<Notification>
-    {
+    update(id: string, notification: Notification): Observable<Notification> {
         const headers = this.httpService.createAuthorizationHeader();
         return this.notifications$.pipe(
             take(1),
@@ -117,8 +112,7 @@ export class NotificationsService
      *
      * @param id
      */
-    delete(id: string): Observable<boolean>
-    {
+    delete(id: string): Observable<boolean> {
         const headers = this.httpService.createAuthorizationHeader();
         return this.notifications$.pipe(
             take(1),
@@ -148,8 +142,7 @@ export class NotificationsService
     /**
      * Mark all notifications as read
      */
-    markAllAsRead(): Observable<boolean>
-    {
+    markAllAsRead(): Observable<boolean> {
         const headers = this.httpService.createAuthorizationHeader();
         return this.notifications$.pipe(
             take(1),
@@ -178,8 +171,7 @@ export class NotificationsService
     /**
      * Delete all notifications
      */
-    deleteAll(): Observable<boolean>
-    {
+    deleteAll(): Observable<boolean> {
         const headers = this.httpService.createAuthorizationHeader();
         return this.notifications$.pipe(
             take(1),

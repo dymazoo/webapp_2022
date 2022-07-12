@@ -9,6 +9,7 @@ import {FUSE_VERSION} from '@fuse/version';
 import {Layout} from 'app/layout/layout.types';
 import {AppConfig} from 'app/core/config/app.config';
 import {NotificationsService} from 'app/layout/common/notifications/notifications.service';
+import {HttpService} from 'app/shared/services/http.service';
 
 @Component({
     selector: 'layout',
@@ -32,6 +33,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         @Inject(DOCUMENT) private _document: any,
         private _renderer2: Renderer2,
         private _router: Router,
+        private httpService: HttpService,
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
@@ -97,9 +99,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
             takeUntil(this._unsubscribeAll)
         ).subscribe(() => {
 
-            // Check for new notifications
-            this._notificationsService.getAll().subscribe();
-
+            if (this.httpService.loggedIn) {
+                // Check for new notifications
+                this._notificationsService.getAll().subscribe();
+            }
             // Update the layout
             this._updateLayout();
         });

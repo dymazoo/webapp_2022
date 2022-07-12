@@ -115,7 +115,8 @@ export class DataSources {
                     if (navComponent) {
                         const navigation = navComponent.navigation;
                         const item = this._fuseNavigationService.getItem('integrations', navigation);
-                        this.setIntegrationsNavigation(item);
+                        this.setIntegrationsSettingsNavigation(item);
+//                        this.setIntegrationsNavigation(item);
                     }
                     // Set the config
                     const layout = this.userData.layout;

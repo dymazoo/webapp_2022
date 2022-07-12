@@ -128,6 +128,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.user.email = this.registerForm.controls['email'].value;
         this.user.password = this.registerForm.controls['password'].value;
         this.user.confirmPassword = this.registerForm.controls['confirmPassword'].value;
+        this.user.layout = 'modern';
+        this.user.scheme = 'light';
+        this.user.theme = 'theme-brand';
         this.client.name = this.registerForm.controls['clientName'].value;
         this.client.plan = this.registerForm.controls['clientPlan'].value;
         this.client.billingType = this.registerForm.controls['clientBillingType'].value;

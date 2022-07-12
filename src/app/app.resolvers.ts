@@ -15,8 +15,8 @@ export class InitialDataResolver implements Resolve<any>
      * Constructor
      */
     constructor(
-        private _navigationService: NavigationService,
-        private _notificationsService: NotificationsService,
+        private _navigationService: NavigationService
+//        private _notificationsService: NotificationsService,
 //        private _shortcutsService: ShortcutsService,
 //        private _userService: UserService
     )
@@ -38,7 +38,7 @@ export class InitialDataResolver implements Resolve<any>
         // Fork join multiple API endpoint calls to wait all of them to finish
         return forkJoin([
             this._navigationService.get(),
-            this._notificationsService.getAll(),
+//            this._notificationsService.getAll(),
 //            this._shortcutsService.getAll(),
 //            this._userService.get()
         ]);

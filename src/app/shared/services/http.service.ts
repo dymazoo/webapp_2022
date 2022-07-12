@@ -14,7 +14,27 @@ export class HttpService {
     public homeUrl = '';
     public token: string;
     public crc: string;
-    public userData = {userName: '', email: '', permissions: [], 'layout': '', 'scheme': '', 'theme': ''};
+    public impersonateToken: string;
+    public impersonateCrc: string;
+    public impersonateKey: string;
+    public userData = {
+        userName: '',
+        email: '',
+        permissions: [],
+        'layout': '',
+        'scheme': '',
+        'theme': '',
+        impersonateUserName: ''
+    };
+    public impersonateUserData = {
+        userName: '',
+        email: '',
+        permissions: [],
+        'layout': '',
+        'scheme': '',
+        'theme': '',
+        impersonateUserName: ''
+    };
     public pendingRoute = '';
     public apiUrl = environment.apiHost;
     protected appHost = window.location.host;
@@ -36,7 +56,20 @@ export class HttpService {
         if (token && crc) {
             const headers = this.getJsonHeader();
             const authHeaders = headers.set('Authorization', 'Bearer ' + token);
-            const CRCHeaders = authHeaders.set('CRCValidation', '' + crc);
+            let CRCHeaders;
+            let impersonateUsername = '';
+            // check Impersonation
+            const dymazooImpersonate = JSON.parse(localStorage.getItem('dymazooImpersonate'));
+            const impersonateToken = dymazooImpersonate && dymazooImpersonate.token;
+            const impersonateCrc = dymazooImpersonate && dymazooImpersonate.crc;
+            const impersonateKey = dymazooImpersonate && dymazooImpersonate.key;
+            if (impersonateToken && impersonateCrc && impersonateKey) {
+                impersonateUsername = dymazooImpersonate.userName;
+                const impersonateHeaders = authHeaders.set('CRCImpersonate', '' + impersonateKey);
+                CRCHeaders = impersonateHeaders.set('CRCValidation', '' + impersonateCrc);
+            } else {
+                CRCHeaders = authHeaders.set('CRCValidation', '' + crc);
+            }
             const result = this.http.get(this.apiUrl + 'loginCheck', {
                 headers: CRCHeaders
             }).pipe(
@@ -53,6 +86,7 @@ export class HttpService {
                         this.userData.layout = data['layout'];
                         this.userData.scheme = data['scheme'];
                         this.userData.theme = data['theme'];
+                        this.userData.impersonateUserName = impersonateUsername;
                         this.setLoggedInState(true);
                         if (this.pendingRoute.length > 0) {
                             const url = this.pendingRoute;
@@ -73,7 +107,7 @@ export class HttpService {
                     }
                     return observableThrowError(['Unknown error - please contact support']);
                 }),
-                );
+            );
             result.subscribe(checkResult => {
                 // Make the GET call
             });
@@ -182,15 +216,30 @@ export class HttpService {
                 this.token = token;
                 this.crc = crc;
             }
+            // check Impersonation
+            const dymazooImpersonate = JSON.parse(localStorage.getItem('dymazooImpersonate'));
+            const impersonateToken = dymazooImpersonate && dymazooImpersonate.token;
+            const impersonateCrc = dymazooImpersonate && dymazooImpersonate.crc;
+            const impersonateKey = dymazooImpersonate && dymazooImpersonate.key;
+            if (impersonateToken && impersonateCrc && impersonateKey) {
+                this.impersonateToken = impersonateToken;
+                this.impersonateCrc = impersonateCrc;
+                this.impersonateKey = impersonateKey;
+            }
         }
         if (this.token && this.crc) {
             const authHeaders = resultHeaders.set('Authorization', 'Bearer ' + this.token.toString());
-            const CRCHeaders = authHeaders.set('CRCValidation', this.crc.toString());
-            return CRCHeaders;
+            if (this.impersonateKey) {
+                const impersonateHeaders = authHeaders.set('CRCImpersonate', this.impersonateKey.toString());
+                const CRCHeaders = impersonateHeaders.set('CRCValidation', this.crc.toString());
+                return CRCHeaders;
+            } else {
+                const CRCHeaders = authHeaders.set('CRCValidation', this.crc.toString());
+                return CRCHeaders;
+            }
         }
         return resultHeaders;
     }
-
 
 
     // Authorisation
@@ -260,7 +309,7 @@ export class HttpService {
                     this.setLoggedInState(true);
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
-                        emailAddress: user['emailAddress'],
+                        emailAddress: this.userData.email,
                         token: token,
                         crc: crc
                     }));
@@ -284,7 +333,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
     }
 
     /**
@@ -308,7 +357,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
         result.subscribe(checkResult => {
             // Make the GET call
         });
@@ -323,9 +372,12 @@ export class HttpService {
         const headers = this.getJsonHeader();
         this.loggedIn = false;
 
-        const regsitrationUser = {name: user.name, email: user.email, password: user.password,
+        const regsitrationUser = {
+            name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
-            client_billing_type: client.billingType, token: user.token};
+            client_billing_type: client.billingType, token: user.token, layout: user.layout, scheme: user.scheme,
+            theme: user.theme
+        };
         return this.http.post(this.apiUrl + 'register', regsitrationUser, {
             headers: headers
         }).pipe(
@@ -342,7 +394,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
     }
 
     /**
@@ -367,10 +419,145 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
 
         return result;
     }
+
+    /*
+     * Begin impersonation
+     */
+    public impersonate(userId: any): any {
+        const headers = this.createAuthorizationHeader();
+        const result = this.http.post(this.apiUrl + 'impersonate', userId, {
+            headers: headers
+        }).pipe(
+            timeout(this.timeout),
+            map(data => {
+                let token = null;
+                if (data['token']) {
+                    token = data['token'];
+                }
+                let impersonateKey = null;
+                if (data['impersonateKey']) {
+                    impersonateKey = data['impersonateKey'];
+                }
+                if (token && impersonateKey) {
+                    localStorage.setItem('dymazooImpersonate', JSON.stringify({
+                        token: this.token,
+                        crc: this.crc,
+                        userName: this.userData.userName,
+                        key: impersonateKey
+                    }));
+                    // set various impersonation properties
+                    this.impersonateToken = this.token;
+                    this.impersonateCrc = this.crc;
+                    this.impersonateKey = impersonateKey;
+                    this.impersonateUserData = {... this.userData};
+
+                    this.token = token;
+                    this.crc = this.impersonateCrc;
+                    this.userData.userName = data['userName'];
+                    this.userData.email = data['email'];
+                    this.userData.permissions = data['permissions'];
+                    this.userData.layout = data['layout'];
+                    this.userData.scheme = data['scheme'];
+                    this.userData.theme = data['theme'];
+                    this.userData.impersonateUserName = this.impersonateUserData.userName;
+                    // store email, oauth token and crc in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('dymazooUser', JSON.stringify({
+                        emailAddress: this.userData.email,
+                        token: token,
+                        crc: this.impersonateCrc
+                    }));
+                    this.userSubject.next(this.userData);
+
+                    // return true to indicate successful impersonation
+                    return true;
+                } else {
+                    return false;
+                }
+            }),
+            catchError((error: any) => {
+                const body = error.error;
+                if (body.errors) {
+                    return observableThrowError(body.errors);
+                }
+                if (error.name === 'TimeoutError') {
+                    return observableThrowError(['Server timeout']);
+                }
+                return observableThrowError(['Unknown error - please contact support']);
+            }),);
+
+        return result;
+    }
+
+    /*
+     * Leave impersonation
+    */
+    public leaveImpersonate(): any {
+        const dymazooImpersonate = JSON.parse(localStorage.getItem('dymazooImpersonate'));
+        const impersonateToken = dymazooImpersonate && dymazooImpersonate.token;
+        const impersonateKey = dymazooImpersonate && dymazooImpersonate.key;
+        const impersonateCrc = dymazooImpersonate && dymazooImpersonate.crc;
+        if (impersonateToken && impersonateCrc && impersonateKey) {
+            this.token = this.impersonateToken;
+            this.crc = this.impersonateCrc;
+            this.userData = {... this.impersonateUserData};
+
+            // store email, oauth token and crc in local storage to keep user logged in between page refreshes
+            localStorage.setItem('dymazooUser', JSON.stringify({
+                token: this.token,
+                crc: this.crc
+            }));
+
+            const headers = this.createAuthorizationHeader();
+            // only remove the impersonate data after getting the autorization headers one last time with the
+            // impersonate key
+            localStorage.removeItem('dymazooImpersonate');
+            this.impersonateKey = null;
+            this.impersonateUserData = {
+                userName: '',
+                email: '',
+                permissions: [],
+                'layout': '',
+                'scheme': '',
+                'theme': '',
+                impersonateUserName: ''
+            };
+            this.impersonateToken = null;
+            this.impersonateCrc = null;
+
+            const result = this.http.post(this.apiUrl + 'leaveImpersonate', {}, {
+                headers: headers
+            }).pipe(
+                timeout(this.timeout),
+                map(data => {
+                    // set various normal user properties
+                    this.userData.permissions = data['permissions'];
+                    this.userData.layout = data['layout'];
+                    this.userData.scheme = data['scheme'];
+                    this.userData.theme = data['theme'];
+
+                    this.userSubject.next(this.userData);
+
+                    // return true to indicate successful impersonation
+                    return true;
+                }),
+                catchError((error: any) => {
+                    const body = error.error;
+                    if (body.errors) {
+                        return observableThrowError(body.errors);
+                    }
+                    if (error.name === 'TimeoutError') {
+                        return observableThrowError(['Server timeout']);
+                    }
+                    return observableThrowError(['Unknown error - please contact support']);
+                }),);
+            return result;
+        }
+    }
+
 
     /**
      * Process a forgotten password request
@@ -393,7 +580,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
 
         return result;
     }
@@ -408,7 +595,7 @@ export class HttpService {
             headers: headers
         }).pipe(
             timeout(this.timeout),
-            map (data => {
+            map(data => {
                 return true;
             }),
             catchError((error: any) => {
@@ -420,7 +607,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
         return result;
     }
 
@@ -446,7 +633,7 @@ export class HttpService {
             headers: headers
         }).pipe(
             timeout(this.timeout),
-            map (pipeResult => {
+            map(pipeResult => {
                 return pipeResult['data'];
             }),
             catchError((error: any) => {
@@ -457,7 +644,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
         return result;
     }
 
@@ -490,7 +677,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
         return result;
     }
 
@@ -523,7 +710,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
         return result;
     }
 
@@ -556,7 +743,7 @@ export class HttpService {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
-            }), );
+            }),);
     }
 
     public getLoggedInState(): Observable<any> {

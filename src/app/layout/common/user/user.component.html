@@ -3,7 +3,7 @@
     mat-icon-button
     [matMenuTriggerFor]="userActions">
     <span class="relative">
-        <img ngxGravatar [email]="userData.email" fallback="mp"/>
+        <img ngxGravatar [email]="userData.email" fallback="mm"/>
         <span
             class="absolute right-0 bottom-0 w-2 h-2 rounded-full mr-px mb-px"
         ></span>
@@ -17,6 +17,12 @@
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
             <span class="mt-1.5 text-md font-medium">{{userData.userName}}</span>
+        </span>
+    </button>
+    <button *ngIf="isImpersonating" mat-menu-item (click)="leaveImpersonate()">
+        <span class="flex flex-col leading-none">
+            <span>Original user</span>
+            <span class="mt-1.5 text-md font-medium">{{userData.impersonateUserName}}</span>
         </span>
     </button>
     <mat-divider class="my-2"></mat-divider>
@@ -34,6 +40,15 @@
         <span>User management</span>
     </button>
     <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item *ngIf="!isImpersonating && canImpersonate" (click)="impersonate()">
+        <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+        <span>Impersonate</span>
+    </button>
+    <button mat-menu-item *ngIf="isImpersonating" (click)="leaveImpersonate()">
+        <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+        <span>Exit Impersonation</span>
+    </button>
+    <mat-divider *ngIf="isImpersonating || canImpersonate" class="my-2"></mat-divider>
     <button
         mat-menu-item
         (click)="signOut()">

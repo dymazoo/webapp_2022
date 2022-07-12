@@ -18,6 +18,8 @@ export class UserComponent implements OnInit, OnDestroy
     userSubscription: Subscription;
 
     canClientAdmin: boolean = false;
+    canImpersonate: boolean = false;
+    isImpersonating: boolean = false;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -28,14 +30,17 @@ export class UserComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private httpService: HttpService,
         private _router: Router
-//        private _userService: UserService
     ){
         this.userData = this.httpService.userData;
+        if (this.userData.impersonateUserName.length > 0) {
+            this.isImpersonating = true;
+        }
 
         this.userSubscription = this.httpService.getCurrentUser().subscribe(userData => {
             this.userData = userData;
             // Check permissions
             this.canClientAdmin = this.httpService.hasPermission('client_admin');
+            this.canImpersonate = this.httpService.hasPermission('impersonate');
         });
 
     }
@@ -49,11 +54,9 @@ export class UserComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.userSubscription = this.httpService.getCurrentUser().subscribe(userData => {
-            this.userData = userData;
-            // Check permissions
-            this.canClientAdmin = this.httpService.hasPermission('client_admin');
-        });
+        // Check permissions
+        this.canClientAdmin = this.httpService.hasPermission('client_admin');
+        this.canImpersonate = this.httpService.hasPermission('impersonate');
     }
 
     /**
@@ -79,6 +82,25 @@ export class UserComponent implements OnInit, OnDestroy
     public userManagement(value): void {
         this._router.navigate(['/account/user-management']);
     }
+
+    public impersonate(value): void {
+        let user = {'userId': '208657fa-e3ac-11eb-87c4-000c29fe2526'};
+        this.httpService.impersonate(user)
+            .subscribe((data: Response) => {
+                this.isImpersonating = true;
+        }, (errors) => {
+                this.isImpersonating = false;
+        });
+    }
+
+    public leaveImpersonate(): void {
+        this.httpService.leaveImpersonate()
+            .subscribe((data: Response) => {
+                this.isImpersonating = false;
+            }, (errors) => {
+            });
+    }
+
 
     signOut(): void
     {
