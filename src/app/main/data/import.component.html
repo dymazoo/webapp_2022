@@ -63,8 +63,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div *ngIf="hasLayout">
-                                    <div class="basis-6/12" *ngIf="getLayoutName">
+                                <div *ngIf="hasLayout" class="flex gt-xs:flex-row">
+                                    <div class="basis-8/12" *ngIf="getLayoutName">
                                         <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
                                                 class="flex-auto gt-xs:pr-3">
@@ -84,7 +84,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="basis-6/12" fxLayoutAlign="right" *ngIf="getLayoutName">
+                                    <div class="basis-4/12" fxLayoutAlign="right" *ngIf="getLayoutName">
                                         <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
                                                 mat-flat-button type="button"
                                                 [disabled]="!importForm.controls.name.value"

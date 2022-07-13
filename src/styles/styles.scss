@@ -692,7 +692,7 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .scroll-fields-container-import {
-    height: 22rem;
+    height: 18.5rem;
     border: groove;
     border-radius: 6px;
     display: block;
@@ -741,12 +741,6 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 .scroll-field-input {
     border-bottom: 1px solid lightgray !important;
-}
-
-@media screen and (max-width: 1279px) {
-    .scroll-fields {
-        width: calc(95vw - 230px);
-    }
 }
 
 .scroll-compliance-container {

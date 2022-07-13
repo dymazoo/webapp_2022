@@ -1,0 +1,37 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">Impersonate</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden"
+                      name="impersonateForm" [formGroup]="impersonateForm"
+                      (submit)="onImpersonate()">
+
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label>Email address</mat-label>
+                            <input matInput formControlName="email" autocomplete="do-not-autofill">
+                            <mat-error>{{ getErrorMessage(impersonateForm.controls.email, 'Email')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Cancel
+                        </button>
+                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary"
+                                mat-flat-button
+                                [disabled]="!impersonateForm.valid"
+                                type="submit">
+                            Impersonate
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

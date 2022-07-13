@@ -1,9 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component, ElementRef, Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-//import { User } from 'app/core/user/user.types';
-//import { UserService } from 'app/core/user/user.service';
 import {HttpService} from 'app/shared/services/http.service';
+import {fuseAnimations} from '@fuse/animations';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
     selector       : 'user',
@@ -19,6 +30,8 @@ export class UserComponent implements OnInit, OnDestroy
 
     canClientAdmin: boolean = false;
     canImpersonate: boolean = false;
+    startImpersonate: boolean = false;
+    impersonateEmail: string = '';
     isImpersonating: boolean = false;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -29,6 +42,8 @@ export class UserComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private httpService: HttpService,
+        private _translocoService: TranslocoService,
+        public dialog: MatDialog,
         private _router: Router
     ){
         this.userData = this.httpService.userData;
@@ -83,13 +98,22 @@ export class UserComponent implements OnInit, OnDestroy
         this._router.navigate(['/account/user-management']);
     }
 
-    public impersonate(value): void {
-        let user = {'userId': '208657fa-e3ac-11eb-87c4-000c29fe2526'};
-        this.httpService.impersonate(user)
-            .subscribe((data: Response) => {
-                this.isImpersonating = true;
-        }, (errors) => {
-                this.isImpersonating = false;
+    public startImpersonating(): void {
+        const dialogRef = this.dialog.open(UserImpersonateDialogComponent, {
+            minWidth: '70%',
+            data: {}
+        });
+
+        dialogRef.afterClosed().subscribe((impersonateResult) => {
+            if (impersonateResult) {
+                let user = {'email': impersonateResult};
+                this.httpService.impersonate(user)
+                    .subscribe((data: Response) => {
+                        this.isImpersonating = true;
+                    }, (errors) => {
+                        this.isImpersonating = false;
+                    });
+            }
         });
     }
 
@@ -105,5 +129,53 @@ export class UserComponent implements OnInit, OnDestroy
     signOut(): void
     {
         this.httpService.logout();
+    }
+}
+
+@Component({
+    selector: 'user-impersonate-dialog',
+    templateUrl: 'user-impersonate.dialog.html',
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
+})
+export class UserImpersonateDialogComponent implements OnInit, OnDestroy {
+
+    public impersonateForm: FormGroup;
+    private _unsubscribeAll: Subject<any>;
+    private touchStart = 0;
+
+    constructor(
+        public dialogRef: MatDialogRef<UserImpersonateDialogComponent>,
+        private _formBuilder: FormBuilder,
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this._unsubscribeAll = new Subject();
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
+    }
+
+    ngOnInit(): void {
+        this.impersonateForm = this._formBuilder.group({
+            email: ['', [Validators.required, Validators.email]]
+        }, {});
+    }
+
+    onImpersonate(): void {
+        this.dialogRef.close(this.impersonateForm.controls['email'].value);
+    }
+
+    onCancel(): void {
+        this.dialogRef.close();
+    }
+
+    getErrorMessage(control, name): string {
+        let returnVal = '';
+        if (control.hasError('required')) {
+            returnVal = name + ' is required!';
+        }
+        return returnVal;
     }
 }

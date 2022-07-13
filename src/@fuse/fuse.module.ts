@@ -29,7 +29,8 @@ import { FuseUtilsModule } from '@fuse/services/utils/utils.module';
             // Use the 'fill' appearance on Angular Material form fields by default
             provide : MAT_FORM_FIELD_DEFAULT_OPTIONS,
             useValue: {
-                appearance: 'fill'
+                appearance: 'fill',
+                floatLabel: 'auto'
             }
         }
     ]

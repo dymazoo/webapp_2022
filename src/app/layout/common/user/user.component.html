@@ -19,7 +19,7 @@
             <span class="mt-1.5 text-md font-medium">{{userData.userName}}</span>
         </span>
     </button>
-    <button *ngIf="isImpersonating" mat-menu-item (click)="leaveImpersonate()">
+    <button *ngIf="isImpersonating" mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Original user</span>
             <span class="mt-1.5 text-md font-medium">{{userData.impersonateUserName}}</span>
@@ -40,7 +40,7 @@
         <span>User management</span>
     </button>
     <mat-divider class="my-2"></mat-divider>
-    <button mat-menu-item *ngIf="!isImpersonating && canImpersonate" (click)="impersonate()">
+    <button mat-menu-item *ngIf="!isImpersonating && canImpersonate" (click)="startImpersonating()">
         <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
         <span>Impersonate</span>
     </button>

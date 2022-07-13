@@ -282,7 +282,8 @@
                                                 <div *ngIf="finalAction == 'segment'" class="flex flex-col">
                                                     <div class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <mat-select placeholder="List" formControlName="listId"
+                                                            <mat-label>List</mat-label>
+                                                            <mat-select formControlName="listId"
                                                                         required
                                                                         (selectionChange)="listSelect($event)">
                                                                 <mat-option *ngFor="let list of lists"
@@ -294,7 +295,8 @@
                                                     </div>
                                                     <div class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <input matInput placeholder="Segment" id="segment"
+                                                            <mat-label>Segment</mat-label>
+                                                            <input matInput id="segment"
                                                                    type="text" value="{{selectionSegment}}"
                                                                    autocomplete="do-not-autofill"
                                                                    (keyup)="segmentChange($event)">
@@ -302,7 +304,8 @@
                                                     </div>
                                                     <div class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <input matInput placeholder="Limit" id="limit" type="text"
+                                                            <mat-label>Limit</mat-label>
+                                                            <input matInput id="limit" type="text"
                                                                    value="{{selectionLimit}}"
                                                                    autocomplete="do-not-autofill"
                                                                    (keyup)="limitChange($event)">
