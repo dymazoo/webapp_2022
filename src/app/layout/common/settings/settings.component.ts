@@ -132,6 +132,8 @@ export class SettingsComponent implements OnInit, OnDestroy
         this.contact.layout = this.userData.layout;
         this.contact.scheme = this.userData.scheme;
         this.contact.theme = this.userData.theme;
+        // prevent loss of telephone on the contact record
+        delete this.contact.telephone;
 
         if (setting === 'layout') {
             this.contact.layout = value;
