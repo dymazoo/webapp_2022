@@ -13,13 +13,11 @@ import { TranslocoService } from '@ngneat/transloco';
 import {fuseAnimations} from '@fuse/animations';
 import {FileInputComponent} from 'ngx-material-file-input/lib/file-input/file-input.component';
 
-
 import {HttpService} from '../../shared/services/http.service';
 import {AbandonDialogService} from '../../shared/services/abandon-dialog.service';
 import {EntityDatasource} from '../../shared/entity-datasource';
 import {Layout} from '../../shared/models/layout';
 import {MatTableDataSource} from '@angular/material/table';
-import {SourceSetting} from '../../shared/models/sourceSetting';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 
@@ -56,11 +54,6 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     @ViewChild('fileInput') fileInputField: FileInputComponent;
 
-    /**
-     * Constructor
-     *
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     */
     constructor(
         private _formBuilder: FormBuilder,
         private httpService: HttpService,
@@ -637,7 +630,7 @@ export class ImportOpenLayoutDialogComponent implements OnInit, OnDestroy {
                 if (layouts instanceof Array) {
                     this.layouts = layouts;
                     if (layouts.length > 0) {
-                        this.paginatedDataSource = new MatTableDataSource<SourceSetting>(layouts);
+                        this.paginatedDataSource = new MatTableDataSource<Layout>(layouts);
                         this.paginatedDataSource.paginator = this.paginator;
                         this.paginatedDataSource.sort = this.sort;
                         this.paginatedDataSource.sortingDataAccessor =

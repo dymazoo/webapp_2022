@@ -411,8 +411,8 @@ export class HttpService {
                 return true;
             }),
             catchError((error: any) => {
-                const body = error.error;
-                if (body.errors) {
+                if (error.status === 406) {
+                    const body = error.error;
                     return observableThrowError(body.errors);
                 }
                 if (error.name === 'TimeoutError') {
@@ -479,8 +479,8 @@ export class HttpService {
                 }
             }),
             catchError((error: any) => {
-                const body = error.error;
-                if (body.errors) {
+                if (error.status === 406) {
+                    const body = error.error;
                     return observableThrowError(body.errors);
                 }
                 if (error.name === 'TimeoutError') {
@@ -545,8 +545,8 @@ export class HttpService {
                     return true;
                 }),
                 catchError((error: any) => {
-                    const body = error.error;
-                    if (body.errors) {
+                    if (error.status === 406) {
+                        const body = error.error;
                         return observableThrowError(body.errors);
                     }
                     if (error.name === 'TimeoutError') {
@@ -573,10 +573,11 @@ export class HttpService {
                 return true;
             }),
             catchError((error: any) => {
-                if (error.errors) {
-                    return observableThrowError(error.errors);
+                if (error.status === 406) {
+                    const body = error.error;
+                    return observableThrowError(body.errors);
                 }
-                if (error['name'] === 'TimeoutError') {
+                if (error.name === 'TimeoutError') {
                     return observableThrowError(['Server timeout']);
                 }
                 return observableThrowError(['Unknown error - please contact support']);
@@ -599,8 +600,8 @@ export class HttpService {
                 return true;
             }),
             catchError((error: any) => {
-                const body = error.json();
-                if (body.errors) {
+                if (error.status === 406) {
+                    const body = error.error;
                     return observableThrowError(body.errors);
                 }
                 if (error.name === 'TimeoutError') {

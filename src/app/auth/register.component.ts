@@ -22,7 +22,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     @ViewChild('name') nameElement: ElementRef;
 
-
     public registerForm: FormGroup;
     public formErrors: string[] = [];
     public errors = [];

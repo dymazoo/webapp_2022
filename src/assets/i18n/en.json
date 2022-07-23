@@ -4,9 +4,15 @@
     "Analytics": "Analytics",
 
     "account-profile-heading": "Profile",
+    "account-usermanagement-heading": "User Management",
 
     "auth-register-heading": "Sign Up",
     "auth-login": "Login",
+    "auth-confirm": "Sign up Confirmed",
+    "auth-forgot": "Forgotten Password",
+    "auth-requested": "Password Reset Requested",
+    "auth-reset": "Reset Password",
+    "auth-confirm-reset": "Password Reset Confirmed",
 
     "data-import-heading": "File import",
 

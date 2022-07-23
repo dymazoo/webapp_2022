@@ -6,6 +6,10 @@ import {TranslocoModule} from '@ngneat/transloco';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {ConfirmComponent} from './confirm.component';
+import {ForgotComponent} from './forgot.component';
+import {RequestedComponent} from './requested.component';
+import {ResetComponent} from './reset.component';
+import {ConfirmResetComponent} from './confirm-reset.component';
 
 @NgModule({
     imports: [
@@ -17,6 +21,10 @@ import {ConfirmComponent} from './confirm.component';
     ],
     declarations: [
         ConfirmComponent,
+        ForgotComponent,
+        RequestedComponent,
+        ResetComponent,
+        ConfirmResetComponent,
     ],
     providers: []
 })

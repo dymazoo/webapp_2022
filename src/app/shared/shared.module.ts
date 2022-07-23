@@ -29,11 +29,13 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MaterialFileInputModule } from 'ngx-material-file-input';
 import {AbandonDialogComponent} from './components/abandon-dialog.component';
 import {ConfirmDialogComponent} from './components/confirm-dialog.component';
+import {LoginComponent} from 'app/auth/login.component';
 
 @NgModule({
     declarations: [
         AbandonDialogComponent,
         ConfirmDialogComponent,
+        LoginComponent,
     ],
 
     imports: [
@@ -98,6 +100,7 @@ import {ConfirmDialogComponent} from './components/confirm-dialog.component';
         MaterialFileInputModule,
         AbandonDialogComponent,
         ConfirmDialogComponent,
+        LoginComponent,
 
     ]
 })

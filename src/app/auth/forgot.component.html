@@ -1,0 +1,57 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden" *transloco="let t">
+    <div class="home-header">
+        <div class="home-logo">
+            <a href="https://dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
+        </div>
+        <div class="home-get-started">
+            <span class="home-website"><a href="https://dymazoo.com">Website</a></span>
+        </div>
+
+    </div>
+
+    <div id="forgotPassword" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component">
+        <fuse-card class="card-minor">
+            <div class="p-2">
+                <div class="h1 text-white bg-primary-500">{{t('auth-forgot')}}</div>
+            </div>
+            <div class="filled-major-item" fuseScrollbar>
+
+                <div id="forms" class="simple fullwidth">
+
+                    <div class="content p-3">
+                        <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+                              name="forgotForm" [formGroup]="forgotForm" (ngSubmit)="reset()">
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Email address</mat-label>
+                                    <input matInput #email formControlName="email" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(forgotForm.controls.email, 'Email address')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex items-center justify-end">
+                                <button
+                                    type="submit"
+                                    class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                    mat-flat-button>
+                                    Reset Password
+                                </button>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </fuse-card>
+    </div>
+</div>

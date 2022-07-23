@@ -7,6 +7,9 @@ export class User {
     public layout: string ='';
     public scheme: string = '';
     public theme: string = '';
+    public lastLogin: string = '';
+    public clientAdmin: number = 0;
+    public roles: any = [];
 
     public constructor(init?: Partial<User>) {
         Object.assign(this, init);

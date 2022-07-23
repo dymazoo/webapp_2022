@@ -1,0 +1,40 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">Set Account Admin</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="emailForm"
+                      [formGroup]="adminForm"
+                      (submit)="setAdmin()">
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <p>There is only ever one Account Admin user for an account.</p>
+                        <p>If you continue then you will be logged out and will no longer be the Account Admin User when you log
+                            back in.</p>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="password" type="password" required>
+                            <mat-error>{{ getErrorMessage(adminForm.controls.password, 'Password')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button type="button" (click)="onCancel()">Cancel
+                        </button>
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-warn-400"
+                                mat-flat-button
+                                type="submit" [disabled]="!adminForm.valid">Set Account Admin User
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

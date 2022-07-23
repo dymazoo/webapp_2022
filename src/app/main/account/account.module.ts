@@ -3,13 +3,16 @@ import { RouterModule } from '@angular/router';
 
 import {AccountRoutingModule} from './account-routing.module';
 import {ProfileComponent, ProfilePasswordDialogComponent, ProfileEmailDialogComponent } from './profile.component';
+import {UserManagementComponent, UserManagementAdminDialogComponent } from './usermanagement.component';
 import {SharedModule} from '../../shared/shared.module';
 
 @NgModule({
     declarations: [
         ProfileComponent,
         ProfilePasswordDialogComponent,
-        ProfileEmailDialogComponent
+        ProfileEmailDialogComponent,
+        UserManagementComponent,
+        UserManagementAdminDialogComponent
     ],
     imports     : [
         AccountRoutingModule,
@@ -17,10 +20,12 @@ import {SharedModule} from '../../shared/shared.module';
     ],
     exports     : [
         ProfileComponent,
+        UserManagementComponent
     ],
     entryComponents: [
         ProfilePasswordDialogComponent,
-        ProfileEmailDialogComponent
+        ProfileEmailDialogComponent,
+        UserManagementAdminDialogComponent
     ],
 })
 

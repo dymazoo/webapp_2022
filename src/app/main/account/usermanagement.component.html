@@ -1,0 +1,134 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('account-usermanagement-heading')}}</div>
+        </div>
+
+        <div class="major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                                mat-flat-button type="button"
+                                (click)="addUser()">Add User
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <div>
+                            <table mat-table #table matSort
+                                   [dataSource]="paginatedDataSource"
+                                   [@fadeIn]="true">
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="email">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                                    <td mat-cell *matCellDef="let row" md> {{row.email}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="lastLogin">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Login</th>
+                                    <td mat-cell *matCellDef="let row" md> {{row.lastLogin}}</td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                    tabindex="999"
+                                    class="cursor-pointer"
+                                    (click)="onSelect(row, i)"
+                                    (keydown.arrowdown)="onArrowDown()"
+                                    (keydown.arrowup)="onArrowUp()"
+                                    (keydown.enter)="onConfirm()"
+                                    [ngClass]="{'bg-primary-200' : row == selectedRow}"
+                                    matRipple [@fadeIn]="true">
+                                    >
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <mat-form-field class="basis-5/12">
+                            <input matInput #filter type="text" (keyup)="filterUsers($event.target.value)"
+                                   autocomplete="do-not-autofill"
+                                   placeholder="Filter">
+                        </mat-form-field>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+
+                    <form *ngIf="hasUser" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                          name="usermanagementForm" [formGroup]="usermanagementForm"
+                          (submit)="save()">
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field
+                                class="flex-auto gt-xs:pr-3">
+                                <mat-label>Name</mat-label>
+                                <input matInput #userName formControlName="name" autocomplete="do-not-autofill"
+                                       required>
+                                <mat-error>{{ getErrorMessage(usermanagementForm.controls.name, 'Name')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field
+                                class="flex-auto gt-xs:pr-3">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" autocomplete="do-not-autofill"
+                                       required>
+                                <mat-error>{{ getErrorMessage(usermanagementForm.controls.email, 'Email')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="mat-form-field flex-auto gt-xs:pr-3">
+                                <div formArrayName="roles">
+                                    <mat-label class="label-bold">Assigned Roles</mat-label>
+                                    <div *ngFor="let role of usermanagementForm.controls.roles.controls; let i = index;">
+                                        <mat-checkbox formControlName="{{i}}">{{ roles[i].name }}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end">
+                            <button  *ngIf="canClientAdmin" class="fuse-mat-button-large w-50 mt-2 bg-warn-300"
+                                    mat-flat-button [disabled]="currentUser.clientAdmin === 1"
+                                    type="button" (click)="openAdminDialog()">
+                                Set as Account Admin
+                            </button>
+                            <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                    mat-flat-button [disabled]="!usermanagementForm.valid"
+                                    type="submit">
+                                Save
+                            </button>
+                        </div>
+
+                    </form>
+
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-button
+                                type="button" (click)="onBack()">
+                            Back
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>

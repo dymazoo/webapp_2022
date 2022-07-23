@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     public currentUser;
     public hasData = false;
 
-//    @ViewChild('profileName', {static: false}) nameElement: ElementRef;
     @ViewChildren('profileName') public Names: QueryList<ElementRef>;
     private nameElement: ElementRef;
 

@@ -100,9 +100,11 @@
 
                         <div class="flex items-center justify-end">
                             <button
-                                type="submit"
                                 class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
-                                mat-flat-button>
+                                mat-flat-button
+                                [disabled]="!registerForm.valid"
+                                type="submit"
+                            >
                                 Submit
                             </button>
                         </div>

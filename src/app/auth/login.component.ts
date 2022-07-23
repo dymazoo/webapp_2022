@@ -71,6 +71,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     }
 
+
+
     getErrorMessage(control, name): string {
         let returnVal = '';
         if (control.hasError('required')) {

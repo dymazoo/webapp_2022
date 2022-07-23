@@ -6,10 +6,10 @@ import {FuseCardModule} from '@fuse/components/card';
 import {SharedModule} from '../../shared/shared.module';
 import {HomeComponent} from './home.component';
 import {RegisterComponent} from 'app/auth/register.component';
-import {LoginComponent} from 'app/auth/login.component';
 import {RegisterCompleteComponent} from 'app/auth/register_complete.component';
 import {NoAuthGuard} from '../../core/auth/guards/noAuth.guard';
 import {LayoutComponent} from '../../layout/layout.component';
+import {LoginComponent} from "../../auth/login.component";
 
 const routes = [
     // Redirect empty path to '/home'
@@ -35,14 +35,13 @@ const routes = [
     declarations: [
         HomeComponent,
         RegisterComponent,
-        LoginComponent,
         RegisterCompleteComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
         TranslocoModule,
-        FuseCardModule
+        FuseCardModule,
     ],
     exports: [
         HomeComponent
