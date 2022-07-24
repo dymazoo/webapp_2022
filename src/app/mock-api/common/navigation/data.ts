@@ -21,6 +21,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'marketing.segmentation',
                 title: 'Segmentation',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:search',
                 link : '/marketing/segmentation'
             },
@@ -28,6 +29,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'marketing.campaigns',
                 title: 'Campaigns',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:mail',
                 link : '/marketing/campaigns',
                 badge: {
@@ -48,6 +50,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.import',
                 title: 'Import',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:cloud-upload',
                 link : '/data/import'
             },
@@ -55,6 +58,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.layout',
                 title: 'Layouts',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:table',
                 link : '/data/layouts'
             },
@@ -62,6 +66,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.custom-fields',
                 title: 'Custom fields',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:dots-circle-horizontal',
                 link : '/data/custom-fields'
             },
@@ -69,6 +74,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.sales-categories',
                 title: 'Sales categories',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:shopping-cart',
                 link : '/data/sales-categories'
             },
@@ -76,6 +82,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.event-categories',
                 title: 'Event categories',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:qrcode',
                 link : '/data/event-categories'
             },
@@ -83,6 +90,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.events',
                 title: 'Events',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:calendar',
                 link : '/data/events'
             },
@@ -90,6 +98,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.download',
                 title: 'Download',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:cloud-download',
                 link : '/data/download'
             },
@@ -97,6 +106,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'data.compliance',
                 title: 'Compliance',
                 type : 'basic',
+                disabled : true,
                 icon : 'heroicons_outline:check-circle',
                 link : '/data/compliance'
             }
@@ -111,6 +121,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: []
     }
 ];
+
 export const compactNavigation: FuseNavigationItem[] = [
     {
         id      : 'dashboard',

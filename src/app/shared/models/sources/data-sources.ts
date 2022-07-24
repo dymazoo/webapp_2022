@@ -116,7 +116,6 @@ export class DataSources {
                         const navigation = navComponent.navigation;
                         const item = this._fuseNavigationService.getItem('integrations', navigation);
                         this.setIntegrationsSettingsNavigation(item);
-//                        this.setIntegrationsNavigation(item);
                     }
                     // Set the config
                     const layout = this.userData.layout;
@@ -169,29 +168,66 @@ export class DataSources {
     }
 
     public setIntegrations(navigation): void {
+        // turn on/off menu items as appropriate for permissions
+        if (this.httpService.loggedIn) {
+            navigation.forEach((navItem) => {
+                if (navItem.children) {
+                    navItem.children.forEach((childItem) => {
+                        if (childItem.id === 'marketing.segmentation') {
+                            childItem.disabled = !this.httpService.hasPermission('selections');
+                        }
+                        if (childItem.id === 'marketing.campaigns') {
+                            childItem.disabled = !this.httpService.hasPermission('esp_integration');
+                        }
+                        if (childItem.id === 'data.import') {
+                            childItem.disabled = !this.httpService.hasPermission('import');
+                        }
+                        if (childItem.id === 'data.layout') {
+                            childItem.disabled = !this.httpService.hasPermission('layout_management');
+                        }
+                        if (childItem.id === 'data.custom-fields') {
+                            childItem.disabled = !this.httpService.hasPermission('custom_management');
+                        }
+                        if (childItem.id === 'data.sales-categories') {
+                            childItem.disabled = !this.httpService.hasPermission('sales');
+                        }
+                        if (childItem.id === 'data.event-categories') {
+                            childItem.disabled = !this.httpService.hasPermission('event');
+                        }
+                        if (childItem.id === 'data.events') {
+                            childItem.disabled = !this.httpService.hasPermission('event');
+                        }
+                        if (childItem.id === 'data.download') {
+                            childItem.disabled = !this.httpService.hasPermission('export');
+                        }
+                        if (childItem.id === 'data.compliance') {
+                            childItem.disabled = !this.httpService.hasPermission('compliance');
+                        }
+                        if (navItem.id === 'integrations') {
+                            childItem.disabled = !this.httpService.hasPermission('client_admin');
+                        }
+                    });
+                }
+            });
+        }
+
         const item = this._fuseNavigationService.getItem('integrations', navigation);
         this.setIntegrationsSettingsNavigation(item);
     }
 
     private setIntegrationsSettingsNavigation(integrationsItem): void {
         integrationsItem.children = [];
-        let removeIntegrationsSettings = true;
         if (this.isLoggedIn) {
-            if (this.canClientAdmin) {
-                removeIntegrationsSettings = false;
-                const integrationsSettingsItem = ({
-                    id: 'integrations.settings',
-                    title: 'Integration Settings',
-                    type: 'basic',
-                    icon: 'heroicons_outline:cog',
-                    link: '/integrations/source-settings'
-                } as FuseNavigationItem);
-                integrationsItem.children.push(integrationsSettingsItem);
-                this.setIntegrationsNavigation(integrationsItem);
-            }
-        }
-        if (removeIntegrationsSettings) {
-            integrationsItem.children = [];
+            const integrationsSettingsItem = ({
+                id: 'integrations.settings',
+                title: 'Integration Settings',
+                type: 'basic',
+                disabled: !this.canClientAdmin,
+                icon: 'heroicons_outline:cog',
+                link: '/integrations/source-settings'
+            } as FuseNavigationItem);
+            integrationsItem.children.push(integrationsSettingsItem);
+            this.setIntegrationsNavigation(integrationsItem);
         }
     }
 
@@ -201,6 +237,7 @@ export class DataSources {
                 id: 'integrations.mailchimp',
                 title: 'Mailchimp',
                 type: 'basic',
+                disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:mail',
                 link: '/integrations/mailchimp'
             } as FuseNavigationItem);
@@ -209,6 +246,7 @@ export class DataSources {
                 id: 'integrations.emailoctopus',
                 title: 'EmailOctopus',
                 type: 'basic',
+                disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:mail',
                 link: '/integrations/emailoctopus'
             } as FuseNavigationItem);
@@ -217,6 +255,7 @@ export class DataSources {
                 id: 'integrations.shopify',
                 title: 'Shopify',
                 type: 'basic',
+                disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:shopping-cart',
                 link: '/integrations/shopify'
             } as FuseNavigationItem);
@@ -225,6 +264,7 @@ export class DataSources {
                 id: 'integrations.woocommerce',
                 title: 'WooCommerce',
                 type: 'basic',
+                disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:shopping-cart',
                 link: '/integrations/woocommerce'
             } as FuseNavigationItem);
@@ -233,6 +273,7 @@ export class DataSources {
                 id: 'integrations.eventbrite',
                 title: 'Eventbrite',
                 type: 'basic',
+                disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:calendar',
                 link: '/integrations/eventbrite'
             } as FuseNavigationItem);

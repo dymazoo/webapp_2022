@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {RouterModule} from '@angular/router';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -42,6 +43,7 @@ import {LoginComponent} from 'app/auth/login.component';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        RouterModule,
 
         MatButtonModule,
         MatFormFieldModule,

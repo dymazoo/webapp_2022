@@ -97,7 +97,6 @@ export class SettingsComponent implements OnInit, OnDestroy
             },
             queryParamsHandling: 'merge'
         }).then(() => {
-
             // Set the config
             this._fuseConfigService.config = {layout};
             this.saveProfile('layout', layout);

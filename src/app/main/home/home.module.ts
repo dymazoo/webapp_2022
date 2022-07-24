@@ -9,7 +9,6 @@ import {RegisterComponent} from 'app/auth/register.component';
 import {RegisterCompleteComponent} from 'app/auth/register_complete.component';
 import {NoAuthGuard} from '../../core/auth/guards/noAuth.guard';
 import {LayoutComponent} from '../../layout/layout.component';
-import {LoginComponent} from "../../auth/login.component";
 
 const routes = [
     // Redirect empty path to '/home'
