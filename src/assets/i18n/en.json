@@ -16,6 +16,9 @@
 
     "data-import-heading": "File import",
     "data-layout-heading": "File layouts",
+    "data-sales-category-heading": "Sales Categories",
+    "data-sales-sub-category-heading": "Sub Categories",
+    "data-current-sales-category-heading": "Current Sales Category",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",

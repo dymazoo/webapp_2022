@@ -1,0 +1,180 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('data-sales-category-heading')}}</div>
+        </div>
+
+        <div class="major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                                mat-flat-button type="button"
+                                (click)="addSalesCategory()">Add Sales Category
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <div>
+                            <table mat-table #table matSort
+                                   [dataSource]="paginatedDataSource"
+                                   [@fadeIn]="true">
+                                <ng-container matColumnDef="description">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="default">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Default</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-icon *ngIf="row.default === 1">
+                                            check
+                                        </mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                    tabindex="999"
+                                    class="cursor-pointer"
+                                    (click)="onSelect(row, i)"
+                                    (keydown.arrowdown)="onArrowDown()"
+                                    (keydown.arrowup)="onArrowUp()"
+                                    (keydown.enter)="onConfirm()"
+                                    [ngClass]="{'bg-primary-200' : row == selectedRow}"
+                                    matRipple [@fadeIn]="true">
+                                    >
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <mat-form-field class="basis-5/12">
+                            <input matInput #filter type="text" (keyup)="filterSalesCategories($event.target.value)"
+                                   autocomplete="do-not-autofill"
+                                   placeholder="Filter">
+                        </mat-form-field>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+
+                    <form *ngIf="hasSalesCategory" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                          name="salescategoryForm" [formGroup]="salescategoryForm"
+                          (submit)="save()">
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="p-4">
+                                <div class="h2 text-white bg-primary-400">{{t('data-current-sales-category-heading')}}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field
+                                class="flex-auto gt-xs:pr-3">
+                                <mat-label>Description</mat-label>
+                                <input matInput #salesCategoryDescription formControlName="description" autocomplete="do-not-autofill"
+                                       required>
+                                <mat-error>{{ getErrorMessage(salescategoryForm.controls.description, 'Description')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row form-non-mat-form-field">
+                            <mat-checkbox name="default" [formControl]="salescategoryForm.get('default')" value="1">
+                                Default
+                            </mat-checkbox>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="p-4">
+                                <div class="h2 text-white bg-primary-400">{{t('data-sales-sub-category-heading')}}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="mat-form-field flex-auto gt-xs:pr-3">
+                                <div formArrayName="subCategories">
+                                    <table style="width:100%">
+                                        <thead>
+                                        <tr class="table-as-mat">
+                                            <th style="width: 70%" class="mat-header-cell">
+                                                Description
+                                            </th>
+                                            <th style="width: 20%" class="mat-header-cell">
+                                                Default
+                                            </th>
+                                            <th style="width: 10%" class="mat-header-cell">
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let subcategory of salescategoryForm.get('subCategories')['controls']; let i=index" class="table-as-mat">
+                                            <td [formGroupName]="i">
+                                                <div>
+                                                    <mat-form-field
+                                                        class="flex-auto gt-xs:pr-3">
+                                                        <input matInput formControlName="description" autocomplete="do-not-autofill" required>
+                                                        <mat-error>{{ getErrorMessage(subcategory.get('description'), 'Description')}}</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </td>
+                                            <td [formGroupName]="i">
+                                                <mat-checkbox name="default" [formControl]="subcategory.get('default')" value="1">
+                                                    Default
+                                                </mat-checkbox>
+                                            </td>
+                                            <td>
+                                                <button class="fuse-mat-button-large w-60 mt-2 bg-warn-300"
+                                                        mat-stroked-button
+                                                        type="button" (click)="removeSubCategory(i)">
+                                                    Remove sub category
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end">
+                            <button class="fuse-mat-button-large w-20 mt-2"
+                                    mat-stroked-button
+                                    type="button" (click)="onCancel()">
+                                Cancel
+                            </button>
+                            <button class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
+                                    mat-stroked-button
+                                    type="button" (click)="onRemove()">
+                                Remove sales category
+                            </button>
+                            <button class="fuse-mat-button-large w-70 mt-2 bg-primary"
+                                    mat-flat-button [disabled]="!salescategoryForm.valid"
+                                    type="submit">
+                                Save sales category
+                            </button>
+                        </div>
+
+                    </form>
+
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-button
+                                type="button" (click)="onBack()">
+                            Back
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>

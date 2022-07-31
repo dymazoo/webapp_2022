@@ -8,6 +8,7 @@ import {AuthGuard} from '../../_guards/index';
 import {ImportComponent} from './import.component';
 import {LayoutComponent} from './layout.component';
 import {EntityDataService} from '../../shared/services/entity-data.service';
+import {SalesCategoriesComponent} from "./sales-categories.component";
 
 const routes: Routes = [
     {
@@ -15,18 +16,18 @@ const routes: Routes = [
         component: ImportComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
-        data: {
-            title: 'File Import'
-        }
     },
     {
         path: 'layouts',
         component: LayoutComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
-        data: {
-            title: 'File Layouts'
-        }
+    },
+    {
+        path: 'sales-categories',
+        component: SalesCategoriesComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
     },
 ];
 
