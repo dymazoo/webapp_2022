@@ -191,6 +191,9 @@ ul {
     min-width: 500px !important;
 }
 
+.form-non-mat-form-field {
+    text-align: left;
+}
 
 .card {
     border-radius: 8px;
@@ -699,6 +702,14 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     text-align: left;
 }
 
+.scroll-fields-container-layout {
+    height: 10.5rem;
+    border: groove;
+    border-radius: 6px;
+    display: block;
+    text-align: left;
+}
+
 .scroll-fields-label {
     height: 24px;
 }
@@ -777,6 +788,11 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     height: 13rem;
 }
 
+.div-label-container-layout {
+    display: block;
+    height: 5rem;
+}
+
 .div-field-container {
     display: block;
     height: 7rem;
@@ -785,6 +801,11 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 .div-field-container-import {
     display: block;
     height: 13rem;
+}
+
+.div-field-container-layout {
+    display: block;
+    height: 5rem;
 }
 
 

@@ -2,8 +2,8 @@ export class Layout {
     public id: string = '';
     public name: string='';
     public description: string='';
+    public type: string='';
     public header: number = 0;
-
 
     public constructor(init?: Partial<Layout>) {
         Object.assign(this, init);

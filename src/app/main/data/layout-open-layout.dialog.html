@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>Open Layout</h1>
+<div mat-dialog-content>
+    <div id="forms" class="simple fullwidth">
+
+        <div class="content p-3">
+            <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="openLayoutForm" [formGroup]="openLayoutForm"
+                  (submit)="onConfirm()">
+
+                <div class="flex flex-col gt-xs:flex-row p-2">
+                    <div>
+                        <table mat-table #table matSort
+                               [dataSource]="paginatedDataSource"
+                               [@fadeIn]="true">
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                                <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                <td mat-cell *matCellDef="let row"md> {{row.description}}</td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                     tabindex="999"
+                                     class="cursor-pointer"
+                                     (click)="onSelect(row, i)"
+                                     (keydown.arrowdown)="onArrowDown()"
+                                     (keydown.arrowup)="onArrowUp()"
+                                     (keydown.enter)="onConfirm()"
+                                     [ngClass]="{'bg-primary-200' : row == selectedRow}"
+                                     matRipple [@fadeIn]="true">
+                            >
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end">
+                    <mat-form-field class="basis-5/12">
+                        <input matInput #filter type="text" (keyup)="filterLayouts($event.target.value)" autocomplete="do-not-autofill"
+                               placeholder="Filter">
+                    </mat-form-field>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <div class="flex items-center justify-end">
+                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
+                    <button mat-raised-button  class="teal mr-4" [disabled]="!selectedLayout" type="submit">Ok</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

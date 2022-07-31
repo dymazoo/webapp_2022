@@ -20,6 +20,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatRadioModule} from '@angular/material/radio';
 
 import { FuseScrollbarModule } from '@fuse/directives/scrollbar';
 import {TranslocoModule} from '@ngneat/transloco';
@@ -61,6 +62,7 @@ import {LoginComponent} from 'app/auth/login.component';
         MatPaginatorModule,
         MatSortModule,
         MatMenuModule,
+        MatRadioModule,
 
         FuseScrollbarModule,
         FuseCardModule,
@@ -92,6 +94,7 @@ import {LoginComponent} from 'app/auth/login.component';
         MatPaginatorModule,
         MatSortModule,
         MatMenuModule,
+        MatRadioModule,
 
         FuseScrollbarModule,
         FuseCardModule,
