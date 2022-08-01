@@ -7,8 +7,8 @@ import {AuthGuard} from '../../_guards/index';
 // Module Components
 import {ImportComponent} from './import.component';
 import {LayoutComponent} from './layout.component';
-import {EntityDataService} from '../../shared/services/entity-data.service';
-import {SalesCategoriesComponent} from "./sales-categories.component";
+import {SalesCategoriesComponent} from './sales-categories.component';
+import {EventCategoriesComponent} from './event-categories.component';
 
 const routes: Routes = [
     {
@@ -26,6 +26,12 @@ const routes: Routes = [
     {
         path: 'sales-categories',
         component: SalesCategoriesComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+    },
+    {
+        path: 'event-categories',
+        component: EventCategoriesComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
     },

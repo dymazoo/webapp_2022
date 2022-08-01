@@ -23,6 +23,8 @@
     "data-sales-category-heading": "Sales Categories",
     "data-sales-sub-category-heading": "Sub Categories",
     "data-current-sales-category-heading": "Sales Category",
+    "data-event-category-heading": "Event Categories",
+    "data-current-event-category-heading": "Event Category",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",
