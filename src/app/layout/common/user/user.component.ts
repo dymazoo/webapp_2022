@@ -100,7 +100,7 @@ export class UserComponent implements OnInit, OnDestroy
 
     public startImpersonating(): void {
         const dialogRef = this.dialog.open(UserImpersonateDialogComponent, {
-            minWidth: '70%',
+            minWidth: '40%',
             data: {}
         });
 

@@ -1,0 +1,67 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">{{t('account-usermanagement')}}</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                      name="usermanagementForm" [formGroup]="usermanagementForm"
+                      (submit)="save()">
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Name</mat-label>
+                            <input matInput #userName formControlName="name" autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(usermanagementForm.controls.name, 'Name')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(usermanagementForm.controls.email, 'Email')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <div *ngIf="currentUser.clientAdmin !==1" class="mat-form-field flex-auto gt-xs:pr-3">
+                            <div formArrayName="roles">
+                                <mat-label class="label-bold">Assigned Roles</mat-label>
+                                <div *ngFor="let role of usermanagementForm.controls.roles.controls; let i = index;">
+                                    <mat-checkbox formControlName="{{i}}">{{ roles[i].name }}</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="currentUser.clientAdmin ===1" class="mat-form-field flex-auto gt-xs:pr-3">
+                            <span>This user is the current Account Admin</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Cancel
+                        </button>
+                        <button *ngIf="currentUser.clientAdmin !==1 && !newUser" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
+                                mat-stroked-button
+                                type="button" (click)="onRemove()">
+                            Remove user
+                        </button>
+                        <button *ngIf="currentUser.clientAdmin !==1" class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button [disabled]="!usermanagementForm.valid"
+                                type="submit">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

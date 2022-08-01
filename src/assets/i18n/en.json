@@ -5,6 +5,8 @@
 
     "account-profile-heading": "Profile",
     "account-usermanagement-heading": "User Management",
+    "account-set-admin": "Set Account Admin",
+    "account-usermanagement": "User",
 
     "auth-register-heading": "Sign Up",
     "auth-login": "Login",
@@ -15,10 +17,12 @@
     "auth-confirm-reset": "Password Reset Confirmed",
 
     "data-import-heading": "File import",
+    "data-confirm-import": "Confirm Import",
+    "data-open-layout": "Open Layout",
     "data-layout-heading": "File layouts",
     "data-sales-category-heading": "Sales Categories",
     "data-sales-sub-category-heading": "Sub Categories",
-    "data-current-sales-category-heading": "Current Sales Category",
+    "data-current-sales-category-heading": "Sales Category",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",

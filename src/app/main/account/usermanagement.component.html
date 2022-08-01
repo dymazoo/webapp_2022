@@ -29,12 +29,24 @@
 
                                 <ng-container matColumnDef="email">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-                                    <td mat-cell *matCellDef="let row" md> {{row.email}}</td>
+                                    <td mat-cell *matCellDef="let row"> {{row.email}}</td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="lastLogin">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Login</th>
-                                    <td mat-cell *matCellDef="let row" md> {{row.lastLogin}}</td>
+                                    <td mat-cell *matCellDef="let row"> {{row.lastLogin}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="admin">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <button  *ngIf="canClientAdmin && row.clientAdmin !== 1" class="fuse-mat-button-large w-50 mt-2 bg-warn-300"
+                                                 mat-flat-button
+                                                 type="button" (click)="openAdminDialog(row.id)">
+                                            Set as Account Admin
+                                        </button>
+                                        <span *ngIf="row.clientAdmin === 1" class="font-bold">Account Admin</span>
+                                    </td>
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -61,57 +73,6 @@
 
                         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                     </div>
-
-                    <form *ngIf="hasUser" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
-                          name="usermanagementForm" [formGroup]="usermanagementForm"
-                          (submit)="save()">
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Name</mat-label>
-                                <input matInput #userName formControlName="name" autocomplete="do-not-autofill"
-                                       required>
-                                <mat-error>{{ getErrorMessage(usermanagementForm.controls.name, 'Name')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Email</mat-label>
-                                <input matInput formControlName="email" autocomplete="do-not-autofill"
-                                       required>
-                                <mat-error>{{ getErrorMessage(usermanagementForm.controls.email, 'Email')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <div class="mat-form-field flex-auto gt-xs:pr-3">
-                                <div formArrayName="roles">
-                                    <mat-label class="label-bold">Assigned Roles</mat-label>
-                                    <div *ngFor="let role of usermanagementForm.controls.roles.controls; let i = index;">
-                                        <mat-checkbox formControlName="{{i}}">{{ roles[i].name }}</mat-checkbox>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-end">
-                            <button  *ngIf="canClientAdmin" class="fuse-mat-button-large w-50 mt-2 bg-warn-300"
-                                    mat-flat-button [disabled]="currentUser.clientAdmin === 1"
-                                    type="button" (click)="openAdminDialog()">
-                                Set as Account Admin
-                            </button>
-                            <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
-                                    mat-flat-button [disabled]="!usermanagementForm.valid"
-                                    type="submit">
-                                Save
-                            </button>
-                        </div>
-
-                    </form>
-
 
                     <div class="flex items-center justify-end">
                         <button class="fuse-mat-button-large w-20 mt-2"

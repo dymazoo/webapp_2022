@@ -1,20 +1,24 @@
-<h1 mat-dialog-title>Confirm Import</h1>
-<div mat-dialog-content>
-    <div id="forms" class="simple fullwidth">
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">{{t('data-confirm-import')}}</div>
 
-        <div class="content p-3">
-            <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="confirmForm" [formGroup]="confirmForm"
-                  (submit)="onConfirm()">
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
 
-                <p *ngIf="data.hasIgnore">Warning - there are still some "Ignored" fields in the layout</p>
-                <p *ngIf="!data.hasOrigin">Warning - the layout does not have a field mapped to ORIGIN</p>
+            <div class="content p-3">
+                <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden" name="confirmForm"
+                      [formGroup]="confirmForm"
+                      (submit)="onConfirm()">
 
-                <div class="flex items-center justify-end">
-                    <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
-                    <button mat-raised-button type="submit" class="teal mr-4">Ok</button>
-                </div>
+                    <p *ngIf="data.hasIgnore">Warning - there are still some "Ignored" fields in the layout</p>
+                    <p *ngIf="!data.hasOrigin">Warning - the layout does not have a field mapped to ORIGIN</p>
 
-            </form>
+                    <div class="flex items-center justify-end">
+                        <button mat-raised-button type="button" class="warn mr-4" (click)="onCancel()">Cancel</button>
+                        <button mat-raised-button type="submit" class="teal mr-4">Ok</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>

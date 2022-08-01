@@ -29,6 +29,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {takeUntil} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
+import {cloneDeep} from "lodash-es";
+import {SalesCategoryDialogComponent} from "../data/sales-categories.component";
 
 @Component({
     selector: 'user-management',
@@ -41,20 +43,17 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('filter') filterElement: ElementRef;
 
-    public usermanagementForm: FormGroup;
-    public formErrors: string[] = [];
     public errors = [];
 
     public user: User = new User();
     public currentUser;
-    public displayedColumns = ['name', 'email', 'lastLogin'];
+    public displayedColumns = ['name', 'email', 'lastLogin', 'admin'];
     public userDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public users: any;
     public selectedUser: User;
     public selectedRow: Record<string, unknown>;
     public selectedIndex: number = -1;
-    public hasUser = false;
     public newUser = false;
     public canClientAdmin = false;
     public roles= [];
@@ -81,14 +80,6 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     ngOnInit(): void {
-        this.usermanagementForm = this._formBuilder.group({
-            'id': [{value: ''}],
-            'name': [{value: '', disabled: true}, Validators.required],
-            'email': [{value: '', disabled: true}, Validators.compose([Validators.required, GlobalValidator.mailFormat])],
-            'roles': this._formBuilder.array([]),
-
-        }, {});
-
         this.userDataSource = new EntityDatasource(
             this.httpService,
             'users',
@@ -98,10 +89,6 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
         this.httpService.getEntity('roles', '')
             .subscribe((result) => {
                 this.roles = result;
-                this.roles.forEach((role) => {
-                    (this.usermanagementForm.controls['roles'] as FormArray).push(
-                        new FormControl({value: ''}));
-                });
             }, (errors) => {
                 this.errors = errors;
             });
@@ -142,7 +129,6 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     onSelect(row, index): void {
-        this.hasUser = false;
         const realIndex = (this.paginator.pageIndex * this.paginator.pageSize) + index;
         this.selectedRow = row;
         this.selectedIndex = realIndex;
@@ -160,9 +146,54 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     onConfirm(): void {
-        this.currentUser = this.selectedUser;
-        this.populateForm();
-        this.hasUser = true;
+        this.currentUser = cloneDeep(this.selectedUser);
+        const dialogRef = this.dialog.open(UserManagementDialogComponent, {
+            minWidth: '70%',
+            data: {'user': this.currentUser, 'newUser': this.newUser, 'roles': this.roles}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result.action === 'save') {
+                this.errors = [];
+
+                this.httpService.saveEntity('user', result.user)
+                    .subscribe((data: Response) => {
+                        this._snackBar.open('User saved', 'Dismiss', {
+                            duration: 5000,
+                            panelClass: ['snackbar-teal']
+                        });
+                        this.newUser = false;
+                        this.userDataSource.refresh();
+                    }, (errors) => {
+                        this.errors = errors;
+                        this.userDataSource.refresh();
+                    });
+            }
+            if (result.action === 'remove') {
+                const id = result.id;
+                this.errors = [];
+                this.httpService.deleteEntity('user', id.value)
+                    .subscribe(data => {
+                        this._snackBar.open('User removed', 'Dismiss', {
+                            duration: 5000,
+                            panelClass: ['snackbar-teal']
+                        });
+
+                        // refresh the salesCategorys after the delete is confirmed
+                        this.httpService.getEntity('users', '')
+                            .subscribe(result => {
+                                this.users = result;
+                            }, (errors) => {
+                                this.errors = errors;
+
+                            });
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+
+            }
+        });
+
         this.newUser = false;
     }
 
@@ -184,60 +215,14 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    populateForm(): void {
-        this.usermanagementForm.controls['name'].setValue(this.currentUser.name);
-        this.usermanagementForm.controls['email'].setValue(this.currentUser.email);
-        this.usermanagementForm.controls['name'].disable();
-        this.usermanagementForm.controls['email'].disable();
-
-        (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
-            roleControl.enable();
-            roleControl.reset(false);
-            this.currentUser.roles.forEach((userRole) => {
-                if (this.roles[index].name === userRole) {
-                    roleControl.setValue(true);
-                }
-            });
-        });
-    }
 
     addUser(): void {
         this.selectedUser = new User();
         this.selectedUser.layout = 'modern';
         this.selectedUser.scheme = 'light';
         this.selectedUser.theme = 'theme-brand';
-        this.onConfirm();
         this.newUser = true;
-        this.usermanagementForm.controls['name'].enable();
-        this.usermanagementForm.controls['email'].enable();
-    }
-
-    save(): void {
-        this.errors = [];
-        this.currentUser.name = this.usermanagementForm.controls['name'].value;
-        this.currentUser.email = this.usermanagementForm.controls['email'].value;
-        let roles = [];
-        (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
-            if (roleControl.value === true) {
-                roles.push(this.roles[index].name);
-            }
-        });
-        this.currentUser.roles = roles;
-
-        this.httpService.saveEntity('user', this.currentUser)
-            .subscribe((data: Response) => {
-                this._snackBar.open('User saved', 'Dismiss', {
-                    duration: 5000,
-                    panelClass: ['snackbar-teal']
-                });
-                this.hasUser = false;
-                this.newUser = false;
-                this.usermanagementForm.markAsPristine();
-                this.userDataSource.refresh();
-            }, (errors) => {
-                this.errors = errors;
-                this.userDataSource.refresh();
-            });
+        this.onConfirm();
     }
 
     public filterUsers = (value: string) => {
@@ -249,11 +234,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.usermanagementForm.dirty) {
-            return this.abandonDialogService.showDialog();
-        } else {
-            return true;
-        }
+        return true;
     }
 
     getErrorMessage(control, name): string {
@@ -267,7 +248,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
         return returnVal;
     }
 
-    openAdminDialog(): void {
+    openAdminDialog(userId): void {
         this.errors = [];
         const dialogRef = this.dialog.open(UserManagementAdminDialogComponent, {
             minWidth: '50%',
@@ -278,7 +259,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
                 this._snackBar.open('Admin Use change in progress', 'Dismiss', {
                     duration: 3000,
                 });
-                const setAdmin = {password: result.password, userId: this.currentUser.id};
+                const setAdmin = {password: result.password, userId: userId};
                 this.httpService.saveEntity('set-admin', setAdmin)
                     .subscribe((data: Response) => {
                         this.httpService.logout();
@@ -297,7 +278,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
 })
 export class UserManagementAdminDialogComponent implements OnInit {
 
-    public adminForm: FormGroup;
+    public usermanagementForm: FormGroup;
     errorMatcher = new CrossFieldErrorMatcher();
 
     constructor(
@@ -307,13 +288,13 @@ export class UserManagementAdminDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.adminForm = this._formBuilder.group({
+        this.usermanagementForm = this._formBuilder.group({
             password: ['', [Validators.required]],
         }, {});
     }
 
     setAdmin(): void {
-        this.data.password = this.adminForm.controls['password'].value;
+        this.data.password = this.usermanagementForm.controls['password'].value;
         this.dialogRef.close(this.data);
     }
 
@@ -329,4 +310,95 @@ export class UserManagementAdminDialogComponent implements OnInit {
         return returnVal;
     }
 }
+
+@Component({
+    selector: 'usermanagement-dialog',
+    templateUrl: 'usermanagement.dialog.html',
+})
+export class UserManagementDialogComponent implements OnInit {
+
+    public usermanagementForm: FormGroup;
+    public formErrors: string[] = [];
+    public currentUser;
+    public newUser;
+    public roles;
+
+    errorMatcher = new CrossFieldErrorMatcher();
+
+    constructor(
+        public dialogRef: MatDialogRef<UserManagementDialogComponent>,
+        private _formBuilder: FormBuilder,
+        @Inject(MAT_DIALOG_DATA) public data: any) {
+        this.currentUser = data.user;
+        this.roles = data.roles;
+        this.newUser = data.newUser;
+    }
+
+    ngOnInit(): void {
+        this.usermanagementForm = this._formBuilder.group({
+            'id': [{value: ''}],
+            'name': [{value: '', disabled: true}, Validators.required],
+            'email': [{value: '', disabled: true}, Validators.compose([Validators.required, GlobalValidator.mailFormat])],
+            'roles': this._formBuilder.array([]),
+
+        }, {});
+        this.roles.forEach((role) => {
+            (this.usermanagementForm.controls['roles'] as FormArray).push(
+                new FormControl({value: ''}));
+        });
+        this.populateForm();
+        if (this.newUser) {
+            this.usermanagementForm.controls['name'].enable();
+            this.usermanagementForm.controls['email'].enable();
+        }
+
+    }
+
+    populateForm(): void {
+        this.usermanagementForm.controls['name'].setValue(this.currentUser.name);
+        this.usermanagementForm.controls['email'].setValue(this.currentUser.email);
+        this.usermanagementForm.controls['name'].disable();
+        this.usermanagementForm.controls['email'].disable();
+
+        (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
+            roleControl.enable();
+            roleControl.reset(false);
+            this.currentUser.roles.forEach((userRole) => {
+                if (this.roles[index].name === userRole) {
+                    roleControl.setValue(true);
+                }
+            });
+        });
+    }
+
+    save(): void {
+        const roles = [];
+        (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
+            if (roleControl.value === true) {
+                roles.push(this.roles[index].name);
+            }
+        });
+        this.currentUser.roles = roles;
+
+        this.dialogRef.close({action: 'save', user: this.currentUser});
+    }
+
+    onRemove(): void {
+        const id = this.usermanagementForm.controls['id'];
+        this.dialogRef.close({action: 'remove', id: id});
+    }
+
+    onCancel(): void {
+        this.dialogRef.close({action: 'cancel'});
+    }
+
+    getErrorMessage(control, name): string {
+        let returnVal = '';
+        if (control.hasError('required')) {
+            returnVal = name + ' is required!';
+        }
+        return returnVal;
+    }
+}
+
 
