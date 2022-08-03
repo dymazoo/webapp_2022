@@ -1,0 +1,77 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">{{t('data-current-event-heading')}}</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                      name="eventForm" [formGroup]="eventForm"
+                      (submit)="onSave()">
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Description</mat-label>
+                            <input matInput #eventCategoryDescription formControlName="description"
+                                   autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(eventForm.controls.description, 'Description')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="eventDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error>{{ getErrorMessage(eventForm.controls.eventDate, 'Event Date')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="eventCategoryId" required>
+                                <mat-option *ngFor="let eventCategory of eventCategories"
+                                            [value]="eventCategory.id">
+                                    {{ eventCategory.description }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Type</mat-label>
+                            <input matInput formControlName="type"
+                                   autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(eventForm.controls.type, 'Type')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Cancel
+                        </button>
+                        <button *ngIf="!newEvent" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
+                                mat-stroked-button
+                                type="button" (click)="onRemove()">
+                            Remove event
+                        </button>
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary"
+                                mat-flat-button [disabled]="!eventForm.valid"
+                                type="submit">
+                            Save event
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

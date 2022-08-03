@@ -9,6 +9,7 @@ import {ImportComponent} from './import.component';
 import {LayoutComponent} from './layout.component';
 import {SalesCategoriesComponent} from './sales-categories.component';
 import {EventCategoriesComponent} from './event-categories.component';
+import {EventsComponent} from './events.component';
 
 const routes: Routes = [
     {
@@ -32,6 +33,12 @@ const routes: Routes = [
     {
         path: 'event-categories',
         component: EventCategoriesComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+    },
+    {
+        path: 'events',
+        component: EventsComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
     },

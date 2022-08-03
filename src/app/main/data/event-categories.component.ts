@@ -132,7 +132,7 @@ export class EventCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     onConfirm(): void {
         this.currentEventCategory = cloneDeep(this.selectedEventCategory);
         const dialogRef = this.dialog.open(EventCategoryDialogComponent, {
-            minWidth: '70%',
+            minWidth: '50%',
             data: {'eventCategory': this.currentEventCategory, 'newEventCategory': this.newEventCategory}
         });
 
@@ -157,23 +157,17 @@ export class EventCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
             if (result.action === 'remove') {
                 const id = result.id;
                 this.errors = [];
-                this.httpService.deleteEntity('event-category', id.value)
+                this.httpService.deleteEntity('event-category', id)
                     .subscribe(data => {
                         this._snackBar.open('Event category removed', 'Dismiss', {
                             duration: 5000,
                             panelClass: ['snackbar-teal']
                         });
 
-                        // refresh the eventCategorys after the delete is confirmed
-                        this.httpService.getEntity('event-categorys', '')
-                            .subscribe(result => {
-                                this.eventCategories = result;
-                            }, (errors) => {
-                                this.errors = errors;
-
-                            });
+                        this.eventCategoryDataSource.refresh();
                     }, (errors) => {
                         this.errors = errors;
+                        this.eventCategoryDataSource.refresh();
                     });
 
             }
@@ -254,7 +248,6 @@ export class EventCategoryDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.eventCategoryForm = this._formBuilder.group({
-            'id': [{value: ''}],
             'description': [{value: '', disabled: true}, Validators.required],
             'default': [{value: 0}],
         }, {});
@@ -277,7 +270,7 @@ export class EventCategoryDialogComponent implements OnInit {
     }
 
     onRemove(): void {
-        const id = this.eventCategoryForm.controls['id'];
+        const id = this.currentEventCategory.id;
         this.dialogRef.close({action: 'remove', id: id});
     }
 

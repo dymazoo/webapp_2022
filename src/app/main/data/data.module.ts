@@ -7,6 +7,7 @@ import {ImportComponent, ImportConfirmDialogComponent, ImportOpenLayoutDialogCom
 import {LayoutComponent, LayoutOpenLayoutDialogComponent} from './layout.component';
 import {SalesCategoriesComponent, SalesCategoryDialogComponent} from './sales-categories.component';
 import {EventCategoriesComponent, EventCategoryDialogComponent} from './event-categories.component';
+import {EventsComponent, EventDialogComponent} from './events.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,8 @@ import {EventCategoriesComponent, EventCategoryDialogComponent} from './event-ca
         SalesCategoryDialogComponent,
         EventCategoriesComponent,
         EventCategoryDialogComponent,
+        EventsComponent,
+        EventDialogComponent,
     ],
     imports: [
         DataRoutingModule,
@@ -34,6 +37,8 @@ import {EventCategoriesComponent, EventCategoryDialogComponent} from './event-ca
         SalesCategoryDialogComponent,
         EventCategoriesComponent,
         EventCategoryDialogComponent,
+        EventsComponent,
+        EventDialogComponent,
     ]
 })
 

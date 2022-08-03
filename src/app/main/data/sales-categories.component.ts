@@ -133,7 +133,7 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     onConfirm(): void {
         this.currentSalesCategory = cloneDeep(this.selectedSalesCategory);
         const dialogRef = this.dialog.open(SalesCategoryDialogComponent, {
-            minWidth: '70%',
+            minWidth: '50%',
             data: {'salesCategory': this.currentSalesCategory, 'newSalesCategory': this.newSalesCategory}
         });
 
@@ -158,23 +158,17 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
             if (result.action === 'remove') {
                 const id = result.id;
                 this.errors = [];
-                this.httpService.deleteEntity('sales-category', id.value)
+                this.httpService.deleteEntity('sales-category', id)
                     .subscribe(data => {
                         this._snackBar.open('Sales category removed', 'Dismiss', {
                             duration: 5000,
                             panelClass: ['snackbar-teal']
                         });
 
-                        // refresh the salesCategorys after the delete is confirmed
-                        this.httpService.getEntity('sales-categorys', '')
-                            .subscribe(result => {
-                                this.salesCategories = result;
-                            }, (errors) => {
-                                this.errors = errors;
-
-                            });
+                        this.salesCategoryDataSource.refresh();
                     }, (errors) => {
                         this.errors = errors;
+                        this.salesCategoryDataSource.refresh();
                     });
 
             }
@@ -255,7 +249,6 @@ export class SalesCategoryDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.salescategoryForm = this._formBuilder.group({
-            'id': [{value: ''}],
             'description': [{value: '', disabled: true}, Validators.required],
             'default': [{value: 0}],
             'subCategories': this._formBuilder.array([]),
@@ -311,7 +304,7 @@ export class SalesCategoryDialogComponent implements OnInit {
     }
 
     onRemove(): void {
-        const id = this.salescategoryForm.controls['id'];
+        const id = this.currentSalesCategory.id;
         this.dialogRef.close({action: 'remove', id: id});
     }
 

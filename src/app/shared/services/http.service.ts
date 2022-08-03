@@ -747,6 +747,20 @@ export class HttpService {
             }),);
     }
 
+    public getDymazooDates(): any {
+        return {
+            parse: {
+                dateInput: 'LL',
+            },
+            display: {
+                dateInput: 'LL',
+                monthYearLabel: 'MMM YYYY',
+                dateA11yLabel: 'LL',
+                monthYearA11yLabel: 'MMMM YYYY',
+            },
+        };
+    }
+
     public getLoggedInState(): Observable<any> {
         return this.loggedinSubject.asObservable().pipe(delay(0));
     }

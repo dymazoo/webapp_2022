@@ -10,7 +10,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatCardModule} from '@angular/material/card';
-import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -21,6 +20,8 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 import { FuseScrollbarModule } from '@fuse/directives/scrollbar';
 import {TranslocoModule} from '@ngneat/transloco';
@@ -52,7 +53,6 @@ import {LoginComponent} from 'app/auth/login.component';
         MatInputModule,
         MatSelectModule,
         MatStepperModule,
-        MatMomentDateModule,
         MatDialogModule,
         MatSnackBarModule,
         MatTooltipModule,
@@ -63,6 +63,8 @@ import {LoginComponent} from 'app/auth/login.component';
         MatSortModule,
         MatMenuModule,
         MatRadioModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
 
         FuseScrollbarModule,
         FuseCardModule,
@@ -84,7 +86,6 @@ import {LoginComponent} from 'app/auth/login.component';
         MatSelectModule,
         MatStepperModule,
         MatCardModule,
-        MatMomentDateModule,
         MatDialogModule,
         MatSnackBarModule,
         MatTooltipModule,
@@ -95,6 +96,8 @@ import {LoginComponent} from 'app/auth/login.component';
         MatSortModule,
         MatMenuModule,
         MatRadioModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
 
         FuseScrollbarModule,
         FuseCardModule,
@@ -107,7 +110,7 @@ import {LoginComponent} from 'app/auth/login.component';
         ConfirmDialogComponent,
         LoginComponent,
 
-    ]
+    ],
 })
 export class SharedModule
 {
