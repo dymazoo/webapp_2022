@@ -1,7 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {SharedModule} from 'app/shared/shared.module';
 
 import {DashboardComponent} from './dashboard.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 const routes = [
     {
@@ -16,6 +18,8 @@ const routes = [
     ],
     imports: [
         RouterModule.forChild(routes),
+        NgApexchartsModule,
+        SharedModule,
 
     ],
     exports: [

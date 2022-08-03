@@ -1,5 +1,252 @@
-<div class="page-layout blank p-24">
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-dashboard">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('dashboard-heading')}}</div>
+        </div>
 
-    <h2>Dashboard</h2>
+        <div class="major-item" fuseScrollbar>
 
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <div class="" *ngIf="emptyDashboard">
+                        <p class="label-bold">Your dashboard doesn't have any data yet!</p>
+                        <p class="">Load customer data from integrations (such as Mailchimp, Shopify or EventBrite) or import data from files</p>
+                        <p> New dashboards are built either daily or weekly, depending on your plan</p>
+                        <p >For help on getting started visit our <a href="https://dymazoo.freshdesk.com/support/home" target="_blank">Support</a> site or
+                            checkout our <a href="https://www.youtube.com/channel/UCm8SNowzwJifgK52lU3CxAQ" target="_blank">YouTube channel</a></p>
+                        <p class="label-bold">Here's a sample of what your dashboard could look like</p>
+                        <div class="proxy_dashboard"></div>
+                    </div>
+                </div>
+
+
+                <!-- Summary Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-8">
+                    <!-- People -->
+                    <div class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">People</div>
+                        </div>
+                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div class="text-7xl font-bold tracking-tighter leading-tight">{{peopleData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="peopleData.trend < 0"
+                                    class="icon-size-5 text-red-500"
+                                    [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="peopleData.trend >= 0"
+                                    class="icon-size-5 text-red-500"
+                                    [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ peopleData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart *ngIf="dataReady"
+                                class="flex-auto w-full h-full"
+                                [chart]="chartPeople.chart"
+                                [colors]="chartPeople.colors"
+                                [series]="chartPeople.series"
+                                [stroke]="chartPeople.stroke"
+                                [tooltip]="chartPeople.tooltip"
+                                [xaxis]="chartPeople.xaxis"
+                                [yaxis]="chartPeople.yaxis"></apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Actions</div>
+                        </div>
+                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div class="text-7xl font-bold tracking-tighter leading-tight">{{actionsData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="actionsData.trend < 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="actionsData.trend >= 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ actionsData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart *ngIf="dataReady"
+                                       class="flex-auto w-full h-full"
+                                       [chart]="chartActions.chart"
+                                       [colors]="chartActions.colors"
+                                       [series]="chartActions.series"
+                                       [stroke]="chartActions.stroke"
+                                       [tooltip]="chartActions.tooltip"
+                                       [xaxis]="chartActions.xaxis"
+                                       [yaxis]="chartActions.yaxis"></apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Sales -->
+                    <div class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Sales</div>
+                        </div>
+                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div class="text-7xl font-bold tracking-tighter leading-tight">{{salesData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="salesData.trend < 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="salesData.trend >= 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ salesData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart *ngIf="dataReady"
+                                       class="flex-auto w-full h-full"
+                                       [chart]="chartSales.chart"
+                                       [colors]="chartSales.colors"
+                                       [series]="chartSales.series"
+                                       [stroke]="chartSales.stroke"
+                                       [tooltip]="chartSales.tooltip"
+                                       [xaxis]="chartSales.xaxis"
+                                       [yaxis]="chartSales.yaxis"></apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Events -->
+                    <div class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Events</div>
+                        </div>
+                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div class="text-7xl font-bold tracking-tighter leading-tight">{{eventsData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="eventsData.trend < 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="eventsData.trend >= 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ eventsData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart *ngIf="dataReady"
+                                       class="flex-auto w-full h-full"
+                                       [chart]="chartEvents.chart"
+                                       [colors]="chartEvents.colors"
+                                       [series]="chartEvents.series"
+                                       [stroke]="chartEvents.stroke"
+                                       [tooltip]="chartEvents.tooltip"
+                                       [xaxis]="chartEvents.xaxis"
+                                       [yaxis]="chartEvents.yaxis"></apx-chart>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field *ngIf="dateItem" class="fuse-mat-dense fuse-mat-no-subscript w-60">
+                        <mat-label>Results Date</mat-label>
+                        <mat-select [(ngModel)]="dateItem.value" (selectionChange)="onDateSelect($event)">
+                            <mat-option *ngFor="let dashboardDate of dashboardDates"
+                                        [value]="dashboardDate.value">
+                                {{ dashboardDate.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Detail Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-8">
+
+                    <ng-container *ngFor="let type of showCharts; let chartIndex=index">
+
+                        <ng-container *ngIf="chartAll[showCharts[chartIndex+1]]">
+                            <!-- donut -->
+                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'donut'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6 h-44">
+                                    <apx-chart
+                                        class="flex flex-auto items-center justify-center w-full h-full"
+                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
+                                        [colors]="chartAll[showCharts[chartIndex+1]].colors"
+                                        [labels]="chartAll[showCharts[chartIndex+1]].labels"
+                                        [plotOptions]="chartAll[showCharts[chartIndex+1]].plotOptions"
+                                        [series]="chartAll[showCharts[chartIndex+1]].series"
+                                        [states]="chartAll[showCharts[chartIndex+1]].states"
+                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"></apx-chart>
+                                </div>
+                                <div class="mt-8">
+                                    <div class="-my-3 divide-y">
+                                        <ng-container *ngFor="let dataset of allChartData[showCharts[chartIndex+1]].series; let i = index">
+                                            <div class="grid grid-cols-3 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="flex-0 w-2 h-2 rounded-full"
+                                                        [style.backgroundColor]="chartAll[showCharts[chartIndex+1]].colors[i]"></div>
+                                                    <div class="ml-3 truncate">{{allChartData[showCharts[chartIndex+1]].labels[i]}}</div>
+                                                </div>
+                                                <div class="font-medium text-right">{{ allChartData[showCharts[chartIndex+1]].total * dataset / 100 | number:'1.0-0' }}</div>
+                                                <div class="text-right text-secondary">{{ dataset }}%</div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- bar -->
+                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'bar'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6 h-60">
+                                    <apx-chart
+                                        class="flex flex-auto items-center justify-center w-full h-full"
+                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
+                                        [dataLabels]="chartAll[showCharts[chartIndex+1]].dataLabels"
+                                        [grid]="chartAll[showCharts[chartIndex+1]].grid"
+                                        [plotOptions]="chartAll[showCharts[chartIndex+1]].plotOptions"
+                                        [fill]="chartAll[showCharts[chartIndex+1]].fill"
+                                        [legend]="chartAll[showCharts[chartIndex+1]].legend"
+                                        [series]="chartAll[showCharts[chartIndex+1]].series"
+                                        [stroke]="chartAll[showCharts[chartIndex+1]].stroke"
+                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"
+                                        [xaxis]="chartAll[showCharts[chartIndex+1]].xaxis"
+                                        [yaxis]="chartAll[showCharts[chartIndex+1]].yaxis"></apx-chart>
+                                </div>
+                            </div>
+                            <!-- line -->
+                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'line'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                </div>
+                                <div class="flex flex-col flex-auto mt-6 h-60">
+                                    <apx-chart
+                                        class="flex flex-auto items-center justify-center w-full h-full"
+                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
+                                        [series]="chartAll[showCharts[chartIndex+1]].series"
+                                        [stroke]="chartAll[showCharts[chartIndex+1]].stroke"
+                                        [xaxis]="chartAll[showCharts[chartIndex+1]].xaxis"
+                                        [yaxis]="chartAll[showCharts[chartIndex+1]].yaxis"
+                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"></apx-chart>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+
+
+                </div>
+            </div>
+        </div>
+    </fuse-card>
 </div>

@@ -3,6 +3,8 @@
     "Project": "Project",
     "Analytics": "Analytics",
 
+    "dashboard-heading": "Dashboard",
+
     "account-profile-heading": "Profile",
     "account-usermanagement-heading": "User Management",
     "account-set-admin": "Set Account Admin",

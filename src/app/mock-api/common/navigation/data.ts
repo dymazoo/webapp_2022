@@ -24,19 +24,19 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 disabled : true,
                 icon : 'heroicons_outline:search',
                 link : '/marketing/segmentation'
-            },
-            {
-                id   : 'marketing.campaigns',
-                title: 'Campaigns',
-                type : 'basic',
-                disabled : true,
-                icon : 'heroicons_outline:mail',
-                link : '/marketing/campaigns',
-                badge: {
-                    title  : '27',
-                    classes: 'px-2 bg-pink-600 text-white rounded-full'
-                }
             }
+//            {
+//                id   : 'marketing.campaigns',
+//                title: 'Campaigns',
+//                type : 'basic',
+//                disabled : true,
+//                icon : 'heroicons_outline:mail',
+//                link : '/marketing/campaigns',
+//                badge: {
+//                    title  : '27',
+//                    classes: 'px-2 bg-pink-600 text-white rounded-full'
+//                }
+//            }
         ]
     },
     {
@@ -62,14 +62,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:table',
                 link : '/data/layouts'
             },
-            {
-                id   : 'data.custom-fields',
-                title: 'Custom fields',
-                type : 'basic',
-                disabled : true,
-                icon : 'heroicons_outline:dots-circle-horizontal',
-                link : '/data/custom-fields'
-            },
+//            {
+//                id   : 'data.custom-fields',
+//                title: 'Custom fields',
+//                type : 'basic',
+//                disabled : true,
+//                icon : 'heroicons_outline:dots-circle-horizontal',
+//                link : '/data/custom-fields'
+//            },
             {
                 id   : 'data.sales-categories',
                 title: 'Sales categories',
