@@ -95,6 +95,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/events'
             },
             {
+                id   : 'data.preferences',
+                title: 'Preferences',
+                type : 'basic',
+                disabled : true,
+                icon : 'heroicons_outline:cog',
+                link : '/data/preferences'
+            },
+            {
                 id   : 'data.download',
                 title: 'Download',
                 type : 'basic',

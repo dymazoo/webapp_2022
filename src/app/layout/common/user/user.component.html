@@ -31,10 +31,6 @@
         <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
         <span>Profile</span>
     </button>
-    <button mat-menu-item>
-        <mat-icon [svgIcon]="'heroicons_outline:cog'"></mat-icon>
-        <span>Settings</span>
-    </button>
     <button mat-menu-item *ngIf="canClientAdmin" (click)="userManagement($event)">
         <mat-icon [svgIcon]="'heroicons_outline:user-group'"></mat-icon>
         <span>User management</span>

@@ -197,6 +197,9 @@ export class DataSources {
                         if (childItem.id === 'data.events') {
                             childItem.disabled = !this.httpService.hasPermission('event');
                         }
+                        if (childItem.id === 'data.preferences') {
+                            childItem.disabled = !this.httpService.hasPermission('settings');
+                        }
                         if (childItem.id === 'data.download') {
                             childItem.disabled = !this.httpService.hasPermission('export');
                         }

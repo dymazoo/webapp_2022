@@ -124,6 +124,24 @@ export class DashboardComponent implements OnInit {
                     if (this.peopleData.trend === -1) {
                         this.peopleData.trend = 0;
                     }
+                    if (this.salesData.amount === -1) {
+                        this.salesData.amount = 0;
+                    }
+                    if (this.salesData.trend === -1) {
+                        this.salesData.trend = 0;
+                    }
+                    if (this.eventsData.amount === -1) {
+                        this.eventsData.amount = 0;
+                    }
+                    if (this.eventsData.trend === -1) {
+                        this.eventsData.trend = 0;
+                    }
+                    if (this.actionsData.amount === -1) {
+                        this.actionsData.amount = 0;
+                    }
+                    if (this.actionsData.trend === -1) {
+                        this.actionsData.trend = 0;
+                    }
                 }
 
                 this.dateItem = this.dashboardDates[0];
