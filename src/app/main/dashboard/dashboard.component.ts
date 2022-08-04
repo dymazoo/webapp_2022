@@ -321,27 +321,26 @@ export class DashboardComponent implements OnInit {
             }
         };
 
-        const donutColours = [
-            ['#51f5f1' ,'#41cbc8', '#319795', '#2b736d', '#1B4945FF'],
-            ['#9cccf8', '#6ca4d9', '#4280bb', '#2f6b96', '#2f5672'],
-            ['#f5c19f', '#f1a26e', '#d97e41', '#f58c0d', '#835c2d'],
-            ['#c0a9f5', '#ae90f1', '#805AD5', '#6131b4', '#9465e7']
-        ];
-        const lineColours = [
-            '#41cbc8',
-            '#6ca4d9',
-            '#f1a26e',
-            '#ae90f1'
+        const chartColours = [
+          ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
+          ['#3F51B5', '#03A9F4', '#4CAF50', '#F9CE1D', '#FF9800'],
+          ['#33B2DF', '#546E7A', '#D4526E', '#13D8AA', '#A5978B'],
+          ['#4ECDC4', '#C7F464', '#81D4FA', '#546E7A', '#FD6A6A'],
+          ['#2B908F', '#F9A3A4', '#90EE7E', '#FA4443', '#69D2E7'],
+          ['#449DD1', '#F86624', '#EA3546', '#662E9B', '#C5D86D'],
+          ['#D7263D', '#1B998B', '#2E294E', '#F46036', '#E2C044'],
+          ['#662E9B', '#F86624', '#F9C80E', '#EA3546', '#43BCCD'],
+          ['#5C4742', '#A5978B', '#8D5B4C', '#5A2A27', '#C4BBAF'],
+          ['#A300D6', '#7D02EB', '#5653FE', '#2983FF', '#00B1F2'],
         ];
         let dataSet;
         let chartType;
-        let currentDonut = 0;
-        let currentLine = 0;
+        let currentPallete = 0;
         let totalDateCount = 0;
         let dataLabel = '';
         let title = '';
-        Object.keys(this.dashboardData).forEach(key => {
-            if (this.showCharts.indexOf(key) > -1) {
+        this.showCharts.forEach(key => {
+            if (this.dashboardData[key]) {
                 dataSet = this.dashboardData[key];
                 chartType = this.settingList[key].type;
                 title = this.settingList[key].label;
@@ -421,7 +420,7 @@ export class DashboardComponent implements OnInit {
                                             enabled: true
                                         }
                                     },
-                                    colors: donutColours[currentDonut],
+                                    colors: chartColours[currentPallete],
                                     labels: this.allChartData[key].labels,
                                     plotOptions: {
                                         pie: {
@@ -459,10 +458,6 @@ export class DashboardComponent implements OnInit {
                                                          </div>`
                                     }
                                 };
-                                currentDonut++;
-                                if (currentDonut > 3) {
-                                    currentDonut = 0;
-                                }
                             }
                             if (chartType === 'bar') {
                                 this.chartAll[key] = {
@@ -484,6 +479,7 @@ export class DashboardComponent implements OnInit {
                                     dataLabels: {
                                         enabled: false,
                                     },
+                                    colors: chartColours[currentPallete],
                                     fill: {
                                         opacity: 1
                                     },
@@ -533,6 +529,10 @@ export class DashboardComponent implements OnInit {
                                     }
                                 };
                             }
+                            currentPallete++;
+                            if (currentPallete > 9) {
+                                currentPallete = 0;
+                            }
                         }
                     }
                 });
@@ -561,6 +561,7 @@ export class DashboardComponent implements OnInit {
                             }
                         },
                         series : this.allChartData[key].series,
+                        colors: chartColours[currentPallete],
                         tooltip: {
                             followCursor: true,
                             theme       : 'dark'
@@ -578,9 +579,9 @@ export class DashboardComponent implements OnInit {
                             }
                         }
                     };
-                    currentLine++;
-                    if (currentLine > 3) {
-                        currentLine = 0;
+                    currentPallete++;
+                    if (currentPallete > 9) {
+                        currentPallete = 0;
                     }
                 }
             }
