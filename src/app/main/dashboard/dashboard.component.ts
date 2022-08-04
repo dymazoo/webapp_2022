@@ -18,8 +18,6 @@ export class DashboardComponent implements OnInit {
     public dateItem: any;
     public showCharts: string[] = [];
     public settingList: any = {};
-    public showCity: boolean = false;
-    public showCountry: boolean = false;
     public emptyDashboard: boolean = false;
     public dataReady: boolean = false;
 
@@ -155,16 +153,8 @@ export class DashboardComponent implements OnInit {
                                 if (setting.name.substr(0, 9) == 'dashboard') {
                                     type = setting.name.substr(10);
                                     if (setting.value === "1") {
-                                        if (type === 'city') {
-                                            this.showCity = true;
-                                        } else {
-                                            if (type === 'country') {
-                                                this.showCountry = true;
-                                            } else {
-                                                this.showCharts.push(setting.label);
-                                                this.settingList[setting.label] = setting;
-                                            }
-                                        }
+                                        this.showCharts.push(setting.label);
+                                        this.settingList[setting.label] = setting;
                                     }
                                 }
                             });
@@ -355,6 +345,9 @@ export class DashboardComponent implements OnInit {
                 dataSet = this.dashboardData[key];
                 chartType = this.settingList[key].type;
                 title = this.settingList[key].label;
+                if (title === 'City') {
+                    title = 'Top Towns / Citys';
+                }
                 if (title === 'County') {
                     title = 'Top States / Counties / Provinces';
                 }

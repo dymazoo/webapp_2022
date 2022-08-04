@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
 // Guards
-import {AuthGuard} from '../../_guards/index';
+import {AuthGuard} from 'app/_guards/index';
 
 // Module Components
 import {ImportComponent} from './import.component';
@@ -10,6 +10,7 @@ import {LayoutComponent} from './layout.component';
 import {SalesCategoriesComponent} from './sales-categories.component';
 import {EventCategoriesComponent} from './event-categories.component';
 import {EventsComponent} from './events.component';
+import {PreferencesComponent} from './preferences.component';
 
 const routes: Routes = [
     {
@@ -39,6 +40,12 @@ const routes: Routes = [
     {
         path: 'events',
         component: EventsComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+    },
+    {
+        path: 'preferences',
+        component: PreferencesComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
     },

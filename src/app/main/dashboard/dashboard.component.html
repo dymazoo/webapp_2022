@@ -170,34 +170,34 @@
 
                     <ng-container *ngFor="let type of showCharts; let chartIndex=index">
 
-                        <ng-container *ngIf="chartAll[showCharts[chartIndex+1]]">
+                        <ng-container *ngIf="chartAll[showCharts[chartIndex]]">
                             <!-- donut -->
-                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'donut'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                            <div *ngIf="allChartData[showCharts[chartIndex]].type === 'donut'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-44">
                                     <apx-chart
                                         class="flex flex-auto items-center justify-center w-full h-full"
-                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
-                                        [colors]="chartAll[showCharts[chartIndex+1]].colors"
-                                        [labels]="chartAll[showCharts[chartIndex+1]].labels"
-                                        [plotOptions]="chartAll[showCharts[chartIndex+1]].plotOptions"
-                                        [series]="chartAll[showCharts[chartIndex+1]].series"
-                                        [states]="chartAll[showCharts[chartIndex+1]].states"
-                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"></apx-chart>
+                                        [chart]="chartAll[showCharts[chartIndex]].chart"
+                                        [colors]="chartAll[showCharts[chartIndex]].colors"
+                                        [labels]="chartAll[showCharts[chartIndex]].labels"
+                                        [plotOptions]="chartAll[showCharts[chartIndex]].plotOptions"
+                                        [series]="chartAll[showCharts[chartIndex]].series"
+                                        [states]="chartAll[showCharts[chartIndex]].states"
+                                        [tooltip]="chartAll[showCharts[chartIndex]].tooltip"></apx-chart>
                                 </div>
                                 <div class="mt-8">
                                     <div class="-my-3 divide-y">
-                                        <ng-container *ngFor="let dataset of allChartData[showCharts[chartIndex+1]].series; let i = index">
+                                        <ng-container *ngFor="let dataset of allChartData[showCharts[chartIndex]].series; let i = index">
                                             <div class="grid grid-cols-3 py-3">
                                                 <div class="flex items-center">
                                                     <div
                                                         class="flex-0 w-2 h-2 rounded-full"
-                                                        [style.backgroundColor]="chartAll[showCharts[chartIndex+1]].colors[i]"></div>
-                                                    <div class="ml-3 truncate">{{allChartData[showCharts[chartIndex+1]].labels[i]}}</div>
+                                                        [style.backgroundColor]="chartAll[showCharts[chartIndex]].colors[i]"></div>
+                                                    <div class="ml-3 truncate">{{allChartData[showCharts[chartIndex]].labels[i]}}</div>
                                                 </div>
-                                                <div class="font-medium text-right">{{ allChartData[showCharts[chartIndex+1]].total * dataset / 100 | number:'1.0-0' }}</div>
+                                                <div class="font-medium text-right">{{ allChartData[showCharts[chartIndex]].total * dataset / 100 | number:'1.0-0' }}</div>
                                                 <div class="text-right text-secondary">{{ dataset }}%</div>
                                             </div>
                                         </ng-container>
@@ -205,40 +205,40 @@
                                 </div>
                             </div>
                             <!-- bar -->
-                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'bar'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                            <div *ngIf="allChartData[showCharts[chartIndex]].type === 'bar'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-60">
                                     <apx-chart
                                         class="flex flex-auto items-center justify-center w-full h-full"
-                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
-                                        [dataLabels]="chartAll[showCharts[chartIndex+1]].dataLabels"
-                                        [grid]="chartAll[showCharts[chartIndex+1]].grid"
-                                        [plotOptions]="chartAll[showCharts[chartIndex+1]].plotOptions"
-                                        [fill]="chartAll[showCharts[chartIndex+1]].fill"
-                                        [legend]="chartAll[showCharts[chartIndex+1]].legend"
-                                        [series]="chartAll[showCharts[chartIndex+1]].series"
-                                        [stroke]="chartAll[showCharts[chartIndex+1]].stroke"
-                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"
-                                        [xaxis]="chartAll[showCharts[chartIndex+1]].xaxis"
-                                        [yaxis]="chartAll[showCharts[chartIndex+1]].yaxis"></apx-chart>
+                                        [chart]="chartAll[showCharts[chartIndex]].chart"
+                                        [dataLabels]="chartAll[showCharts[chartIndex]].dataLabels"
+                                        [grid]="chartAll[showCharts[chartIndex]].grid"
+                                        [plotOptions]="chartAll[showCharts[chartIndex]].plotOptions"
+                                        [fill]="chartAll[showCharts[chartIndex]].fill"
+                                        [legend]="chartAll[showCharts[chartIndex]].legend"
+                                        [series]="chartAll[showCharts[chartIndex]].series"
+                                        [stroke]="chartAll[showCharts[chartIndex]].stroke"
+                                        [tooltip]="chartAll[showCharts[chartIndex]].tooltip"
+                                        [xaxis]="chartAll[showCharts[chartIndex]].xaxis"
+                                        [yaxis]="chartAll[showCharts[chartIndex]].yaxis"></apx-chart>
                                 </div>
                             </div>
                             <!-- line -->
-                            <div *ngIf="allChartData[showCharts[chartIndex+1]].type === 'line'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+                            <div *ngIf="allChartData[showCharts[chartIndex]].type === 'line'" class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex+1]].title }}</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-60">
                                     <apx-chart
                                         class="flex flex-auto items-center justify-center w-full h-full"
-                                        [chart]="chartAll[showCharts[chartIndex+1]].chart"
-                                        [series]="chartAll[showCharts[chartIndex+1]].series"
-                                        [stroke]="chartAll[showCharts[chartIndex+1]].stroke"
-                                        [xaxis]="chartAll[showCharts[chartIndex+1]].xaxis"
-                                        [yaxis]="chartAll[showCharts[chartIndex+1]].yaxis"
-                                        [tooltip]="chartAll[showCharts[chartIndex+1]].tooltip"></apx-chart>
+                                        [chart]="chartAll[showCharts[chartIndex]].chart"
+                                        [series]="chartAll[showCharts[chartIndex]].series"
+                                        [stroke]="chartAll[showCharts[chartIndex]].stroke"
+                                        [xaxis]="chartAll[showCharts[chartIndex]].xaxis"
+                                        [yaxis]="chartAll[showCharts[chartIndex]].yaxis"
+                                        [tooltip]="chartAll[showCharts[chartIndex]].tooltip"></apx-chart>
                                 </div>
                             </div>
                         </ng-container>

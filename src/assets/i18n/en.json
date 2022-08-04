@@ -29,6 +29,8 @@
     "data-current-event-category-heading": "Event Category",
     "data-event-heading": "Events",
     "data-current-event-heading": "Event",
+    "data-preference-heading": "Dashboard Preferences",
+    "data-current-preference-heading": "Dashboard Item",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",

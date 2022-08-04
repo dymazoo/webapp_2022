@@ -96,7 +96,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'data.preferences',
-                title: 'Preferences',
+                title: 'Dashboard Preferences',
                 type : 'basic',
                 disabled : true,
                 icon : 'heroicons_outline:cog',

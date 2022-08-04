@@ -1,0 +1,111 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('data-preference-heading')}}</div>
+        </div>
+
+        <div class="major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <div>
+                            <table mat-table #table matSort
+                                   [dataSource]="paginatedDataSource"
+                                   [@fadeIn]="true">
+                                <ng-container matColumnDef="label">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Dashboard Item</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.label}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="value">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Show</th>
+                                    <td mat-cell *matCellDef="let row; let i=index;">
+                                        <mat-icon [matTooltip]="'Toggle off'" *ngIf="row.value === '1'" (click)="onChangeShow(row, i)">
+                                            toggle_on
+                                        </mat-icon>
+                                        <mat-icon [matTooltip]="'Toggle on'" *ngIf="row.value === '0'" (click)="onChangeShow(row, i)">
+                                            toggle_off
+                                        </mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sequence">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>
+                                    <td mat-cell *matCellDef="let row; let i=index;">
+                                        <mat-icon [matTooltip]="'Move up 10'" (click)="onSequenceUp(row, i, 10)">
+                                            replay_10
+                                        </mat-icon>
+                                        <mat-icon [matTooltip]="'Move up'" (click)="onSequenceUp(row, i, 1)">
+                                            expand_less
+                                        </mat-icon>
+                                        {{row.sequence}}
+                                        <mat-icon [matTooltip]="'Move down'" (click)="onSequenceDown(row, i, 1)">
+                                            expand_more
+                                        </mat-icon>
+                                        <mat-icon [matTooltip]="'Move down 10'" (click)="onSequenceDown(row, i, 10)">
+                                            forward_10
+                                        </mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                                    <td mat-cell *matCellDef="let row; let i=index;">
+                                        <mat-icon [matTooltip]="'Change to bar'" *ngIf="row.type === 'donut'" (click)="onTypeChange(row, i)">
+                                            donut_large
+                                        </mat-icon>
+                                        <mat-icon [matTooltip]="'Change to line'" *ngIf="row.type === 'bar'" (click)="onTypeChange(row, i)">
+                                            bar_chart
+                                        </mat-icon>
+                                        <mat-icon [matTooltip]="'Change to donut'" *ngIf="row.type === 'line'" (click)="onTypeChange(row, i)">
+                                            show_chart
+                                        </mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                    tabindex="999"
+                                    class="cursor-pointer"
+                                    (click)="onSelect(row, i)"
+                                    (keydown.arrowdown)="onArrowDown()"
+                                    (keydown.arrowup)="onArrowUp()"
+                                    [ngClass]="{'bg-primary-200' : row == selectedRow}"
+                                    matRipple [@fadeIn]="true">
+                                    >
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <mat-form-field class="basis-5/12">
+                            <input matInput #filter type="text" (keyup)="filterPreferences($event.target.value)"
+                                   autocomplete="do-not-autofill"
+                                   placeholder="Filter">
+                        </mat-form-field>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-button
+                                type="button" (click)="onBack()">
+                            Back
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>
