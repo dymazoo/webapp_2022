@@ -1,0 +1,160 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">{{t('data-compliance-person-heading')}}</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <div *ngIf="!hasPerson" class="flex flex-col gt-xs:flex-row p-2">
+                    <div>
+                        <table mat-table #table matSort
+                               [dataSource]="paginatedDataSource"
+                               [@fadeIn]="true">
+                            <ng-container matColumnDef="first_name">
+                                <th mat-header-cell style="font-size: 1.5rem;"
+                                    *matHeaderCellDef mat-sort-header>First Name
+                                </th>
+                                <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.first_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="last_name">
+                                <th mat-header-cell style="font-size: 1.5rem;"
+                                    *matHeaderCellDef mat-sort-header>Last Name
+                                </th>
+                                <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.last_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="emails">
+                                <th mat-header-cell style="font-size: 1.5rem;"
+                                    *matHeaderCellDef mat-sort-header>Emails
+                                </th>
+                                <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.emails}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="mobiles">
+                                <th mat-header-cell style="font-size: 1.5rem;"
+                                    *matHeaderCellDef mat-sort-header>Mobiles
+                                </th>
+                                <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.mobiles}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="postcode">
+                                <th mat-header-cell style="font-size: 1.5rem;"
+                                    *matHeaderCellDef mat-sort-header>PostCode / Zip
+                                </th>
+                                <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.postcode}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef></th>
+                                <td mat-cell *matCellDef="let row; let i=index" style="height: 4rem;">
+                                    <button class="fuse-mat-button-large w-30 bg-primary-300"
+                                            mat-flat-button type="button"
+                                            (click)="onGetPersonData(row)">
+                                        View data
+                                    </button>
+                                    <button *ngIf="row.description !== 'File Import'"
+                                            class="fuse-mat-button-large w-30 bg-warn-300"
+                                            mat-flat-button type="button"
+                                            (click)="onRemovePerson(row)">
+                                        Remove person
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                tabindex="999"
+                                matRipple [@fadeIn]="true">
+                                >
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start start">
+                        <mat-form-field style="width: 60%">
+                            <input matInput #filter type="text" (keyup)="filterPersons($event.target.value)"
+                                   placeholder="Filter" autocomplete="do-not-autofill">
+                        </mat-form-field>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+                <div *ngIf="hasPerson" class="scroll-compliance-container">
+                    <div class="scroll-compliance">
+                        <div *ngFor="let className of objectKeys(currentPerson)">
+                            <h4>{{ className }}</h4>
+                            <table>
+                                <ng-container *ngIf="className === 'Person'">
+                                    <tr class="table-as-mat">
+                                        <th *ngFor="let field of objectKeys(currentPerson[className])"
+                                            class="mat-header-cell compliance-th">
+                                            {{ field }}
+                                        </th>
+                                    </tr>
+                                    <tr class="table-as-mat">
+                                        <td *ngFor="let field of objectKeys(currentPerson[className])">
+                                            {{ currentPerson[className][field] }}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="className !== 'Person'">
+                                    <ng-container *ngFor="let subItem of currentPerson[className];  let i=index">
+                                        <tr *ngIf="i==0" class="table-as-mat">
+                                            <th *ngFor="let field of objectKeys(subItem)"
+                                                class="mat-header-cell compliance-th">
+                                                {{ field }}
+                                            </th>
+                                        </tr>
+                                    </ng-container>
+                                    <tr *ngFor="let subItem of currentPerson[className]" class="table-as-mat">
+                                        <td *ngFor="let field of objectKeys(subItem)">
+                                            {{ subItem[field] }}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden">
+                    <div *ngIf="hasPerson" class="flex flex-col gt-xs:flex-row">
+                        <form class="flex gt-xs:flex-row mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                              name="complianceForm" [formGroup]="complianceForm">
+                            <div class="basis-6/12">
+                                <mat-form-field>
+                                    <mat-label>Export password</mat-label>
+                                    <input matInput formControlName="password" required autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(complianceForm.controls.password, 'Password')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="basis-6/12">
+                                <div class="flex items-center justify-end">
+                                    <button class="fuse-mat-button-large w-50 mt-2 bg-primary"
+                                            mat-flat-button
+                                            [disabled]="!complianceForm.valid"
+                                            type="button" (click)="onExportData()">
+                                        Export Data
+                                    </button>
+                                    <button class="fuse-mat-button-large w-20 mt-2"
+                                            mat-stroked-button
+                                            type="button" (click)="onCloseData()">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <div class="flex items-center justify-end">
+                            <div class="flex items-center justify-end">
+                                <button class="fuse-mat-button-large w-20 mt-2"
+                                        mat-button
+                                        type="button" (click)="onCancel()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

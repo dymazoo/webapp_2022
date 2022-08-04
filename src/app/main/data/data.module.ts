@@ -9,6 +9,7 @@ import {SalesCategoriesComponent, SalesCategoryDialogComponent} from './sales-ca
 import {EventCategoriesComponent, EventCategoryDialogComponent} from './event-categories.component';
 import {EventsComponent, EventDialogComponent} from './events.component';
 import {PreferencesComponent, PreferenceDialogComponent} from './preferences.component';
+import {ComplianceComponent,ComplianceDialogComponent} from './compliance.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,8 @@ import {PreferencesComponent, PreferenceDialogComponent} from './preferences.com
         EventDialogComponent,
         PreferencesComponent,
         PreferenceDialogComponent,
+        ComplianceComponent,
+        ComplianceDialogComponent,
     ],
     imports: [
         DataRoutingModule,
@@ -44,6 +47,8 @@ import {PreferencesComponent, PreferenceDialogComponent} from './preferences.com
         EventDialogComponent,
         PreferencesComponent,
         PreferenceDialogComponent,
+        ComplianceComponent,
+        ComplianceDialogComponent,
     ]
 })
 

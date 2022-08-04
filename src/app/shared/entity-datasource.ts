@@ -6,6 +6,7 @@ export class EntityDatasource extends DataSource<any> {
     onItemsChanged: BehaviorSubject<any>;
     onItemSelected: BehaviorSubject<any>;
     items: [];
+    type: string = 'GET';
 
     public errors = [];
     public hasItems = false;
@@ -19,6 +20,10 @@ export class EntityDatasource extends DataSource<any> {
         // Set the defaults
         this.onItemsChanged = new BehaviorSubject({});
         this.onItemSelected = new BehaviorSubject({item: null, index: -1});
+        if (this.itemParams.type) {
+            this.type = this.itemParams.type;
+        }
+
         this.getItems();
     }
 
@@ -35,20 +40,36 @@ export class EntityDatasource extends DataSource<any> {
         return this.items[index];
     }
 
+    public setParams(itemParams): void {
+        this.itemParams = itemParams;
+    }
+
     public refresh(): any {
         this.getItems();
     }
 
     private getItems(): void {
-         this.httpService.getEntity(this.itemEntity, this.itemParams)
-            .subscribe(result => {
-                this.items = result;
-                this.hasItems = true;
-                this.onItemsChanged.next(result);
-                this.onItemSelected.next({item: result[0], index: 0});
-            }, (errors) => {
-                this.errors = errors;
-        });
+        if (this.type === 'GET') {
+            this.httpService.getEntity(this.itemEntity, this.itemParams)
+                .subscribe(result => {
+                    this.items = result;
+                    this.hasItems = true;
+                    this.onItemsChanged.next(result);
+                    this.onItemSelected.next({item: result[0], index: 0});
+                }, (errors) => {
+                    this.errors = errors;
+                });
+        } else {
+            this.httpService.saveEntity(this.itemEntity, this.itemParams)
+                .subscribe(result => {
+                    this.items = result;
+                    this.hasItems = true;
+                    this.onItemsChanged.next(result);
+                    this.onItemSelected.next({item: result[0], index: 0});
+                }, (errors) => {
+                    this.errors = errors;
+                });
+        }
     }
 
 }

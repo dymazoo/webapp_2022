@@ -16,17 +16,17 @@ import { TranslocoService } from '@ngneat/transloco';
 import {fuseAnimations} from '@fuse/animations';
 
 
-import {HttpService} from '../../shared/services/http.service';
-import {AbandonDialogService} from '../../shared/services/abandon-dialog.service';
-import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
-import {EntityDatasource} from '../../shared/entity-datasource';
-import {SelectionCard} from '../../shared/models/selectionCard';
-import {Selection} from '../../shared/models/selection';
+import {HttpService} from 'app/shared/services/http.service';
+import {AbandonDialogService} from 'app/shared/services/abandon-dialog.service';
+import {ConfirmDialogComponent} from 'app/shared/components/confirm-dialog.component';
+import {EntityDatasource} from 'app/shared/entity-datasource';
+import {SelectionCard} from 'app/shared/models/selectionCard';
+import {Selection} from 'app/shared/models/selection';
 import * as _ from 'lodash';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import {SourceSetting} from '../../shared/models/sourceSetting';
+import {SourceSetting} from 'app/shared/models/sourceSetting';
 import {FuseConfigService} from '@fuse/services/config';
 import {FuseMediaWatcherService} from '@fuse/services/media-watcher';
 
@@ -136,11 +136,13 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
         this.selectionForm = this._formBuilder.group({
             'id': [''],
+            'action': ['segment'],
             'name': ['', Validators.required],
             'description': [''],
             'listId': [''],
             'layoutId': [''],
         });
+
         combineLatest([
             this._fuseConfigService.config$,
             this._fuseMediaWatcherService.onMediaQueryChange$(['(prefers-color-scheme: dark)', '(prefers-color-scheme: light)'])
@@ -951,21 +953,8 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         }
     }
 
-    segmentActionChange():void {
-        if (this.finalAction == 'segment') {
-            this.finalAction = 'update';
-        } else {
-            if (this.finalAction == 'update') {
-                this.finalAction = 'create';
-                this.selectionForm.controls['listId'].reset('');
-            } else {
-                if (this.finalAction == 'create') {
-                    this.finalAction = 'export';
-                } else {
-                    this.finalAction = 'segment';
-                }
-            }
-        }
+    segmentActionChange(item): void {
+        this.finalAction = item.value;
     }
 
     removeEntered(event: CdkDragEnter<any>): void {

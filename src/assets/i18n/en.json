@@ -31,6 +31,8 @@
     "data-current-event-heading": "Event",
     "data-preference-heading": "Dashboard Preferences",
     "data-current-preference-heading": "Dashboard Item",
+    "data-compliance-heading": "Compliance",
+    "data-compliance-person-heading": "Compliance Matches",
 
     "integration-eventbrite-customer-heading": "Eventbrite - Events and Customers",
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",

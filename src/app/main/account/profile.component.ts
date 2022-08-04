@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.profileForm = this._formBuilder.group({
             name: ['', [Validators.required]],
             email: [{value: '', disabled: true}, [Validators.required, Validators.email]],
-            telephone: [''],
+            telephone: ['',  [Validators.compose([GlobalValidator.telephoneFormat])]],
         }, {});
     }
 
@@ -141,6 +141,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             returnVal = name + ' is required!';
         }
         if (control.hasError('email')) {
+            returnVal = name + ' is invalid!';
+        }
+        if (control.hasError('incorrectTelephoneFormat')) {
             returnVal = name + ' is invalid!';
         }
         return returnVal;

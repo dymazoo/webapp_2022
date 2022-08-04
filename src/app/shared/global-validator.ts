@@ -37,6 +37,19 @@ export class GlobalValidator {
         };
     }
 
+    static oneHasValue(control1Key: string, control2Key: string, errorKey: string) {
+        return (group: FormGroup): ValidationResult => {
+            let control1 = group.controls[control1Key];
+            let control2 = group.controls[control2Key];
+
+            if (control1.value === '' && control2.value === '') {
+                return {[errorKey]: true};
+            }
+
+            return null;
+        };
+    }
+
 }
 
 interface ValidationResult {

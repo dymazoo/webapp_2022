@@ -11,6 +11,7 @@ import {SalesCategoriesComponent} from './sales-categories.component';
 import {EventCategoriesComponent} from './event-categories.component';
 import {EventsComponent} from './events.component';
 import {PreferencesComponent} from './preferences.component';
+import {ComplianceComponent} from './compliance.component';
 
 const routes: Routes = [
     {
@@ -46,6 +47,12 @@ const routes: Routes = [
     {
         path: 'preferences',
         component: PreferencesComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+    },
+    {
+        path: 'compliance',
+        component: ComplianceComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
     },

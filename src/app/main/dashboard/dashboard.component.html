@@ -9,6 +9,11 @@
             <div id="forms" class="simple fullwidth">
 
                 <div class="content p-3">
+                    <div *ngIf="!emptyDashboard && !dataReady" class="flex gt-xs:flex-row">
+                        <div class='div-block-centre'>
+                            <mat-spinner style="top: 50%; left: 50%; margin-left: -50px;"></mat-spinner>
+                        </div>
+                    </div>
 
                     <div class="" *ngIf="emptyDashboard">
                         <p class="label-bold">Your dashboard doesn't have any data yet!</p>
@@ -23,13 +28,13 @@
 
 
                 <!-- Summary Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-8">
+                <div *ngIf="dataReady" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-8">
                     <!-- People -->
                     <div class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
                             <div class="text-lg font-medium tracking-tight leading-6 truncate">People</div>
                         </div>
-                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div class="text-7xl font-bold tracking-tighter leading-tight">{{peopleData.amount | number:'1.0-0'}}</div>
                             <div class="flex lg:flex-col lg:ml-3">
                                 <mat-icon *ngIf="peopleData.trend < 0"
@@ -44,7 +49,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col flex-auto h-30">
-                            <apx-chart *ngIf="dataReady"
+                            <apx-chart
                                 class="flex-auto w-full h-full"
                                 [chart]="chartPeople.chart"
                                 [colors]="chartPeople.colors"
@@ -61,7 +66,7 @@
                         <div class="flex items-start justify-between m-6 mb-0">
                             <div class="text-lg font-medium tracking-tight leading-6 truncate">Actions</div>
                         </div>
-                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div class="text-7xl font-bold tracking-tighter leading-tight">{{actionsData.amount | number:'1.0-0'}}</div>
                             <div class="flex lg:flex-col lg:ml-3">
                                 <mat-icon *ngIf="actionsData.trend < 0"
@@ -76,7 +81,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col flex-auto h-30">
-                            <apx-chart *ngIf="dataReady"
+                            <apx-chart
                                        class="flex-auto w-full h-full"
                                        [chart]="chartActions.chart"
                                        [colors]="chartActions.colors"
@@ -93,7 +98,7 @@
                         <div class="flex items-start justify-between m-6 mb-0">
                             <div class="text-lg font-medium tracking-tight leading-6 truncate">Sales</div>
                         </div>
-                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div class="text-7xl font-bold tracking-tighter leading-tight">{{salesData.amount | number:'1.0-0'}}</div>
                             <div class="flex lg:flex-col lg:ml-3">
                                 <mat-icon *ngIf="salesData.trend < 0"
@@ -108,7 +113,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col flex-auto h-30">
-                            <apx-chart *ngIf="dataReady"
+                            <apx-chart
                                        class="flex-auto w-full h-full"
                                        [chart]="chartSales.chart"
                                        [colors]="chartSales.colors"
@@ -125,7 +130,7 @@
                         <div class="flex items-start justify-between m-6 mb-0">
                             <div class="text-lg font-medium tracking-tight leading-6 truncate">Events</div>
                         </div>
-                        <div *ngIf="dataReady" class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div class="text-7xl font-bold tracking-tighter leading-tight">{{eventsData.amount | number:'1.0-0'}}</div>
                             <div class="flex lg:flex-col lg:ml-3">
                                 <mat-icon *ngIf="eventsData.trend < 0"
@@ -140,7 +145,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col flex-auto h-30">
-                            <apx-chart *ngIf="dataReady"
+                            <apx-chart
                                        class="flex-auto w-full h-full"
                                        [chart]="chartEvents.chart"
                                        [colors]="chartEvents.colors"
@@ -154,8 +159,8 @@
                 </div>
 
                 <div class="flex flex-col gt-xs:flex-row">
-                    <mat-form-field *ngIf="dateItem" class="fuse-mat-dense fuse-mat-no-subscript w-60">
-                        <mat-label>Results Date</mat-label>
+                    <mat-form-field *ngIf="dateItem && !emptyDashboard && dataReady" class="fuse-mat-dense fuse-mat-no-subscript w-60">
+                        <mat-label>Dashboard as at</mat-label>
                         <mat-select [(ngModel)]="dateItem.value" (selectionChange)="onDateSelect($event)">
                             <mat-option *ngFor="let dashboardDate of dashboardDates"
                                         [value]="dashboardDate.value">

@@ -103,14 +103,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/preferences'
             },
             {
-                id   : 'data.download',
-                title: 'Download',
-                type : 'basic',
-                disabled : true,
-                icon : 'heroicons_outline:cloud-download',
-                link : '/data/download'
-            },
-            {
                 id   : 'data.compliance',
                 title: 'Compliance',
                 type : 'basic',

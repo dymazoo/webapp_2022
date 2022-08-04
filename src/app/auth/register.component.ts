@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
-import {HttpService} from '../shared/services/http.service';
-import {GlobalValidator} from '../shared/global-validator';
-import {CrossFieldErrorMatcher} from '../shared/cross-field-errormatcher';
-import {User} from '../shared/models/user';
-import {Client} from '../shared/models/client';
+import {HttpService} from 'app/shared/services/http.service';
+import {GlobalValidator} from 'app/shared/global-validator';
+import {CrossFieldErrorMatcher} from 'app/shared/cross-field-errormatcher';
+import {User} from 'app/shared/models/user';
+import {Client} from 'app/shared/models/client';
 //import {StripeService, StripeCardComponent } from 'ngx-stripe';
 //import {StripeCardElementOptions, StripeElementsOptions} from '@stripe/stripe-js';
 import { TranslocoService } from '@ngneat/transloco';

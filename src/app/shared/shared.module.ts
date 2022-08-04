@@ -22,6 +22,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { FuseScrollbarModule } from '@fuse/directives/scrollbar';
 import {TranslocoModule} from '@ngneat/transloco';
@@ -65,6 +66,7 @@ import {LoginComponent} from 'app/auth/login.component';
         MatRadioModule,
         MatDatepickerModule,
         MatMomentDateModule,
+        MatProgressSpinnerModule,
 
         FuseScrollbarModule,
         FuseCardModule,
@@ -98,6 +100,7 @@ import {LoginComponent} from 'app/auth/login.component';
         MatRadioModule,
         MatDatepickerModule,
         MatMomentDateModule,
+        MatProgressSpinnerModule,
 
         FuseScrollbarModule,
         FuseCardModule,

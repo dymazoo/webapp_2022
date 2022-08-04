@@ -333,6 +333,15 @@ ul {
     vertical-align: top;
 }
 
+.div-block-centre {
+    display: block !important;
+    min-width: 100%;
+    min-height: 20rem;
+    max-height: 40rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
 .div-inline {
     display: inline-block !important;
 }
@@ -772,11 +781,15 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .scroll-compliance {
-    position: absolute;
     height: 19rem;
-    width: 98%;
+    width: 99%;
     overflow-y: auto;
     overflow-x: auto;
+}
+
+.compliance-th {
+    min-width: 10rem;
+    max-width: 40rem;
 }
 
 .div-field-header {
