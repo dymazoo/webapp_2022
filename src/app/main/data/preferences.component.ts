@@ -141,7 +141,7 @@ export class PreferencesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedPreference = new Preference(row);
         this.selectedPreference.sequence += jump;
         if (this.selectedPreference.sequence > 99) {
-            this.selectedPreference.sequence = 99
+            this.selectedPreference.sequence = 99;
         }
         this.updatePreference(this.selectedPreference);
     }

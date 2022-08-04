@@ -35,18 +35,17 @@
                                 <ng-container matColumnDef="sequence">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>
                                     <td mat-cell *matCellDef="let row; let i=index;">
-                                        <mat-icon [matTooltip]="'Move up 10'" (click)="onSequenceUp(row, i, 10)">
-                                            replay_10
+                                        <mat-icon [matTooltip]="'Move up 5'" (click)="onSequenceUp(row, i, 11)">
+                                            replay_5
                                         </mat-icon>
-                                        <mat-icon [matTooltip]="'Move up'" (click)="onSequenceUp(row, i, 1)">
+                                        <mat-icon [matTooltip]="'Move up'" (click)="onSequenceUp(row, i, 3)">
                                             expand_less
                                         </mat-icon>
-                                        {{row.sequence}}
-                                        <mat-icon [matTooltip]="'Move down'" (click)="onSequenceDown(row, i, 1)">
+                                        <mat-icon [matTooltip]="'Move down'" (click)="onSequenceDown(row, i, 3)">
                                             expand_more
                                         </mat-icon>
-                                        <mat-icon [matTooltip]="'Move down 10'" (click)="onSequenceDown(row, i, 10)">
-                                            forward_10
+                                        <mat-icon [matTooltip]="'Move down 5'" (click)="onSequenceDown(row, i, 11)">
+                                            forward_5
                                         </mat-icon>
                                     </td>
                                 </ng-container>
