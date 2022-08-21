@@ -10,6 +10,7 @@ import {ForgotComponent} from './forgot.component';
 import {RequestedComponent} from './requested.component';
 import {ResetComponent} from './reset.component';
 import {ConfirmResetComponent} from './confirm-reset.component';
+import {OauthComponent} from './oauth.component';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import {ConfirmResetComponent} from './confirm-reset.component';
         RequestedComponent,
         ResetComponent,
         ConfirmResetComponent,
+        OauthComponent,
     ],
     providers: []
 })

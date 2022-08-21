@@ -17,6 +17,7 @@
     "auth-requested": "Password Reset Requested",
     "auth-reset": "Reset Password",
     "auth-confirm-reset": "Password Reset Confirmed",
+    "auth-oauth": "Dymazoo Api Authorisation",
 
     "data-import-heading": "File import",
     "data-confirm-import": "Confirm Import",
@@ -38,7 +39,9 @@
     "integration-mailchimp-campaign-heading": "Mailchimp Campaigns",
     "integration-mailchimp-list-heading": "Mailchimp Lists",
     "integration-shopify-customer-heading": "Shopify  - Sales and Customers",
+    "integration-zapier-heading": "Zapier",
     "integration-sourcesetting-heading": "Current Integrations",
+    "integration-dymazoo-api-heading": "Dymazoo Api",
 
     "source-settings-heading": "Integrations",
 

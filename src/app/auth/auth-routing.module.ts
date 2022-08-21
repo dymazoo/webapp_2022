@@ -5,6 +5,8 @@ import {ForgotComponent} from './forgot.component';
 import {RequestedComponent} from './requested.component';
 import {ResetComponent} from './reset.component';
 import {ConfirmResetComponent} from './confirm-reset.component';
+import {OauthComponent} from './oauth.component';
+import {AuthGuard} from '../_guards';
 
 const routes: Routes = [
     {
@@ -26,6 +28,10 @@ const routes: Routes = [
     {
         path: 'confirm-reset',
         component: ConfirmResetComponent,
+    },
+    {
+        path: 'oauth',
+        component: OauthComponent,
     }
 ];
 

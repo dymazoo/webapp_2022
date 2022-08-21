@@ -13,19 +13,13 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [AuthGuard],
-        data: {
-            title: 'Profile'
-        }
+        canDeactivate: [AuthGuard]
     },
     {
         path: 'user-management',
         component: UserManagementComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [AuthGuard],
-        data: {
-            title: 'User Management'
-        }
+        canDeactivate: [AuthGuard]
     }
 
 ];

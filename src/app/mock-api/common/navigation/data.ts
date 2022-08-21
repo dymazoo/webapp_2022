@@ -15,14 +15,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title   : 'Marketing',
         subtitle: 'Segmentation and marketing tasks',
         type    : 'group',
-        icon    : 'heroicons_outline:lightning-bolt',
+        icon    : 'heroicons_outline:globe-alt',
         children: [
             {
                 id   : 'marketing.segmentation',
                 title: 'Segmentation',
                 type : 'basic',
                 disabled : true,
-                icon : 'heroicons_outline:search',
+                icon : 'heroicons_outline:chart-pie',
                 link : '/marketing/segmentation'
             }
 //            {
@@ -136,7 +136,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         title   : 'Marketing',
         tooltip : 'Segmentation and marketing tasks',
         type    : 'aside',
-        icon    : 'heroicons_outline:lightning-bolt',
+        icon    : 'heroicons_outline:globe-alt',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
     {
@@ -194,7 +194,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         id      : 'marketing',
         title   : 'Marketing',
         type    : 'group',
-        icon    : 'heroicons_outline:lightning-bolt',
+        icon    : 'heroicons_outline:globe-alt',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
     {

@@ -1,0 +1,48 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('auth-oauth')}}</div>
+        </div>
+
+        <div class="major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <span *ngIf="!hasCode && !hasToken"><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code">Authorize API access</a></span>
+
+                    <span *ngIf="!hasCode && !hasToken"><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code">Authorize API access</a></span>
+
+
+                    <div *ngIf="hasToken">
+                        <div class="pl-48 pr-48">
+                            <div class="h3 text-white bg-primary">You have successfully Authorised your use of the Dymazoo Api</div>
+                        </div>
+                        <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Please copy the token data below. It will not be displayed again</div>
+                        <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Token type</div>
+                        <p>{{tokenType}}</p>
+                        <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Access Token</div>
+                        <p style="overflow-wrap: break-word;">{{token}}</p>
+                        <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Refresh Token</div>
+                        <p style="overflow-wrap: break-word;">{{refreshToken}}</p>
+                        <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">We suggest that you configure your API access to automatically refresh the token, on expiry</div>
+                    </div>
+
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>

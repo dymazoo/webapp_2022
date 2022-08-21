@@ -493,6 +493,29 @@ export class HttpService {
     }
 
     /*
+     * Get OAuthToken
+     */
+    public getOAuthToken(tokenData: any): any {
+        const headers = this.getJsonHeader();
+        const baseUrl = this.apiUrl.substring(0, this.apiUrl.length -4);
+        const result = this.http.post(baseUrl + 'oauth/token', tokenData, {
+            headers: headers
+        }).pipe(
+            timeout(this.timeout),
+            map(pipeResult => {
+                return pipeResult;
+            }),
+            catchError((error: any) => {
+                if (error.name === 'TimeoutError') {
+                    return observableThrowError(['Server timeout']);
+                }
+                return observableThrowError(['Unknown error - please contact support']);
+            }),);
+        return result;
+    }
+
+
+    /*
      * Leave impersonation
     */
     public leaveImpersonate(): any {

@@ -3,13 +3,15 @@ import {Source} from './source';
 import {Mailchimp} from './mailchimp';
 import {Emailoctopus} from './emailoctopus';
 import {Shopify} from './shopify';
+import {Woocommerce} from './woocommerce';
+import {Eventbrite} from './eventbrite';
+import {Zapier} from './zapier';
+import {Dymazooapi} from './dymazooapi';
 import {SourceSetting} from '../sourceSetting';
 import {HttpService} from '../../services/http.service';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {SourceSettingValue} from '../sourceSettingValue';
-import {Woocommerce} from './woocommerce';
-import {Eventbrite} from './eventbrite';
 import {FuseNavigationItem} from '@fuse/components/navigation/navigation.types';
 import {FuseConfigService} from '@fuse/services/config';
 
@@ -40,6 +42,8 @@ export class DataSources {
         this.sources.push(new Shopify());
         this.sources.push(new Woocommerce());
         this.sources.push(new Eventbrite());
+        this.sources.push(new Zapier());
+        this.sources.push(new Dymazooapi());
 
         if (this.isLoggedIn) {
             this.getCurrentDescriptions();
@@ -281,6 +285,23 @@ export class DataSources {
                 link: '/integrations/eventbrite'
             } as FuseNavigationItem);
 
+            const zapierItem = ({
+                id: 'integrations.zapier',
+                title: 'Zapier',
+                type: 'basic',
+                disabled: !this.canClientAdmin,
+                icon: 'heroicons_outline:lightning-bolt',
+                link: '/integrations/zapier'
+            } as FuseNavigationItem);
+            const dymazooapiItem = ({
+                id: 'integrations.dymazooapi',
+                title: 'Dymazoo Api',
+                type: 'basic',
+                disabled: !this.canClientAdmin,
+                icon: 'heroicons_outline:link',
+                link: '/integrations/dymazoo-api'
+            } as FuseNavigationItem);
+
             this.activeDescriptions.forEach(activeDescription => {
                 if (activeDescription.name === 'mailchimp') {
                     this.addIntegrationChild(integrationsItem, mailchimpItem);
@@ -296,6 +317,12 @@ export class DataSources {
                 }
                 if (activeDescription.name === 'eventbrite') {
                     this.addIntegrationChild(integrationsItem, eventbriteItem);
+                }
+                if (activeDescription.name === 'zapier') {
+                    this.addIntegrationChild(integrationsItem, zapierItem);
+                }
+                if (activeDescription.name === 'dymazooapi') {
+                    this.addIntegrationChild(integrationsItem, dymazooapiItem);
                 }
             });
         }

@@ -1,0 +1,26 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary">{{t('integration-dymazoo-api-heading')}}</div>
+        </div>
+
+        <div class="major-item" fuseScrollbar>
+
+            <div id="forms" class="simple fullwidth">
+
+                <div class="content p-3">
+
+                    <span><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code" target="_blank">Authorize API access</a></span>
+
+                </div>
+                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+</div>
