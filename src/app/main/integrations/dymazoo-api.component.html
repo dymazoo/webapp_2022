@@ -9,9 +9,64 @@
             <div id="forms" class="simple fullwidth">
 
                 <div class="content p-3">
+                    <div class="flex items-center justify-end">
+                        <button *ngIf="!doRefresh" class="fuse-mat-button-large w-50 mt-2 bg-accent-300"
+                                mat-flat-button type="button"
+                                (click)="startRefresh()">
+                            Refresh OAuth Token
+                        </button>
+                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                                mat-flat-button type="button">
+                            <a style="text-decoration: none;"
+                               href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code"
+                               target="_blank">Authorize API access</a>
+                        </button>
+                    </div>
 
-                    <span><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code" target="_blank">Authorize API access</a></span>
+                    <form  *ngIf="doRefresh"  class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+                          name="refreshForm" [formGroup]="refreshForm" (ngSubmit)="onRefresh()">
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-label>Refresh Token</mat-label>
+                                <input matInput #getRefreshToken formControlName="getRefreshToken" autocomplete="do-not-autofill" required>
+                                <mat-error>{{ getErrorMessage(refreshForm.controls.getRefreshToken, 'Refresh Token')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex items-center justify-end">
+                            <button
+                                type="submit"
+                                [disabled]="!refreshForm.valid"
+                                class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                mat-flat-button>
+                                Get New Token
+                            </button>
+                        </div>
 
+                    </form>
+                    <div *ngIf="hasToken" class="flex flex-col gt-xs:flex-row p-2">
+                        <div>
+                            <div class="pl-48 pr-48">
+                                <div class="h3 text-white bg-primary">You have successfully Authorised your use of the Dymazoo Api</div>
+                            </div>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Please copy the token data below. It will not be displayed again</div>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Token type</div>
+                            <p>{{tokenType}}</p>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Expires In</div>
+                            <p>{{expiresIn}}</p>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Access Token</div>
+                            <p style="overflow-wrap: break-word;">{{token}}</p>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Refresh Token</div>
+                            <p style="overflow-wrap: break-word;">{{refreshToken}}</p>
+                            <p>&nbsp;</p>
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">To get a new token on expiry, go to  <a routerLink="/integrations/dymazoo-api" routerLinkActive="active">Integrations / Dymazoo Api</a></div>
+                        </div>
+
+                    </div>
                 </div>
                 <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
                     <ul>

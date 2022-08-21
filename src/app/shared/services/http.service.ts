@@ -509,7 +509,7 @@ export class HttpService {
                 if (error.name === 'TimeoutError') {
                     return observableThrowError(['Server timeout']);
                 }
-                return observableThrowError(['Unknown error - please contact support']);
+                return observableThrowError(['Unable to process Authorisation code']);
             }),);
         return result;
     }

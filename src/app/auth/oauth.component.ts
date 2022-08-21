@@ -13,7 +13,8 @@ export class OauthComponent implements OnInit, OnDestroy {
     public code: string;
     public secret: string;
     public token: string;
-    public tokenType:string;
+    public tokenType: string;
+    public expiresIn: string;
     public refreshToken: string;
     public hasCode: boolean = false;
     public hasToken: boolean = false;
@@ -53,6 +54,7 @@ export class OauthComponent implements OnInit, OnDestroy {
                         .subscribe(data => {
                             this.hasToken = true;
                             this.tokenType = data.token_type;
+                            this.expiresIn = data.expires_in;
                             this.token = data.access_token;
                             this.refreshToken = data.refresh_token;
                         }, (errors) => {

@@ -36,6 +36,7 @@
                             </button>
                             <button
                                 type="submit"
+                                [disabled]="!loginForm.valid"
                                 class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
                                 mat-flat-button>
                                 Login

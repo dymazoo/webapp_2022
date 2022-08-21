@@ -34,6 +34,7 @@
                             <div class="flex items-center justify-end">
                                 <button
                                     type="submit"
+                                    [disabled]="!forgotForm.valid"
                                     class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
                                     mat-flat-button>
                                     Reset Password

@@ -45,6 +45,16 @@ export class DymazooApiComponent implements OnInit, OnDestroy {
     public paginatedAuditsDataSource;
     public selectedAuditsRow: {};
     public selectedAuditsIndex: number = -1;
+    public doRefresh: boolean = false;
+    public getRefreshToken: string;
+    public secret: string;
+    public token: string;
+    public tokenType: string;
+    public expiresIn: string;
+    public refreshToken: string;
+    public hasToken: boolean = false;
+
+    public refreshForm: FormGroup;
 
     public audits: any[];
     canClientAdmin = false;
@@ -55,6 +65,7 @@ export class DymazooApiComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
     private touchStart = 0;
 
+    @ViewChild('getRefreshToken') getRefreshElement: ElementRef;
 
     constructor(
         private _formBuilder: FormBuilder,
@@ -70,6 +81,11 @@ export class DymazooApiComponent implements OnInit, OnDestroy {
 
         // Check permissions
         this.canClientAdmin = this.httpService.hasPermission('client_admin');
+
+        this.refreshForm = this._formBuilder.group({
+            getRefreshToken: [this.getRefreshToken, Validators.required]
+        });
+
     }
 
     ngOnInit(): void {
@@ -105,6 +121,43 @@ export class DymazooApiComponent implements OnInit, OnDestroy {
 
     onBack(): void {
         this.location.back();
+    }
+
+    startRefresh(): void {
+        this.doRefresh = true;
+        setTimeout(() => {
+            this.getRefreshElement.nativeElement.focus();
+        }, 100);
+    }
+
+    onRefresh(): void {
+        this.doRefresh = false;
+        this.getRefreshToken = this.refreshForm.controls['getRefreshToken'].value;
+        this.httpService.saveEntity('dymazoo-oauth-secret', {})
+            .subscribe(data => {
+                this.secret = data.secret;
+                const tokenData = {
+                    'refresh_token': this.getRefreshToken,
+                    'client_id': 1,
+                    'client_secret': this.secret,
+                    'grant_type': 'refresh_token'
+                };
+                this.httpService.getOAuthToken(tokenData)
+                    .subscribe(data => {
+                        this.hasToken = true;
+                        this.tokenType = data.token_type;
+                        this.token = data.access_token;
+                        this.expiresIn = data.expires_in;
+                        this.refreshToken = data.refresh_token;
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+
+
+            }, (errors) => {
+                this.errors = errors;
+            });
+
     }
 
     auditsFilterPredicate(data: Audit, filter: string): boolean {
@@ -159,6 +212,14 @@ export class DymazooApiComponent implements OnInit, OnDestroy {
     public filterAudits = (value: string) => {
         this.paginatedAuditsDataSource.filter = value.trim().toLocaleLowerCase();
     };
+
+    getErrorMessage(control, name): string {
+        let returnVal = '';
+        if (control.hasError('required')) {
+            returnVal = name + ' is required!';
+        }
+        return returnVal;
+    }
 
 }
 

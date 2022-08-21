@@ -10,10 +10,7 @@
 
                 <div class="content p-3">
 
-                    <span *ngIf="!hasCode && !hasToken"><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code">Authorize API access</a></span>
-
-                    <span *ngIf="!hasCode && !hasToken"><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code">Authorize API access</a></span>
-
+                    <span *ngIf="!hasCode && !hasToken"><a href="https://api.dymazoo.com/oauth/authorize?client_id=1&redirect_uri=https://app.dymazoo.com/auth/oauth/&response_type=code" target="_blank">Authorize API access</a></span>
 
                     <div *ngIf="hasToken">
                         <div class="pl-48 pr-48">
@@ -25,13 +22,16 @@
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">Token type</div>
                         <p>{{tokenType}}</p>
                         <p>&nbsp;</p>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Expires In</div>
+                        <p>{{expiresIn}}</p>
+                        <p>&nbsp;</p>
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">Access Token</div>
                         <p style="overflow-wrap: break-word;">{{token}}</p>
                         <p>&nbsp;</p>
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">Refresh Token</div>
                         <p style="overflow-wrap: break-word;">{{refreshToken}}</p>
                         <p>&nbsp;</p>
-                        <div class="text-lg font-medium tracking-tight leading-6 truncate">We suggest that you configure your API access to automatically refresh the token, on expiry</div>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate">To get a new token on expiry, go to  <a routerLink="/integrations/dymazoo-api" routerLinkActive="active">Integrations / Dymazoo Api</a></div>
                     </div>
 
                 </div>
