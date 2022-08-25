@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Source} from './source';
 import {Mailchimp} from './mailchimp';
-import {Emailoctopus} from './emailoctopus';
+import {Sendinblue} from './sendinblue';
 import {Shopify} from './shopify';
 import {Woocommerce} from './woocommerce';
 import {Eventbrite} from './eventbrite';
@@ -38,7 +38,7 @@ export class DataSources {
         private _fuseConfigService: FuseConfigService
     ) {
         this.sources.push(new Mailchimp());
-        this.sources.push(new Emailoctopus());
+        this.sources.push(new Sendinblue());
         this.sources.push(new Shopify());
         this.sources.push(new Woocommerce());
         this.sources.push(new Eventbrite());
@@ -249,13 +249,13 @@ export class DataSources {
                 link: '/integrations/mailchimp'
             } as FuseNavigationItem);
 
-            const emailoctopusItem = ({
-                id: 'integrations.emailoctopus',
-                title: 'EmailOctopus',
+            const sendinblueItem = ({
+                id: 'integrations.sendinblue',
+                title: 'Sendinblue',
                 type: 'basic',
                 disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:mail',
-                link: '/integrations/emailoctopus'
+                link: '/integrations/sendinblue'
             } as FuseNavigationItem);
 
             const shopifyItem = ({
@@ -293,6 +293,7 @@ export class DataSources {
                 icon: 'heroicons_outline:lightning-bolt',
                 link: '/integrations/zapier'
             } as FuseNavigationItem);
+
             const dymazooapiItem = ({
                 id: 'integrations.dymazooapi',
                 title: 'Dymazoo Api',
@@ -306,8 +307,8 @@ export class DataSources {
                 if (activeDescription.name === 'mailchimp') {
                     this.addIntegrationChild(integrationsItem, mailchimpItem);
                 }
-                if (activeDescription.name === 'emailoctopus') {
-                    this.addIntegrationChild(integrationsItem, emailoctopusItem);
+                if (activeDescription.name === 'sendinblue') {
+                    this.addIntegrationChild(integrationsItem, sendinblueItem);
                 }
                 if (activeDescription.name === 'shopify') {
                     this.addIntegrationChild(integrationsItem, shopifyItem);
