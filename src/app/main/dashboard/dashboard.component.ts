@@ -70,8 +70,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    public onDateSelect(item): void {
-        this.refreshDashboard(item);
+    public onDateSelect(value): void {
+        this.refreshDashboard(value);
     }
 
     protected processDashboardData(): void {
@@ -84,15 +84,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.eventsData = storedDashboard.eventsData;
             this.actionsData = storedDashboard.actionsData;
             this.allChartData = storedDashboard.allChartData;
-            this.chartPeople = storedDashboard.chartPeople;
-            this.chartSales = storedDashboard.chartSales;
-            this.chartEvents = storedDashboard.chartEvents;
-            this.chartActions = storedDashboard.chartActions;
-            this.chartAll = storedDashboard.chartAll;
             this.showCharts = storedDashboard.showCharts;
             this.dashboardDates = storedDashboard.dashboardDates;
             this.dateItem = storedDashboard.dateItem;
-            this.dataReady = true;
+            this.settingList = storedDashboard.settingList;
+            this.refreshDashboard(this.dateItem.value);
         } else {
             if (!this.dashboardData.hasData) {
                 this.emptyDashboard = true;
@@ -203,7 +199,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             }
                         });
 
-                        this.refreshDashboard(this.dateItem);
+                        this.refreshDashboard(this.dateItem.value);
                     }, (errors) => {
 
                     });
@@ -421,7 +417,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         });
                     }
                     if (chartType === 'donut' || chartType === 'bar') {
-                        if (dateItem.date === dashboardDate.value) {
+                        if (dateItem.date === dashboardDate) {
                             totalDateCount = 0;
                             dateItem.data.forEach((dataElement) => {
                                 totalDateCount = totalDateCount + dataElement.value;
@@ -628,10 +624,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         const storedDashboard = {
             'peopleData': this.peopleData, 'salesData': this.salesData, 'eventsData': this.eventsData,
-            'actionsData': this.actionsData, 'allChartData': this.allChartData, 'chartPeople': this.chartPeople,
-            'chartSales': this.chartSales, 'chartEvents': this.chartEvents, 'chartActions': this.chartActions,
-            'chartAll': this.chartAll, 'showCharts': this.showCharts, 'dateItem': dashboardDate, 'hasData': true,
-            'dashboardDates': this.dashboardDates
+            'actionsData': this.actionsData, 'allChartData': this.allChartData, 'showCharts': this.showCharts,
+            'dateItem': this.dateItem, 'hasData': true, 'dashboardDates': this.dashboardDates,
+            'settingList': this.settingList
         };
         this.httpService.storeDashboard(storedDashboard);
         this.dataReady = true;

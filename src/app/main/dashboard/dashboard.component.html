@@ -161,7 +161,7 @@
                 <div class="flex flex-col gt-xs:flex-row">
                     <mat-form-field *ngIf="dateItem && !emptyDashboard && dataReady" class="fuse-mat-dense fuse-mat-no-subscript w-60">
                         <mat-label>Dashboard as at</mat-label>
-                        <mat-select [(ngModel)]="dateItem.value" (selectionChange)="onDateSelect($event)">
+                        <mat-select [(ngModel)]="dateItem.value" (selectionChange)="onDateSelect($event.value)">
                             <mat-option *ngFor="let dashboardDate of dashboardDates"
                                         [value]="dashboardDate.value">
                                 {{ dashboardDate.label }}
