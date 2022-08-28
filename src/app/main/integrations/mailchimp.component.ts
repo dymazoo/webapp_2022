@@ -239,7 +239,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
 
     syncLists(): void {
         this.syncListsTitle = 'Syncing ...';
-        this.httpService.getEntity('sync-lists', '')
+        this.httpService.getEntity('sync-lists', 'mailchimp')
             .subscribe(result => {
                 this.listsDataSource.refresh();
                 this.syncListsTitle = 'Sync Lists';
@@ -249,7 +249,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
     }
 
     syncMembers(): void {
-        this.httpService.getEntity('sync-list-members', '')
+        this.httpService.getEntity('sync-list-members', 'mailchimp')
             .subscribe(result => {
                 this._snackBar.open('Member Synchronisation Scheduled', 'Dismiss', {
                     duration: 5000,
@@ -265,7 +265,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
 
     syncCampaigns(): void {
         this.syncCampaignsTitle = 'Syncing ...';
-        this.httpService.getEntity('sync-campaigns', '')
+        this.httpService.getEntity('sync-campaigns', 'mailchimp')
             .subscribe(result => {
                 this.campaignDataSource.refresh();
                 this.syncCampaignsTitle = 'Sync Campaigns';
@@ -275,7 +275,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
     }
 
     syncActivity(): void {
-        this.httpService.getEntity('sync-activity', '')
+        this.httpService.getEntity('sync-activity', 'mailchimp')
             .subscribe(result => {
                 this._snackBar.open('Activity Synchronisation Scheduled', 'Dismiss', {
                     duration: 5000,

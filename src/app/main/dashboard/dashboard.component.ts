@@ -1,17 +1,20 @@
-import {Component, OnInit, LOCALE_ID, Inject} from '@angular/core';
+import {Component, OnInit, LOCALE_ID, Inject, OnDestroy} from '@angular/core';
 import {FuseConfigService} from '@fuse/services/config';
 import {HttpService} from 'app/shared/services/http.service';
 import {TranslocoService} from '@ngneat/transloco';
 import {formatDate} from '@angular/common';
 import { ApexOptions } from 'ng-apexcharts';
+import {Subject, Subscription} from 'rxjs';
 
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
     public dashboardData;
+    public dashboardSubscription: Subscription;
+
     public settings;
     public dashboardDates: string[] = [];
     public currentDate: string;
@@ -38,6 +41,8 @@ export class DashboardComponent implements OnInit {
 
     config: any;
 
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _fuseConfigService: FuseConfigService,
         private httpService: HttpService,
@@ -47,129 +52,140 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.dashboardData = this.httpService.fetchDashboardData();
+        if (this.dashboardData !== undefined) {
+            this.processDashboardData();
+        }
 
-        this.httpService.getEntity('dashboard', '')
-            .subscribe(result => {
-                this.dashboardData = result;
+        this.dashboardSubscription = this.httpService.getDashboardData().subscribe(dashboardData => {
+            this.dashboardData = dashboardData;
+            this.processDashboardData();
+        });
+    }
 
-
-                if (!this.dashboardData.hasData) {
-                    this.emptyDashboard = true;
-                }
-
-                if (this.dashboardData.Summary) {
-                    this.dateLabels.length = 0;
-
-                    let summaryData = this.dashboardData.Summary;
-                    let summaryDates = [];
-                    let salesData = [];
-                    let eventsData = [];
-                    let actionsData = [];
-                    summaryData.dates.forEach((dateItem) => {
-                        summaryDates.push({value: dateItem.date, label: formatDate(dateItem.date, 'longDate', this.locale)});
-                        this.dateLabels.unshift(formatDate(dateItem.date, 'longDate', this.locale));
-                        dateItem.data.forEach((dataItem) => {
-                            if (dataItem.label === 'people') {
-                                if (this.peopleData.amount === -1) {
-                                    this.peopleData.amount = dataItem.value;
-                                } else {
-                                    if (this.peopleData.trend === -1) {
-                                        this.peopleData.trend = this.peopleData.amount - dataItem.value;
-                                    }
-                                }
-                                this.peopleData.labels.unshift(dateItem.date);
-                                this.peopleData.series[0].data.unshift(dataItem.value);
-                            }
-                            if (dataItem.label === 'sales') {
-                                if (this.salesData.amount === -1) {
-                                    this.salesData.amount = dataItem.value;
-                                } else {
-                                    if (this.salesData.trend === -1) {
-                                        this.salesData.trend = this.salesData.amount - dataItem.value;
-                                    }
-                                }
-                                this.salesData.labels.unshift(dateItem.date);
-                                this.salesData.series[0].data.unshift(dataItem.value);
-                            }
-                            if (dataItem.label === 'events') {
-                                if (this.eventsData.amount === -1) {
-                                    this.eventsData.amount = dataItem.value;
-                                } else {
-                                    if (this.eventsData.trend === -1) {
-                                        this.eventsData.trend = this.eventsData.amount - dataItem.value;
-                                    }
-                                }
-                                this.eventsData.labels.unshift(dateItem.date);
-                                this.eventsData.series[0].data.unshift(dataItem.value);
-                            }
-                            if (dataItem.label === 'actions') {
-                                if (this.actionsData.amount === -1) {
-                                    this.actionsData.amount = dataItem.value;
-                                } else {
-                                    if (this.actionsData.trend === -1) {
-                                        this.actionsData.trend = this.actionsData.amount - dataItem.value;
-                                    }
-                                }
-                                this.actionsData.labels.unshift(dateItem.date);
-                                this.actionsData.series[0].data.unshift(dataItem.value);
-                            }
-                        });
-                    });
-                    this.dashboardDates = summaryDates;
-                    if (this.peopleData.amount === -1) {
-                        this.peopleData.amount = 0;
-                    }
-                    if (this.peopleData.trend === -1) {
-                        this.peopleData.trend = 0;
-                    }
-                    if (this.salesData.amount === -1) {
-                        this.salesData.amount = 0;
-                    }
-                    if (this.salesData.trend === -1) {
-                        this.salesData.trend = 0;
-                    }
-                    if (this.eventsData.amount === -1) {
-                        this.eventsData.amount = 0;
-                    }
-                    if (this.eventsData.trend === -1) {
-                        this.eventsData.trend = 0;
-                    }
-                    if (this.actionsData.amount === -1) {
-                        this.actionsData.amount = 0;
-                    }
-                    if (this.actionsData.trend === -1) {
-                        this.actionsData.trend = 0;
-                    }
-                }
-
-                this.dateItem = this.dashboardDates[0];
-                if (this.dateItem) {
-                    this.currentDate = this.dateItem.value;
-                    this.httpService.getEntity('settings', '')
-                        .subscribe(result => {
-                            this.settings = result;
-                            let type;
-                            this.settings.forEach(setting => {
-                                if (setting.name.substr(0, 9) == 'dashboard') {
-                                    type = setting.name.substr(10);
-                                    if (setting.value === "1") {
-                                        this.showCharts.push(setting.label);
-                                        this.settingList[setting.label] = setting;
-                                    }
-                                }
-                            });
-
-                            this.refreshDashboard(this.dateItem);
-                        }, (errors) => {
-
-                        });
-                }
-            }, (errors) => {
-            });
+    ngOnDestroy(): void
+    {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
     }
 
     public onDateSelect(item): void {
         this.refreshDashboard(item);
+    }
+
+    protected processDashboardData(): void {
+        if (!this.dashboardData.hasData) {
+            this.emptyDashboard = true;
+        }
+
+        if (this.dashboardData.Summary) {
+            this.dateLabels.length = 0;
+
+            let summaryData = this.dashboardData.Summary;
+            let summaryDates = [];
+            let salesData = [];
+            let eventsData = [];
+            let actionsData = [];
+            summaryData.dates.forEach((dateItem) => {
+                summaryDates.push({value: dateItem.date, label: formatDate(dateItem.date, 'longDate', this.locale)});
+                this.dateLabels.unshift(formatDate(dateItem.date, 'longDate', this.locale));
+                dateItem.data.forEach((dataItem) => {
+                    if (dataItem.label === 'people') {
+                        if (this.peopleData.amount === -1) {
+                            this.peopleData.amount = dataItem.value;
+                        } else {
+                            if (this.peopleData.trend === -1) {
+                                this.peopleData.trend = this.peopleData.amount - dataItem.value;
+                            }
+                        }
+                        this.peopleData.labels.unshift(dateItem.date);
+                        this.peopleData.series[0].data.unshift(dataItem.value);
+                    }
+                    if (dataItem.label === 'sales') {
+                        if (this.salesData.amount === -1) {
+                            this.salesData.amount = dataItem.value;
+                        } else {
+                            if (this.salesData.trend === -1) {
+                                this.salesData.trend = this.salesData.amount - dataItem.value;
+                            }
+                        }
+                        this.salesData.labels.unshift(dateItem.date);
+                        this.salesData.series[0].data.unshift(dataItem.value);
+                    }
+                    if (dataItem.label === 'events') {
+                        if (this.eventsData.amount === -1) {
+                            this.eventsData.amount = dataItem.value;
+                        } else {
+                            if (this.eventsData.trend === -1) {
+                                this.eventsData.trend = this.eventsData.amount - dataItem.value;
+                            }
+                        }
+                        this.eventsData.labels.unshift(dateItem.date);
+                        this.eventsData.series[0].data.unshift(dataItem.value);
+                    }
+                    if (dataItem.label === 'actions') {
+                        if (this.actionsData.amount === -1) {
+                            this.actionsData.amount = dataItem.value;
+                        } else {
+                            if (this.actionsData.trend === -1) {
+                                this.actionsData.trend = this.actionsData.amount - dataItem.value;
+                            }
+                        }
+                        this.actionsData.labels.unshift(dateItem.date);
+                        this.actionsData.series[0].data.unshift(dataItem.value);
+                    }
+                });
+            });
+            this.dashboardDates = summaryDates;
+            if (this.peopleData.amount === -1) {
+                this.peopleData.amount = 0;
+            }
+            if (this.peopleData.trend === -1) {
+                this.peopleData.trend = 0;
+            }
+            if (this.salesData.amount === -1) {
+                this.salesData.amount = 0;
+            }
+            if (this.salesData.trend === -1) {
+                this.salesData.trend = 0;
+            }
+            if (this.eventsData.amount === -1) {
+                this.eventsData.amount = 0;
+            }
+            if (this.eventsData.trend === -1) {
+                this.eventsData.trend = 0;
+            }
+            if (this.actionsData.amount === -1) {
+                this.actionsData.amount = 0;
+            }
+            if (this.actionsData.trend === -1) {
+                this.actionsData.trend = 0;
+            }
+        }
+
+        this.dateItem = this.dashboardDates[0];
+        if (this.dateItem) {
+            this.currentDate = this.dateItem.value;
+            this.httpService.getEntity('settings', '')
+                .subscribe(result => {
+                    this.settings = result;
+                    let type;
+                    this.settings.forEach(setting => {
+                        if (setting.name.substr(0, 9) == 'dashboard') {
+                            type = setting.name.substr(10);
+                            if (setting.value === "1") {
+                                this.showCharts.push(setting.label);
+                                this.settingList[setting.label] = setting;
+                            }
+                        }
+                    });
+
+                    this.refreshDashboard(this.dateItem);
+                }, (errors) => {
+
+                });
+        }
     }
 
     protected refreshDashboard(dashboardDate): void {

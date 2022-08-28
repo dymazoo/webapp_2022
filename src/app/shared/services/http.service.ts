@@ -7,6 +7,7 @@ import {environment} from '../../../environments/environment';
 import {User} from '../models/user';
 import {Client} from '../models/client';
 import {FuseSplashScreenService} from '@fuse/services/splash-screen/splash-screen.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class HttpService {
@@ -18,23 +19,26 @@ export class HttpService {
     public impersonateCrc: string;
     public impersonateKey: string;
     public userData = {
-        userName: '',
-        email: '',
-        permissions: [],
+        'userName': '',
+        'email': '',
+        'permissions': [],
         'layout': '',
         'scheme': '',
         'theme': '',
-        impersonateUserName: ''
+        'impersonateUserName': ''
     };
     public impersonateUserData = {
-        userName: '',
-        email: '',
-        permissions: [],
+        'userName': '',
+        'email': '',
+        'permissions': [],
         'layout': '',
         'scheme': '',
         'theme': '',
-        impersonateUserName: ''
+        'impersonateUserName': ''
     };
+    public dashboardRecency: any;
+    public dashboardData: any;
+    public dashboardLoggedInConfirmed = false;
     public pendingRoute = '';
     public apiUrl = environment.apiHost;
     protected appHost = window.location.host;
@@ -42,6 +46,7 @@ export class HttpService {
     private timeout = 60000;
     private loggedinSubject = new Subject<any>();
     private userSubject = new Subject<any>();
+    private dashboardSubject = new Subject<any>();
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -77,6 +82,10 @@ export class HttpService {
                 map(data => {
                     const status = data['status'];
                     if (status) {
+                        const dymazooDashboard = JSON.parse(localStorage.getItem('dymazooDashboard'));
+                        this.dashboardRecency = dymazooDashboard && dymazooDashboard.recency;
+                        this.dashboardData = dymazooDashboard && dymazooDashboard.data;
+
                         this.homeUrl = '/dashboard';
                         this.token = token;
                         this.crc = crc;
@@ -113,6 +122,7 @@ export class HttpService {
             });
         } else {
             this.loggedIn = false;
+            this.dashboardLoggedInConfirmed = false;
             this.homeUrl = '';
             this.token = null;
             this.crc = null;
@@ -123,6 +133,9 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             localStorage.removeItem('dymazooUser');
+            localStorage.removeItem('dymazooDashboard');
+            localStorage.removeItem('dymazooImpersonate');
+
         }
     }
 
@@ -206,6 +219,7 @@ export class HttpService {
             const crc = dymazooUser && dymazooUser.crc;
             if (token && crc) {
                 this.loggedIn = true;
+                this.dashboardLoggedInConfirmed = true;
                 this.userData.userName = '';
                 this.userData.email = '';
                 this.userData.layout = '';
@@ -250,12 +264,14 @@ export class HttpService {
         this.loggedinSubject.next({state: state});
         if (state) {
             this.loggedIn = true;
+            this.dashboardLoggedInConfirmed = true;
             this.userSubject.next(this.userData);
             setTimeout(() => {
                 this._fuseSplashScreenService.hide();
             }, 1);
         } else {
             this.loggedIn = false;
+            this.dashboardLoggedInConfirmed = false;
             this.homeUrl = '';
             this.token = null;
             this.crc = null;
@@ -266,6 +282,8 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             localStorage.removeItem('dymazooUser');
+            localStorage.removeItem('dymazooDashboard');
+            localStorage.removeItem('dymazooImpersonate');
             const elem = document.querySelector('body');
             elem.className = 'app header-fixed navbar-fixed sidebar-hidden';
             this.router.navigate(['']);
@@ -353,6 +371,8 @@ export class HttpService {
             catchError((error: any) => {
                 // clear token remove user from local storage to log user out
                 localStorage.removeItem('dymazooUser');
+                localStorage.removeItem('dymazooDashboard');
+                localStorage.removeItem('dymazooImpersonate');
                 if (error.name === 'TimeoutError') {
                     return observableThrowError(['Server timeout']);
                 }
@@ -371,6 +391,7 @@ export class HttpService {
     public register(user: User, client: Client): any {
         const headers = this.getJsonHeader();
         this.loggedIn = false;
+        this.dashboardLoggedInConfirmed = false;
 
         const regsitrationUser = {
             name: user.name, email: user.email, password: user.password,
@@ -453,7 +474,7 @@ export class HttpService {
                     this.impersonateToken = this.token;
                     this.impersonateCrc = this.crc;
                     this.impersonateKey = impersonateKey;
-                    this.impersonateUserData = {... this.userData};
+                    this.impersonateUserData = {...this.userData};
 
                     this.token = token;
                     this.crc = this.impersonateCrc;
@@ -497,7 +518,7 @@ export class HttpService {
      */
     public getOAuthToken(tokenData: any): any {
         const headers = this.getJsonHeader();
-        const baseUrl = this.apiUrl.substring(0, this.apiUrl.length -4);
+        const baseUrl = this.apiUrl.substring(0, this.apiUrl.length - 4);
         const result = this.http.post(baseUrl + 'oauth/token', tokenData, {
             headers: headers
         }).pipe(
@@ -526,7 +547,7 @@ export class HttpService {
         if (impersonateToken && impersonateCrc && impersonateKey) {
             this.token = this.impersonateToken;
             this.crc = this.impersonateCrc;
-            this.userData = {... this.impersonateUserData};
+            this.userData = {...this.impersonateUserData};
 
             // store email, oauth token and crc in local storage to keep user logged in between page refreshes
             localStorage.setItem('dymazooUser', JSON.stringify({
@@ -784,28 +805,57 @@ export class HttpService {
         };
     }
 
-    public getLoggedInState(): Observable<any> {
+    public fetchDashboardData(): any {
+        const now = moment();
+        let refreshDashboard = true;
+        if (this.dashboardRecency !== undefined) {
+            if (now.diff(this.dashboardRecency, 'minutes') < 5) {
+                refreshDashboard = false;
+            }
+        }
+        if (this.dashboardLoggedInConfirmed && refreshDashboard) {
+            this.getEntity('dashboard', '')
+                .subscribe(result => {
+                    this.dashboardData = result;
+                    this.dashboardRecency = now;
+                    localStorage.setItem('dymazooDashboard', JSON.stringify({
+                        data: this.dashboardData,
+                        recency: this.dashboardRecency
+                    }));
+
+                    this.dashboardSubject.next(this.dashboardData);
+                }, (errors) => {
+                });
+        }
+        return this.dashboardData;
+    }
+
+    public getLoggedInState(): Observable < any > {
         return this.loggedinSubject.asObservable().pipe(delay(0));
     }
 
-    public getCurrentUser(): Observable<any> {
+    public getCurrentUser(): Observable < any > {
         return this.userSubject.asObservable().pipe(delay(0));
     }
 
-    public setCurrentUserName($userName): void {
-        this.userData.userName = $userName;
-        this.userSubject.next(this.userData);
+    public getDashboardData(): Observable < any > {
+        return this.dashboardSubject.asObservable().pipe(delay(0));
     }
+
+    public setCurrentUserName($userName): void {
+            this.userData.userName = $userName;
+            this.userSubject.next(this.userData);
+        }
 
     public setCurrentLayout($layout): void {
-        this.userData.layout = $layout;
-    }
+            this.userData.layout = $layout;
+        }
 
     public setCurrentScheme($scheme): void {
-        this.userData.scheme = $scheme;
-    }
+            this.userData.scheme = $scheme;
+        }
 
     public setCurrentTheme($theme): void {
-        this.userData.theme = $theme;
+            this.userData.theme = $theme;
+        }
     }
-}

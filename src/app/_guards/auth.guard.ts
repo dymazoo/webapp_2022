@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {
     Router,
     CanActivate,
@@ -9,15 +9,16 @@ import {
     UrlTree
 } from '@angular/router';
 import {HttpService} from 'app/shared/services/http.service';
-import {Observable, of, switchMap} from 'rxjs';
+import {Observable, of, Subscription, switchMap} from 'rxjs';
 
 export interface CanComponentDeactivate {
     canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
 }
 
 @Injectable()
-export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<CanComponentDeactivate> {
+export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanDeactivate<CanComponentDeactivate> {
     private permissions = [];
+    private loginSubscription: Subscription;
 
     /**
      * Constructor
@@ -26,11 +27,20 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<C
      */
     constructor(private router: Router,
                 private httpService: HttpService) {
-        this.httpService.getEntity('permissions', '').subscribe(result => {
-            this.permissions = result;
-        }, (error) => {
-            this.permissions === [];
+        this.loginSubscription = this.httpService.getLoggedInState().subscribe(status => {
+            if(status) {
+                this.httpService.getEntity('permissions', '').subscribe(result => {
+                    this.permissions = result;
+                }, (error) => {
+                    this.permissions = [];
+                });
+            }
         });
+
+    }
+
+    ngOnDestroy(): void {
+        this.loginSubscription.unsubscribe();
     }
 
     /**
