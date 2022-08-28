@@ -38,6 +38,7 @@ export class HttpService {
     };
     public dashboardRecency: any;
     public dashboardData: any;
+    public storedDashboard: any = {};
     public dashboardLoggedInConfirmed = false;
     public pendingRoute = '';
     public apiUrl = environment.apiHost;
@@ -85,6 +86,7 @@ export class HttpService {
                         const dymazooDashboard = JSON.parse(localStorage.getItem('dymazooDashboard'));
                         this.dashboardRecency = dymazooDashboard && dymazooDashboard.recency;
                         this.dashboardData = dymazooDashboard && dymazooDashboard.data;
+                        this.storedDashboard = dymazooDashboard && dymazooDashboard.stored;
 
                         this.homeUrl = '/dashboard';
                         this.token = token;
@@ -135,7 +137,6 @@ export class HttpService {
             localStorage.removeItem('dymazooUser');
             localStorage.removeItem('dymazooDashboard');
             localStorage.removeItem('dymazooImpersonate');
-
         }
     }
 
@@ -828,6 +829,30 @@ export class HttpService {
                 });
         }
         return this.dashboardData;
+    }
+
+    public storeDashboard(storedDashboard): void {
+        this.storedDashboard = storedDashboard;
+        const dymazooDashboard = JSON.parse(localStorage.getItem('dymazooDashboard'));
+        localStorage.setItem('dymazooDashboard', JSON.stringify({
+            data: this.dashboardData,
+            recency: this.dashboardRecency,
+            stored: storedDashboard
+        }));
+    }
+
+    public getStoredDashboard(): any {
+        const now = moment();
+        let refreshDashboard = true;
+        if (this.dashboardRecency !== undefined) {
+            if (now.diff(this.dashboardRecency, 'minutes') < 5) {
+                refreshDashboard = false;
+            }
+        }
+        if (refreshDashboard) {
+            return {};
+        }
+        return this.storedDashboard;
     }
 
     public getLoggedInState(): Observable < any > {

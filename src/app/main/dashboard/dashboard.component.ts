@@ -75,116 +75,139 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     protected processDashboardData(): void {
-        if (!this.dashboardData.hasData) {
-            this.emptyDashboard = true;
-        }
+        this.dataReady = false;
 
-        if (this.dashboardData.Summary) {
-            this.dateLabels.length = 0;
+        const storedDashboard = this.httpService.getStoredDashboard();
+        if (storedDashboard && storedDashboard.hasData) {
+            this.peopleData = storedDashboard.peopleData;
+            this.salesData = storedDashboard.salesData;
+            this.eventsData = storedDashboard.eventsData;
+            this.actionsData = storedDashboard.actionsData;
+            this.allChartData = storedDashboard.allChartData;
+            this.chartPeople = storedDashboard.chartPeople;
+            this.chartSales = storedDashboard.chartSales;
+            this.chartEvents = storedDashboard.chartEvents;
+            this.chartActions = storedDashboard.chartActions;
+            this.chartAll = storedDashboard.chartAll;
+            this.showCharts = storedDashboard.showCharts;
+            this.dashboardDates = storedDashboard.dashboardDates;
+            this.dateItem = storedDashboard.dateItem;
+            this.dataReady = true;
+        } else {
+            if (!this.dashboardData.hasData) {
+                this.emptyDashboard = true;
+            }
 
-            let summaryData = this.dashboardData.Summary;
-            let summaryDates = [];
-            let salesData = [];
-            let eventsData = [];
-            let actionsData = [];
-            summaryData.dates.forEach((dateItem) => {
-                summaryDates.push({value: dateItem.date, label: formatDate(dateItem.date, 'longDate', this.locale)});
-                this.dateLabels.unshift(formatDate(dateItem.date, 'longDate', this.locale));
-                dateItem.data.forEach((dataItem) => {
-                    if (dataItem.label === 'people') {
-                        if (this.peopleData.amount === -1) {
-                            this.peopleData.amount = dataItem.value;
-                        } else {
-                            if (this.peopleData.trend === -1) {
-                                this.peopleData.trend = this.peopleData.amount - dataItem.value;
-                            }
-                        }
-                        this.peopleData.labels.unshift(dateItem.date);
-                        this.peopleData.series[0].data.unshift(dataItem.value);
-                    }
-                    if (dataItem.label === 'sales') {
-                        if (this.salesData.amount === -1) {
-                            this.salesData.amount = dataItem.value;
-                        } else {
-                            if (this.salesData.trend === -1) {
-                                this.salesData.trend = this.salesData.amount - dataItem.value;
-                            }
-                        }
-                        this.salesData.labels.unshift(dateItem.date);
-                        this.salesData.series[0].data.unshift(dataItem.value);
-                    }
-                    if (dataItem.label === 'events') {
-                        if (this.eventsData.amount === -1) {
-                            this.eventsData.amount = dataItem.value;
-                        } else {
-                            if (this.eventsData.trend === -1) {
-                                this.eventsData.trend = this.eventsData.amount - dataItem.value;
-                            }
-                        }
-                        this.eventsData.labels.unshift(dateItem.date);
-                        this.eventsData.series[0].data.unshift(dataItem.value);
-                    }
-                    if (dataItem.label === 'actions') {
-                        if (this.actionsData.amount === -1) {
-                            this.actionsData.amount = dataItem.value;
-                        } else {
-                            if (this.actionsData.trend === -1) {
-                                this.actionsData.trend = this.actionsData.amount - dataItem.value;
-                            }
-                        }
-                        this.actionsData.labels.unshift(dateItem.date);
-                        this.actionsData.series[0].data.unshift(dataItem.value);
-                    }
-                });
-            });
-            this.dashboardDates = summaryDates;
-            if (this.peopleData.amount === -1) {
-                this.peopleData.amount = 0;
-            }
-            if (this.peopleData.trend === -1) {
-                this.peopleData.trend = 0;
-            }
-            if (this.salesData.amount === -1) {
-                this.salesData.amount = 0;
-            }
-            if (this.salesData.trend === -1) {
-                this.salesData.trend = 0;
-            }
-            if (this.eventsData.amount === -1) {
-                this.eventsData.amount = 0;
-            }
-            if (this.eventsData.trend === -1) {
-                this.eventsData.trend = 0;
-            }
-            if (this.actionsData.amount === -1) {
-                this.actionsData.amount = 0;
-            }
-            if (this.actionsData.trend === -1) {
-                this.actionsData.trend = 0;
-            }
-        }
+            if (this.dashboardData.Summary) {
+                this.dateLabels = [];
 
-        this.dateItem = this.dashboardDates[0];
-        if (this.dateItem) {
-            this.currentDate = this.dateItem.value;
-            this.httpService.getEntity('settings', '')
-                .subscribe(result => {
-                    this.settings = result;
-                    let type;
-                    this.settings.forEach(setting => {
-                        if (setting.name.substr(0, 9) == 'dashboard') {
-                            type = setting.name.substr(10);
-                            if (setting.value === "1") {
-                                this.showCharts.push(setting.label);
-                                this.settingList[setting.label] = setting;
+                let summaryData = this.dashboardData.Summary;
+                let summaryDates = [];
+                let salesData = [];
+                let eventsData = [];
+                let actionsData = [];
+                summaryData.dates.forEach((dateItem) => {
+                    summaryDates.push({
+                        value: dateItem.date,
+                        label: formatDate(dateItem.date, 'longDate', this.locale)
+                    });
+                    this.dateLabels.unshift(formatDate(dateItem.date, 'longDate', this.locale));
+                    dateItem.data.forEach((dataItem) => {
+                        if (dataItem.label === 'people') {
+                            if (this.peopleData.amount === -1) {
+                                this.peopleData.amount = dataItem.value;
+                            } else {
+                                if (this.peopleData.trend === -1) {
+                                    this.peopleData.trend = this.peopleData.amount - dataItem.value;
+                                }
                             }
+                            this.peopleData.labels.unshift(dateItem.date);
+                            this.peopleData.series[0].data.unshift(dataItem.value);
+                        }
+                        if (dataItem.label === 'sales') {
+                            if (this.salesData.amount === -1) {
+                                this.salesData.amount = dataItem.value;
+                            } else {
+                                if (this.salesData.trend === -1) {
+                                    this.salesData.trend = this.salesData.amount - dataItem.value;
+                                }
+                            }
+                            this.salesData.labels.unshift(dateItem.date);
+                            this.salesData.series[0].data.unshift(dataItem.value);
+                        }
+                        if (dataItem.label === 'events') {
+                            if (this.eventsData.amount === -1) {
+                                this.eventsData.amount = dataItem.value;
+                            } else {
+                                if (this.eventsData.trend === -1) {
+                                    this.eventsData.trend = this.eventsData.amount - dataItem.value;
+                                }
+                            }
+                            this.eventsData.labels.unshift(dateItem.date);
+                            this.eventsData.series[0].data.unshift(dataItem.value);
+                        }
+                        if (dataItem.label === 'actions') {
+                            if (this.actionsData.amount === -1) {
+                                this.actionsData.amount = dataItem.value;
+                            } else {
+                                if (this.actionsData.trend === -1) {
+                                    this.actionsData.trend = this.actionsData.amount - dataItem.value;
+                                }
+                            }
+                            this.actionsData.labels.unshift(dateItem.date);
+                            this.actionsData.series[0].data.unshift(dataItem.value);
                         }
                     });
-
-                    this.refreshDashboard(this.dateItem);
-                }, (errors) => {
-
                 });
+                this.dashboardDates = summaryDates;
+                if (this.peopleData.amount === -1) {
+                    this.peopleData.amount = 0;
+                }
+                if (this.peopleData.trend === -1) {
+                    this.peopleData.trend = 0;
+                }
+                if (this.salesData.amount === -1) {
+                    this.salesData.amount = 0;
+                }
+                if (this.salesData.trend === -1) {
+                    this.salesData.trend = 0;
+                }
+                if (this.eventsData.amount === -1) {
+                    this.eventsData.amount = 0;
+                }
+                if (this.eventsData.trend === -1) {
+                    this.eventsData.trend = 0;
+                }
+                if (this.actionsData.amount === -1) {
+                    this.actionsData.amount = 0;
+                }
+                if (this.actionsData.trend === -1) {
+                    this.actionsData.trend = 0;
+                }
+            }
+
+            this.dateItem = this.dashboardDates[0];
+            if (this.dateItem) {
+                this.currentDate = this.dateItem.value;
+                this.httpService.getEntity('settings', '')
+                    .subscribe(result => {
+                        this.settings = result;
+                        let type;
+                        this.settings.forEach(setting => {
+                            if (setting.name.substr(0, 9) == 'dashboard') {
+                                type = setting.name.substr(10);
+                                if (setting.value === "1") {
+                                    this.showCharts.push(setting.label);
+                                    this.settingList[setting.label] = setting;
+                                }
+                            }
+                        });
+
+                        this.refreshDashboard(this.dateItem);
+                    }, (errors) => {
+
+                    });
+            }
         }
     }
 
@@ -603,6 +626,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
         });
 
+        const storedDashboard = {
+            'peopleData': this.peopleData, 'salesData': this.salesData, 'eventsData': this.eventsData,
+            'actionsData': this.actionsData, 'allChartData': this.allChartData, 'chartPeople': this.chartPeople,
+            'chartSales': this.chartSales, 'chartEvents': this.chartEvents, 'chartActions': this.chartActions,
+            'chartAll': this.chartAll, 'showCharts': this.showCharts, 'dateItem': dashboardDate, 'hasData': true,
+            'dashboardDates': this.dashboardDates
+        };
+        this.httpService.storeDashboard(storedDashboard);
         this.dataReady = true;
     }
 

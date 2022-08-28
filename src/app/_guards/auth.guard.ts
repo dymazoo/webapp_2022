@@ -34,6 +34,8 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
                 }, (error) => {
                     this.permissions = [];
                 });
+            } else {
+                this.permissions = [];
             }
         });
 
