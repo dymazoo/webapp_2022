@@ -333,6 +333,11 @@ export class SourceSettingsValuesDialogComponent implements OnInit, OnDestroy {
 
 
             } else {
+                if (this.sourceSetting.name === 'sendinblue' && value.name === 'date_format') {
+                    if (value.value.length === 0) {
+                        value.value = 'MM-DD-YYYY';
+                    }
+                }
                 (this.sourceSettingsForm.controls['values'] as FormArray).push(this._formBuilder.group({
                     id: [value.id],
                     description: [this.prettyName(value.name)],
