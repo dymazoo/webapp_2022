@@ -171,7 +171,7 @@ export class EventbriteComponent implements OnInit, OnDestroy {
 
     syncCustomers(): void {
         this.syncCustomersTitle = 'Scheduling ...';
-        this.httpService.getEntity('sync-event-customers', '')
+        this.httpService.getEntity('sync-event-customers', 'eventbrite')
             .subscribe(result => {
                 this.syncCustomersTitle = 'Full Customer Sync';
                 this._snackBar.open('Customer Synchronisation Scheduled', 'Dismiss', {
@@ -185,7 +185,7 @@ export class EventbriteComponent implements OnInit, OnDestroy {
 
     syncEvents(): void {
         this.syncEventsTitle = 'Scheduling ...';
-        this.httpService.getEntity('sync-event-events', '')
+        this.httpService.getEntity('sync-event-events', 'eventbrite')
             .subscribe(result => {
                 this.syncEventsTitle = 'Full Event Sync';
                 this._snackBar.open('Event Synchronisation Scheduled', 'Dismiss', {

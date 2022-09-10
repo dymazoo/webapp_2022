@@ -171,7 +171,7 @@ export class ShopifyComponent implements OnInit, OnDestroy {
 
     syncCustomers(): void {
         this.syncCustomersTitle = 'Scheduling ...';
-        this.httpService.getEntity('sync-ecommerce-customers', '')
+        this.httpService.getEntity('sync-ecommerce-customers', 'shopify')
             .subscribe(result => {
                 this.syncCustomersTitle = 'Full Customer Sync';
                 this._snackBar.open('Customer Synchronisation Scheduled', 'Dismiss', {
@@ -185,7 +185,7 @@ export class ShopifyComponent implements OnInit, OnDestroy {
 
     syncOrders(): void {
         this.syncOrdersTitle = 'Scheduling ...';
-        this.httpService.getEntity('sync-ecommerce-orders', '')
+        this.httpService.getEntity('sync-ecommerce-orders', 'shopify')
             .subscribe(result => {
                 this.syncOrdersTitle = 'Full Order Sync';
                 this._snackBar.open('Order Synchronisation Scheduled', 'Dismiss', {
