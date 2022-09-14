@@ -28,6 +28,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {takeUntil} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
 
 @Component({
     selector: 'event-categories',
@@ -41,7 +42,7 @@ export class EventCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     @ViewChild('filter') filterElement: ElementRef;
 
     public eventCategory: EventCategory = new EventCategory();
-    public displayedColumns = ['description', 'default'];
+    public displayedColumns = ['description', 'default', 'action'];
     public eventCategoryDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public eventCategories: any;
@@ -224,6 +225,33 @@ export class EventCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
         }
         return returnVal;
     }
+
+    public deleteEventCategory(eventCategory): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            minWidth: '33%',
+            width: '300px',
+            data: {
+                confirmMessage: 'Are you sure you want to delete the event category: ' + eventCategory.description + ' ?',
+                informationMessage: 'Note: An event category will not be removed if it is in use'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.httpService.deleteEntity('event-category', eventCategory.id)
+                    .subscribe((deleteResult) => {
+                        this.eventCategoryDataSource.refresh();
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+            }
+        });
+
+    }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
+
 }
 
 @Component({

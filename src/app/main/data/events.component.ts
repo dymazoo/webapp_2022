@@ -34,6 +34,7 @@ import {takeUntil} from 'rxjs/operators';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {dymazooDates} from 'app/shared/services/dymazoo-date.service';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -49,7 +50,7 @@ export class EventsComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('filter') filterElement: ElementRef;
 
     public event: Event = new Event();
-    public displayedColumns = ['description', 'eventDate', 'eventCategory', 'type'];
+    public displayedColumns = ['description', 'eventDate', 'eventCategory', 'type', 'action'];
     public eventDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public events: any;
@@ -254,6 +255,34 @@ export class EventsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return returnVal;
     }
+
+    public deleteEvent(event): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            minWidth: '33%',
+            width: '300px',
+            data: {
+                confirmMessage: 'Are you sure you want to delete the event category: ' + event.description + ' ?',
+                informationMessage: 'Note: An event category will not be removed if it is in use'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.httpService.deleteEntity('event', event.id)
+                    .subscribe((deleteResult) => {
+                        this.eventDataSource.refresh();
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+            }
+        });
+
+    }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
+
+
 }
 
 @Component({

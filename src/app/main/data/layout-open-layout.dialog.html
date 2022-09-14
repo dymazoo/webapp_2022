@@ -5,6 +5,19 @@
         <div id="forms" class="simple fullwidth">
 
             <div class="content p-3">
+                <div *ngIf="errors.length > 0">
+                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                        <div class="card-header">
+                            <strong>Errors</strong>
+                        </div>
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <form class="flex flex-col mt-2 p-2 pb-1 bg-card rounded-2xl shadow overflow-hidden"
                       name="openLayoutForm" [formGroup]="openLayoutForm"
                       (submit)="onConfirm()">
@@ -22,6 +35,14 @@
                                 <ng-container matColumnDef="description">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
                                     <td mat-cell *matCellDef="let row" md> {{row.description}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef>Remove Layout</th>
+                                    <td mat-cell *matCellDef="let row" md>
+                                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'" (click)="deleteLayout(row)">
+                                        </mat-icon>
+                                    </td>
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

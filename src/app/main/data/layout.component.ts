@@ -15,6 +15,7 @@ import {FileInputComponent} from 'ngx-material-file-input/lib/file-input/file-in
 
 import {HttpService} from '../../shared/services/http.service';
 import {AbandonDialogService} from '../../shared/services/abandon-dialog.service';
+import {ConfirmDialogComponent} from 'app/shared/components/confirm-dialog.component';
 import {EntityDatasource} from '../../shared/entity-datasource';
 import {Layout} from '../../shared/models/layout';
 import {MatTableDataSource} from '@angular/material/table';
@@ -310,7 +311,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
     doOpenLayout(): void {
         const dialogRef = this.dialog.open(LayoutOpenLayoutDialogComponent, {
             minWidth: '80%',
-            data: {}
+            data: {'dialog': this.dialog}
         });
 
         dialogRef.afterClosed().subscribe(openResult => {
@@ -403,10 +404,12 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
 export class LayoutOpenLayoutDialogComponent implements OnInit, OnDestroy {
 
     public openLayoutForm: FormGroup;
-    displayedColumns = ['name', 'description'];
+    public errors = [];
+    displayedColumns = ['name', 'description', 'action'];
     layoutDataSource: EntityDatasource | null;
     public paginatedDataSource;
     layouts: any;
+    dialog: MatDialog;
     selectedLayout: Layout;
     selectedRow: {};
     selectedIndex: number = -1;
@@ -424,6 +427,7 @@ export class LayoutOpenLayoutDialogComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._unsubscribeAll = new Subject();
+        this.dialog = data.dialog;
     }
 
     ngOnDestroy(): void {
@@ -514,6 +518,32 @@ export class LayoutOpenLayoutDialogComponent implements OnInit, OnDestroy {
     public filterLayouts = (value: string) => {
         this.paginatedDataSource.filter = value.trim().toLocaleLowerCase();
     };
+
+    public deleteLayout(layout): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            minWidth: '33%',
+            width: '300px',
+            data: {
+                confirmMessage: 'Are you sure you want to delete the layout: ' + layout.name + ' ?',
+                informationMessage: 'Note: This cannot be undone'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.httpService.deleteEntity('layout', layout.id)
+                    .subscribe((deleteResult) => {
+                        this.layoutDataSource.refresh();
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+            }
+        });
+
+    }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
 
     getErrorMessage(control, name): string {
         let returnVal = '';
