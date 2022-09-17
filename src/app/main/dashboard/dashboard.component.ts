@@ -79,6 +79,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         const storedDashboard = this.httpService.getStoredDashboard();
         if (storedDashboard && storedDashboard.hasData) {
+            this.emptyDashboard = false;
             this.peopleData = storedDashboard.peopleData;
             this.salesData = storedDashboard.salesData;
             this.eventsData = storedDashboard.eventsData;
@@ -90,7 +91,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.settingList = storedDashboard.settingList;
             this.refreshDashboard(this.dateItem.value);
         } else {
-            if (!this.dashboardData.hasData) {
+            if (this.dashboardData && !this.dashboardData.hasData) {
                 this.emptyDashboard = true;
             }
 

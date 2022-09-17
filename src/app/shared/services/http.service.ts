@@ -850,7 +850,7 @@ export class HttpService {
             }
         }
         if (refreshDashboard) {
-            return {};
+            return {'hasData': false};
         }
         return this.storedDashboard;
     }
