@@ -12,6 +12,7 @@ import {HttpService} from '../shared/services/http.service';
 import {User} from '../shared/models/user';
 import { TranslocoService } from '@ngneat/transloco';
 import {Subscription} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(
         private _formBuilder: FormBuilder,
         private httpService: HttpService,
-        private _translocoService: TranslocoService
+        private _translocoService: TranslocoService,
+        private router: Router
     ) {
         this._translocoService.setActiveLang('en');
     }
@@ -61,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     this.loggedIn.emit(true);
                     const elem = document.querySelector('body');
                     elem.className = 'app header-fixed navbar-fixed';
-
+                    this.router.navigate(['/home']);
                 } else {
                     this.errors = ['Error logging in - please contact support'];
                 }

@@ -4,12 +4,16 @@
             <a href="https://dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
         </div>
         <div class="home-get-started">
-            <span class="home-website"><a href="https://dymazoo.com">Website</a></span>
+            <span class="home-website home-header-link"><a href="https://dymazoo.com">Website</a></span>
+
+            <span class="cursor-pointer home-header-link" (click)="toggleLogin($event)">
+                Log In
+            </span>
         </div>
 
     </div>
 
-    <div id="registerConfirmComplete" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component">
+    <div  *ngIf="action=='none'" id="registerConfirmComplete" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component">
         <fuse-card class="card-major">
             <div class="p-2">
                 <div class="h1 text-white bg-primary-500">{{t('auth-confirm')}}</div>
@@ -28,4 +32,7 @@
             </div>
         </fuse-card>
     </div>
+
+    <login *ngIf="action=='login'"></login>
+
 </div>

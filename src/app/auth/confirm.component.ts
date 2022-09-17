@@ -10,6 +10,7 @@ import {TranslocoService} from '@ngneat/transloco';
 })
 export class ConfirmComponent {
 
+    action: string = 'none';
     clientId: string;
     errors = [];
 
@@ -32,6 +33,15 @@ export class ConfirmComponent {
                     this.errors = errors;
                 });
         });
+    }
+
+    public toggleLogin(event): void {
+        if (this.action === 'login') {
+            this.action = 'none';
+        } else {
+            this.action = 'login';
+        }
+        event.stopPropagation();
     }
 }
 
