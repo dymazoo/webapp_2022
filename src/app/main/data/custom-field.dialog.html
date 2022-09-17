@@ -1,0 +1,103 @@
+<div *transloco="let t">
+    <div class="h1 text-white bg-primary central">{{t('data-current-custom-field-heading')}}</div>
+    <div mat-dialog-content>
+        <div id="forms" class="simple fullwidth">
+
+            <div class="content p-3">
+                <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                      name="customFieldForm" [formGroup]="customFieldForm"
+                      (submit)="onSave()">
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="name"
+                                   autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(customFieldForm.controls.name, 'Name')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Description</mat-label>
+                            <input matInput formControlName="description"
+                                   autocomplete="do-not-autofill"
+                                   required>
+                            <mat-error>{{ getErrorMessage(customFieldForm.controls.description, 'Description')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Relates To</mat-label>
+                            <mat-select formControlName="type" required>
+                                <mat-option value='PERSON'>Person</mat-option>
+                                <mat-option value='EVENT'>Event</mat-option>
+                                <mat-option value='SALE'>Sale</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Action</mat-label>
+                            <mat-select formControlName="action" required>
+                                <mat-option value='ADD'>Add</mat-option>
+                                <mat-option value='UPDATE'>Update</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Data Type</mat-label>
+                            <mat-select formControlName="dataType" required>
+                                <mat-option value='TEXT'>Text</mat-option>
+                                <mat-option value='NUMBER'>Number</mat-option>
+                                <mat-option value='DATE'>Date</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3">
+                            <mat-label>Field</mat-label>
+                            <mat-select formControlName="fieldId" required>
+                                <mat-option *ngFor="let field of fields"
+                                            [value]="field.id">
+                                    {{ field.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Cancel
+                        </button>
+                        <button *ngIf="!newCustomField" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
+                                mat-stroked-button
+                                type="button" (click)="onRemove()">
+                            Remove custom field
+                        </button>
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary"
+                                mat-flat-button [disabled]="!customFieldForm.valid"
+                                type="submit">
+                            Save custom fields
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

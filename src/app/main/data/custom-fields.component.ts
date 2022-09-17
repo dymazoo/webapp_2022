@@ -23,8 +23,7 @@ import { assign, cloneDeep } from 'lodash-es';
 import {HttpService} from 'app/shared/services/http.service';
 import {AbandonDialogService} from 'app/shared/services/abandon-dialog.service';
 import {EntityDatasource} from 'app/shared/entity-datasource';
-import {SalesCategory} from 'app/shared/models/salesCategory';
-import {SalesSubCategory} from 'app/shared/models/salesSubCategory';
+import {CustomField} from 'app/shared/models/customField';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {takeUntil} from 'rxjs/operators';
@@ -32,26 +31,27 @@ import {MatTableDataSource} from '@angular/material/table';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
 
 @Component({
-    selector: 'sales-categories',
-    templateUrl: './sales-categories.component.html',
+    selector: 'custom-fields',
+    templateUrl: './custom-fields.component.html',
     animations: fuseAnimations
 })
 
-export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CustomFieldsComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('filter') filterElement: ElementRef;
 
-    public salesCategory: SalesCategory = new SalesCategory();
-    public displayedColumns = ['description', 'default'];
-    public salesCategoryDataSource: EntityDatasource | null;
+    public customField: CustomField = new CustomField();
+    public displayedColumns = ['name', 'description', 'type', 'action', 'dataType'];
+    public customFieldDataSource: EntityDatasource | null;
     public paginatedDataSource;
-    public salesCategories: any;
-    public currentSalesCategory: SalesCategory;
-    public selectedSalesCategory: SalesCategory;
+    public customFields: any;
+    public fields;
+    public currentCustomField: CustomField;
+    public selectedCustomField: CustomField;
     public selectedRow: Record<string, unknown>;
     public selectedIndex: number = -1;
-    public newSalesCategory = false;
+    public newCustomField = false;
     public errors = [];
 
     private touchStart = 0;
@@ -74,25 +74,38 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnInit(): void {
-        this.salesCategoryDataSource = new EntityDatasource(
+        this.httpService.getEntity('fields', '')
+            .subscribe(result => {
+                this.fields = [];
+                this.fields.push({'id': 'new', 'name': 'New field', 'description' : 'Create new field', 'custom': 1});
+                result.forEach((field) => {
+                    if (field.id !== 'blank') {
+                        this.fields.push(field);
+                    }
+                });
+            }, (errors) => {
+                this.errors = errors;
+            });
+
+        this.customFieldDataSource = new EntityDatasource(
             this.httpService,
-            'sales-categorys',
+            'custom-fields',
             ''
         );
 
-        this.salesCategoryDataSource.onItemsChanged
+        this.customFieldDataSource.onItemsChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((salesCategories) => {
-                if (salesCategories instanceof Array) {
-                    this.salesCategories = salesCategories;
-                    if (salesCategories.length > 0) {
-                        this.paginatedDataSource = new MatTableDataSource<SalesCategory>(salesCategories);
+            .subscribe((customFields) => {
+                if (customFields instanceof Array) {
+                    this.customFields = customFields;
+                    if (customFields.length > 0) {
+                        this.paginatedDataSource = new MatTableDataSource<CustomField>(customFields);
                         this.paginatedDataSource.paginator = this.paginator;
                         this.paginatedDataSource.sort = this.sort;
                         this.paginatedDataSource.sortingDataAccessor =
                             (data, sortHeaderId) => data[sortHeaderId].toLocaleLowerCase();
                         this.paginatedDataSource.filterPredicate =
-                            (data: SalesCategory, filter: string) => this.salesCategoriesFilterPredicate(data, filter);
+                            (data: CustomField, filter: string) => this.customFieldsFilterPredicate(data, filter);
                         this.filterElement.nativeElement.focus();
                     }
                 }
@@ -107,7 +120,7 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
         this._unsubscribeAll.complete();
     }
 
-    salesCategoriesFilterPredicate(data: SalesCategory, filter: string): boolean {
+    customFieldsFilterPredicate(data: CustomField, filter: string): boolean {
         let filterResult = false;
         const filterCompare = filter.toLocaleLowerCase();
         filterResult = filterResult || data.description.toLocaleLowerCase().indexOf(filterCompare) !== -1;
@@ -118,7 +131,7 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
         const realIndex = (this.paginator.pageIndex * this.paginator.pageSize) + index;
         this.selectedRow = row;
         this.selectedIndex = realIndex;
-        this.selectedSalesCategory = new SalesCategory(row);
+        this.selectedCustomField = new CustomField(row);
         if (this.touchStart === 0) {
             this.touchStart = new Date().getTime();
         } else {
@@ -132,50 +145,50 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     onConfirm(): void {
-        this.currentSalesCategory = cloneDeep(this.selectedSalesCategory);
-        const dialogRef = this.dialog.open(SalesCategoryDialogComponent, {
+        this.currentCustomField = cloneDeep(this.selectedCustomField);
+        const dialogRef = this.dialog.open(CustomFieldDialogComponent, {
             minWidth: '50%',
-            data: {'salesCategory': this.currentSalesCategory, 'newSalesCategory': this.newSalesCategory}
+            data: {'customField': this.currentCustomField, 'newCustomField': this.newCustomField, 'fields': this.fields}
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result.action === 'save') {
                 this.errors = [];
 
-                this.httpService.saveEntity('sales-category', result.salesCategory)
+                this.httpService.saveEntity('custom-field', result.customField)
                     .subscribe((data: Response) => {
-                        this._snackBar.open('Sales category saved', 'Dismiss', {
+                        this._snackBar.open('Custom field  saved', 'Dismiss', {
                             duration: 5000,
                             panelClass: ['snackbar-teal']
                         });
-                        this.newSalesCategory = false;
-                        this.salesCategoryDataSource.refresh();
+                        this.newCustomField = false;
+                        this.customFieldDataSource.refresh();
                     }, (errors) => {
                         this.errors = errors;
-                        this.salesCategoryDataSource.refresh();
+                        this.customFieldDataSource.refresh();
                     });
 
             }
             if (result.action === 'remove') {
                 const id = result.id;
                 this.errors = [];
-                this.httpService.deleteEntity('sales-category', id)
+                this.httpService.deleteEntity('custom-field', id)
                     .subscribe(data => {
-                        this._snackBar.open('Sales category removed', 'Dismiss', {
+                        this._snackBar.open('Custom field removed', 'Dismiss', {
                             duration: 5000,
                             panelClass: ['snackbar-teal']
                         });
 
-                        this.salesCategoryDataSource.refresh();
+                        this.customFieldDataSource.refresh();
                     }, (errors) => {
                         this.errors = errors;
-                        this.salesCategoryDataSource.refresh();
+                        this.customFieldDataSource.refresh();
                     });
 
             }
         });
 
-        this.newSalesCategory = false;
+        this.newCustomField = false;
     }
 
     onArrowDown(): void {
@@ -197,14 +210,14 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
 
-    addSalesCategory(): void {
-        this.selectedSalesCategory = new SalesCategory();
-        this.newSalesCategory = true;
+    addCustomField(): void {
+        this.selectedCustomField = new CustomField();
+        this.newCustomField = true;
         this.onConfirm();
     }
 
 
-    public filterSalesCategories = (value: string) => {
+    public filterCustomFields = (value: string) => {
         this.paginatedDataSource.filter = value.trim().toLocaleLowerCase();
     };
 
@@ -227,20 +240,20 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
         return returnVal;
     }
 
-    public deleteSalesCategory(salesCategory): void {
+    public deleteCustomField(customField): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '33%',
             width: '300px',
             data: {
-                confirmMessage: 'Are you sure you want to delete the sales category: ' + salesCategory.description + ' ?',
-                informationMessage: 'Note: A sales category will not be removed if it is in use'
+                confirmMessage: 'Are you sure you want to delete the custom field: ' + customField.description + ' ?',
+                informationMessage: 'Note: A custom field will not be removed if it is in use'
             }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.httpService.deleteEntity('sales-category', salesCategory.id)
+                this.httpService.deleteEntity('custom-field', customField.id)
                     .subscribe((deleteResult) => {
-                        this.salesCategoryDataSource.refresh();
+                        this.customFieldDataSource.refresh();
                     }, (errors) => {
                         this.errors = errors;
                     });
@@ -253,117 +266,81 @@ export class SalesCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
         this.errors = [];
     }
 
+    toCleanCase(value): string {
+        return value.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
+    }
 }
 
 @Component({
-    selector: 'sales-category-dialog',
-    templateUrl: 'sales-category.dialog.html',
+    selector: 'custom-field-dialog',
+    templateUrl: 'custom-field.dialog.html',
 })
-export class SalesCategoryDialogComponent implements OnInit {
+export class CustomFieldDialogComponent implements OnInit {
 
-    public salescategoryForm: FormGroup;
+    public customFieldForm: FormGroup;
     public formErrors: string[] = [];
     public errors = [];
-    public currentSalesCategory;
-    public newSalesCategory;
+    public currentCustomField;
+    public newCustomField;
+    public fields;
 
     constructor(
-        public dialogRef: MatDialogRef<SalesCategoryDialogComponent>,
+        public dialogRef: MatDialogRef<CustomFieldDialogComponent>,
         private _formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-        this.currentSalesCategory = data.salesCategory;
-        this.newSalesCategory = data.newSalesCategory;
+        this.currentCustomField = data.customField;
+        this.newCustomField = data.newCustomField;
+        this.fields = data.fields;
     }
 
     ngOnInit(): void {
-        this.salescategoryForm = this._formBuilder.group({
-            'description': [{value: '', disabled: true}, Validators.required],
-            'default': [{value: 0}],
-            'subCategories': this._formBuilder.array([]),
-
+        this.customFieldForm = this._formBuilder.group({
+            'name': [{value: '', disabled: false}, Validators.required],
+            'description': [{value: '', disabled: false}, Validators.required],
+            'type': [{value: '', disabled: false}, Validators.required],
+            'action': [{value: '', disabled: false}, Validators.required],
+            'dataType': [{value: '', disabled: false}, Validators.required],
+            'fieldId': [{value: '', disabled: false}, Validators.required],
         }, {});
         this.populateForm();
-        if (this.newSalesCategory) {
-            this.salescategoryForm.controls['description'].enable();
+        if (this.newCustomField) {
+            this.customFieldForm.controls['description'].enable();
         }
     }
 
     populateForm(): void {
-        this.salescategoryForm.controls['description'].setValue(this.currentSalesCategory.description);
-        this.salescategoryForm.controls['default'].setValue(this.currentSalesCategory.default);
-        this.salescategoryForm.controls['description'].disable();
-
-        const subCategoryLength = (this.salescategoryForm.controls['subCategories'] as FormArray).length;
-        let i = 0;
-        while (i < subCategoryLength) {
-            (this.salescategoryForm.controls['subCategories'] as FormArray).removeAt(0);
-            i++;
+        this.customFieldForm.controls['name'].setValue(this.currentCustomField.name);
+        this.customFieldForm.controls['description'].setValue(this.currentCustomField.description);
+        this.customFieldForm.controls['type'].setValue(this.currentCustomField.type);
+        this.customFieldForm.controls['action'].setValue(this.currentCustomField.action);
+        this.customFieldForm.controls['dataType'].setValue(this.currentCustomField.dataType);
+        this.customFieldForm.controls['fieldId'].setValue(this.currentCustomField.fieldId);
+        if (this.currentCustomField.sourceId.length > 0) {
+            this.customFieldForm.controls['name'].disable();
+            this.customFieldForm.controls['description'].disable();
+            this.customFieldForm.controls['type'].disable();
+            this.customFieldForm.controls['action'].disable();
+            this.customFieldForm.controls['dataType'].disable();
         }
-        (this.salescategoryForm.controls['subCategories'] as FormArray).reset();
-
-        this.currentSalesCategory.subCategories.forEach(subCategory => {
-            (this.salescategoryForm.controls['subCategories'] as FormArray).push(this._formBuilder.group({
-                id: [subCategory.id],
-                description: [{value: subCategory.description, disabled: true}, Validators.required],
-                default: [subCategory.default],
-            }));
-        });
     }
 
     onSave(): void {
-        this.currentSalesCategory.description = this.salescategoryForm.controls['description'].value;
-        this.currentSalesCategory.default = this.salescategoryForm.controls['default'].value;
-
-        const subCategoryGroups = (this.salescategoryForm.controls['subCategories'] as FormArray).controls;
-        const subCategoryList = [];
-        subCategoryGroups.forEach((subCategoryGroup: FormGroup, index) => {
-            const idControl = subCategoryGroup.controls['id'];
-            const descriptionControl = subCategoryGroup.controls['description'];
-            const defaultControl = subCategoryGroup.controls['default'];
-            let actualSubDefault = 0;
-            if (defaultControl.value){
-                actualSubDefault = 1;
-            }
-            subCategoryList.push(new SalesSubCategory({id: idControl.value, description: descriptionControl.value, default: actualSubDefault}));
-        });
-        this.currentSalesCategory.subCategories = subCategoryList;
-
-        this.dialogRef.close({action: 'save', salesCategory: this.currentSalesCategory});
+        this.currentCustomField.name = this.customFieldForm.controls['name'].value;
+        this.currentCustomField.description = this.customFieldForm.controls['description'].value;
+        this.currentCustomField.type = this.customFieldForm.controls['type'].value;
+        this.currentCustomField.action = this.customFieldForm.controls['action'].value;
+        this.currentCustomField.dataType = this.customFieldForm.controls['dataType'].value;
+        this.currentCustomField.fieldId = this.customFieldForm.controls['fieldId'].value;
+        this.dialogRef.close({action: 'save', customField: this.currentCustomField});
     }
 
     onRemove(): void {
-        const id = this.currentSalesCategory.id;
+        const id = this.currentCustomField.id;
         this.dialogRef.close({action: 'remove', id: id});
     }
 
     onCancel(): void {
         this.dialogRef.close({action: 'cancel'});
-    }
-
-    setDefault(subIndex, subDefault): void {
-        if (subDefault.checked) {
-            const subCategoryGroups = (this.salescategoryForm.controls['subCategories'] as FormArray).controls;
-            subCategoryGroups.forEach((subCategoryGroup: FormGroup, index) => {
-                if (index !== subIndex) {
-                    const defaultControl = subCategoryGroup.controls['default'];
-                    defaultControl.setValue(0);
-                }
-            });
-        }
-    }
-
-    addSubCategory(): void {
-        this.currentSalesCategory.subCategories.push(new SalesSubCategory({description: '', default: 0}));
-        (this.salescategoryForm.controls['subCategories'] as FormArray).push(this._formBuilder.group({
-            id: [''],
-            description: ['', Validators.required],
-            default: [''],
-        }));
-    }
-
-    removeSubCategory(index): void {
-        this.currentSalesCategory.subCategories.splice(index, 1);
-        (this.salescategoryForm.controls['subCategories'] as FormArray).removeAt(index);
     }
 
     getErrorMessage(control, name): string {
@@ -373,5 +350,6 @@ export class SalesCategoryDialogComponent implements OnInit {
         }
         return returnVal;
     }
+
 }
 

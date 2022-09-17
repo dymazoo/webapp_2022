@@ -10,6 +10,7 @@ import {EventCategoriesComponent, EventCategoryDialogComponent} from './event-ca
 import {EventsComponent, EventDialogComponent} from './events.component';
 import {PreferencesComponent, PreferenceDialogComponent} from './preferences.component';
 import {ComplianceComponent,ComplianceDialogComponent} from './compliance.component';
+import {CustomFieldsComponent, CustomFieldDialogComponent} from './custom-fields.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,8 @@ import {ComplianceComponent,ComplianceDialogComponent} from './compliance.compon
         PreferenceDialogComponent,
         ComplianceComponent,
         ComplianceDialogComponent,
+        CustomFieldsComponent,
+        CustomFieldDialogComponent,
     ],
     imports: [
         DataRoutingModule,
@@ -49,6 +52,8 @@ import {ComplianceComponent,ComplianceDialogComponent} from './compliance.compon
         PreferenceDialogComponent,
         ComplianceComponent,
         ComplianceDialogComponent,
+        CustomFieldsComponent,
+        CustomFieldDialogComponent,
     ]
 })
 

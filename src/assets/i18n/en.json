@@ -30,6 +30,8 @@
     "data-current-event-category-heading": "Event Category",
     "data-event-heading": "Events",
     "data-current-event-heading": "Event",
+    "data-custom-field-heading": "Custom Fields",
+    "data-current-custom-field-heading": "Custom Field",
     "data-preference-heading": "Dashboard Preferences",
     "data-current-preference-heading": "Dashboard Item",
     "data-compliance-heading": "Compliance",

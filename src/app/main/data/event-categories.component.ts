@@ -42,7 +42,7 @@ export class EventCategoriesComponent implements OnInit, OnDestroy, AfterViewIni
     @ViewChild('filter') filterElement: ElementRef;
 
     public eventCategory: EventCategory = new EventCategory();
-    public displayedColumns = ['description', 'default', 'action'];
+    public displayedColumns = ['description', 'default'];
     public eventCategoryDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public eventCategories: any;

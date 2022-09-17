@@ -50,7 +50,7 @@ export class EventsComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('filter') filterElement: ElementRef;
 
     public event: Event = new Event();
-    public displayedColumns = ['description', 'eventDate', 'eventCategory', 'type', 'action'];
+    public displayedColumns = ['description', 'eventDate', 'eventCategory', 'type'];
     public eventDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public events: any;

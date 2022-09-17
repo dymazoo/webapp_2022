@@ -95,6 +95,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/events'
             },
             {
+                id   : 'data.custom-fields',
+                title: 'Custom Fields',
+                type : 'basic',
+                disabled : true,
+                icon : 'heroicons_outline:collection',
+                link : '/data/custom-fields'
+            },
+            {
                 id   : 'data.preferences',
                 title: 'Dashboard Preferences',
                 type : 'basic',

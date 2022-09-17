@@ -12,6 +12,7 @@ import {EventCategoriesComponent} from './event-categories.component';
 import {EventsComponent} from './events.component';
 import {PreferencesComponent} from './preferences.component';
 import {ComplianceComponent} from './compliance.component';
+import {CustomFieldsComponent} from './custom-fields.component';
 
 const routes: Routes = [
     {
@@ -41,6 +42,12 @@ const routes: Routes = [
     {
         path: 'events',
         component: EventsComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+    },
+    {
+        path: 'custom-fields',
+        component: CustomFieldsComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard],
     },
