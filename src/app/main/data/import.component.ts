@@ -348,8 +348,6 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     onCancel(): void {
-        this.importForm.reset();
-        this.importForm.markAsPristine();
         this.hasLayout = false;
         this.hasFile = false;
         this.openedLayout = false;
@@ -364,6 +362,8 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.fields[index].inLayout = false;
         });
         this.setLayoutFields();
+        this.importForm.reset();
+        this.importForm.markAsPristine();
     }
 
     onBack(): void {
