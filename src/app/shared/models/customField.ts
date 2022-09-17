@@ -5,7 +5,9 @@ export class CustomField {
     public type: string='';
     public action: string='';
     public dataType: string='';
+    public sourceDescription: string='';
     public sourceId: string='';
+    public fieldName: string='';
     public fieldId: string='';
 
     public constructor(init?: Partial<CustomField>) {

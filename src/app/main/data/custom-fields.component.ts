@@ -42,7 +42,7 @@ export class CustomFieldsComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('filter') filterElement: ElementRef;
 
     public customField: CustomField = new CustomField();
-    public displayedColumns = ['name', 'description', 'type', 'action', 'dataType'];
+    public displayedColumns = ['name', 'description', 'type', 'action', 'dataType', 'fieldName', 'sourceDescription'];
     public customFieldDataSource: EntityDatasource | null;
     public paginatedDataSource;
     public customFields: any;
