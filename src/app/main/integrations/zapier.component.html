@@ -55,7 +55,7 @@
                                         (keydown.arrowdown)="onAuditArrowDown()"
                                         (keydown.arrowup)="onAuditArrowUp()"
                                         (keydown.enter)="onSelectAudit()"
-                                        [ngClass]="{'selected' : row == selectedAuditsRow}"
+                                        [ngClass]="{'bg-primary-200' : row == selectedAuditsRow}"
                                         matRipple [@fadeIn]="true">
                                     >
                                     </tr>

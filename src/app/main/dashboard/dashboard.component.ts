@@ -52,14 +52,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.dashboardData = this.httpService.fetchDashboardData();
+        this.dashboardData = this.httpService.fetchDashboardData(false);
         if (this.dashboardData !== undefined) {
-            this.processDashboardData();
+            this.processDashboardData(false);
         }
 
         this.dashboardSubscription = this.httpService.getDashboardData().subscribe(dashboardData => {
             this.dashboardData = dashboardData;
-            this.processDashboardData();
+            this.processDashboardData(false);
         });
     }
 
@@ -74,11 +74,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.refreshDashboard(value);
     }
 
-    protected processDashboardData(): void {
+    public forceRefreshDashboard(): void {
+        this.dashboardData = this.httpService.fetchDashboardData(true);
+        if (this.dashboardData !== undefined) {
+            this.processDashboardData(true);
+        }
+    }
+
+    protected processDashboardData(force: boolean): void {
         this.dataReady = false;
 
         const storedDashboard = this.httpService.getStoredDashboard();
-        if (storedDashboard && storedDashboard.hasData) {
+        if (!force && storedDashboard && storedDashboard.hasData) {
             this.emptyDashboard = false;
             this.peopleData = storedDashboard.peopleData;
             this.salesData = storedDashboard.salesData;
@@ -96,6 +103,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
 
             if (this.dashboardData.Summary) {
+                this.peopleData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'People', 'data':[]}]};
+                this.salesData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Sales', 'data':[]}]};
+                this.eventsData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Events', 'data':[]}]};
+                this.actionsData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Actions', 'data':[]}]};
+
                 this.dateLabels = [];
 
                 let summaryData = this.dashboardData.Summary;
@@ -191,9 +203,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.settings = result;
                         let type;
                         this.settings.forEach(setting => {
-                            if (setting.name.substr(0, 9) == 'dashboard') {
+                            if (setting.name.substr(0, 9) === 'dashboard') {
                                 type = setting.name.substr(10);
-                                if (setting.value === "1") {
+                                if (setting.value === '1') {
                                     this.showCharts.push(setting.label);
                                     this.settingList[setting.label] = setting;
                                 }

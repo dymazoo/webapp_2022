@@ -24,7 +24,7 @@
                 <div class="h1 text-white bg-primary">{{t('integration-sendinblue-list-heading')}}</div>
             </div>
 
-            <div class="major-item">
+            <div class="major-item" fuseScrollbar>
                 <div id="listforms" class="simple fullwidth">
 
                     <div class="content p-3">
@@ -45,7 +45,7 @@
 
                         <div class="flex flex-col gt-xs:flex-row p-2">
                             <div>
-                                <table mat-table #listTable matSort
+                                <table mat-table #listTable matSort #listSort="matSort"
                                        [dataSource]="paginatedListsDataSource"
                                        [@fadeIn]="true">
                                     <ng-container matColumnDef="description">
@@ -65,7 +65,7 @@
                                         (keydown.arrowdown)="onListArrowDown()"
                                         (keydown.arrowup)="onListArrowUp()"
                                         (keydown.enter)="onSelectList()"
-                                        [ngClass]="{'selected' : row == selectedListsRow}"
+                                        [ngClass]="{'bg-primary-200' : row == selectedListsRow}"
                                         matRipple [@fadeIn]="true">
                                     >
                                     </tr>
@@ -121,7 +121,7 @@
 
                         <div class="flex flex-col gt-xs:flex-row p-2">
                             <div>
-                                <table mat-table #campaignTable matSort
+                                <table mat-table #campaignTable matSort #campaignSort="matSort"
                                        [dataSource]="paginatedCampaignsDataSource"
                                        [@fadeIn]="true">
                                     <ng-container matColumnDef="description">
@@ -145,7 +145,7 @@
                                         (keydown.arrowdown)="onCampaignArrowDown()"
                                         (keydown.arrowup)="onCampaignArrowUp()"
                                         (keydown.enter)="onSelectCampaign()"
-                                        [ngClass]="{'selected' : row == selectedCampaignsRow}"
+                                        [ngClass]="{'bg-primary-200' : row == selectedCampaignsRow}"
                                         matRipple [@fadeIn]="true">
                                     >
                                     </tr>

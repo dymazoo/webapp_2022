@@ -3,6 +3,7 @@ import {HttpService} from '../shared/services/http.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FuseConfigService} from '@fuse/services/config';
 import {TranslocoService} from '@ngneat/transloco';
+import {Clipboard} from '@angular/cdk/clipboard';
 
 @Component({
     selector: 'home',
@@ -25,7 +26,8 @@ export class OauthComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private httpService: HttpService,
-                private _translocoService: TranslocoService
+                private _translocoService: TranslocoService,
+                private clipboard: Clipboard,
     ) {
         this._translocoService.setActiveLang('en');
 
@@ -66,6 +68,10 @@ export class OauthComponent implements OnInit, OnDestroy {
                     this.errors = errors;
                 });
         }
+    }
+
+    copyText(text: string): void {
+        this.clipboard.copy(text);
     }
 
     ngOnDestroy(): void {

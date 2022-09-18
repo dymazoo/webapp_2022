@@ -27,9 +27,21 @@
                         <p>&nbsp;</p>
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">Access Token</div>
                         <p style="overflow-wrap: break-word;">{{token}}</p>
+                        <button class="fuse-mat-button-large w-50 mt-2"
+                                mat-button
+                                type="button" (click)="copyText(token)">
+                            Copy Token
+                        </button>
+
                         <p>&nbsp;</p>
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">Refresh Token</div>
                         <p style="overflow-wrap: break-word;">{{refreshToken}}</p>
+                        <button class="fuse-mat-button-large w-50 mt-2"
+                                mat-button
+                                type="button" (click)="copyText(refreshToken)">
+                            Copy Refresh
+                        </button>
+
                         <p>&nbsp;</p>
                         <div class="text-lg font-medium tracking-tight leading-6 truncate">To get a new token on expiry, go to  <a routerLink="/integrations/dymazoo-api" routerLinkActive="active">Integrations / Dymazoo Api</a></div>
                     </div>

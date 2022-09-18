@@ -5,6 +5,6 @@ export class Sendinblue extends Source {
     public description: string = 'Sendinblue';
     public esp: boolean = true;
 
-    public values: string[] = ['api_key', 'date-format'];
+    public values: string[] = ['api_key', 'date_format'];
 
 }

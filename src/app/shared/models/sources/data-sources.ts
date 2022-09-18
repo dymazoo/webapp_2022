@@ -40,7 +40,7 @@ export class DataSources {
         this.sources.push(new Mailchimp());
         this.sources.push(new Sendinblue());
         this.sources.push(new Shopify());
-        this.sources.push(new Woocommerce());
+//        this.sources.push(new Woocommerce());
         this.sources.push(new Eventbrite());
         this.sources.push(new Zapier());
         this.sources.push(new Dymazooapi());

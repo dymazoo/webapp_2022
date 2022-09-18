@@ -806,7 +806,7 @@ export class HttpService {
         };
     }
 
-    public fetchDashboardData(): any {
+    public fetchDashboardData(force: boolean): any {
         const now = moment();
         let refreshDashboard = true;
         if (this.dashboardRecency !== undefined) {
@@ -814,7 +814,7 @@ export class HttpService {
                 refreshDashboard = false;
             }
         }
-        if (this.dashboardLoggedInConfirmed && refreshDashboard) {
+        if (this.dashboardLoggedInConfirmed && (refreshDashboard || force)) {
             this.getEntity('dashboard', '')
                 .subscribe(result => {
                     this.dashboardData = result;

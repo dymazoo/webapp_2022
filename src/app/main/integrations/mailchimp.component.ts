@@ -60,11 +60,11 @@ export class MailchimpComponent implements OnInit, OnDestroy {
     private touchStart = 0;
 
     @ViewChild('listPaginator', { read: MatPaginator }) listPaginator: MatPaginator;
-    @ViewChild('listTable', { read: MatSort, static: true }) listSort: MatSort;
+    @ViewChild('listSort') listSort: MatSort;
     @ViewChild('listFilter') listFilterElement: ElementRef;
 
     @ViewChild('campaignPaginator', { read: MatPaginator }) campaignPaginator: MatPaginator;
-    @ViewChild('campaignTable', { read: MatSort, static: true }) campaignSort: MatSort;
+    @ViewChild('campaignSort') campaignSort: MatSort;
     @ViewChild('campaignFilter') campaignFilterElement: ElementRef;
 
     constructor(
@@ -96,7 +96,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
                 if (lists instanceof Array) {
                     this.lists = lists;
                     if (lists.length > 0) {
-                        this.paginatedListsDataSource = new MatTableDataSource<SourceSetting>(lists);
+                        this.paginatedListsDataSource = new MatTableDataSource<List>(lists);
                         this.paginatedListsDataSource.paginator = this.listPaginator;
                         this.paginatedListsDataSource.sort = this.listSort;
                         this.paginatedListsDataSource.sortingDataAccessor =
@@ -120,7 +120,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
                 if (campaigns instanceof Array) {
                     this.campaigns = campaigns;
                     if (campaigns.length > 0) {
-                        this.paginatedCampaignsDataSource = new MatTableDataSource<SourceSetting>(campaigns);
+                        this.paginatedCampaignsDataSource = new MatTableDataSource<Campaign>(campaigns);
                         this.paginatedCampaignsDataSource.paginator = this.campaignPaginator;
                         this.paginatedCampaignsDataSource.sort = this.campaignSort;
                         this.paginatedCampaignsDataSource.sortingDataAccessor =
