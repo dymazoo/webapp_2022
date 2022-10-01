@@ -5,6 +5,6 @@ export class Shopify extends Source {
     public description: string = 'Shopify';
     public esp: boolean = false;
 
-    public values: string[] = ['api_key', 'api_token', 'store_url'];
+    public values: string[] = ['api_key', 'password', 'store_url'];
 
 }
