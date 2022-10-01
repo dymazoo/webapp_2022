@@ -101,6 +101,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             if (!this.dashboardData || !this.dashboardData.hasData) {
                 this.emptyDashboard = true;
             } else {
+                this.allChartData = [];
+                this.chartAll = [];
+                this.showCharts = [];
+
                 if (this.dashboardData.Summary) {
                     this.peopleData = {
                         'amount': -1,
