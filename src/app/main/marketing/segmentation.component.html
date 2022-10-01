@@ -262,8 +262,11 @@
                                                         <mat-label>Action</mat-label>
                                                         <mat-select (selectionChange)="segmentActionChange($event)"
                                                                     formControlName="action" required>
-                                                            <mat-option value="segment">
+                                                            <mat-option *ngIf="needsList()" value="segment">
                                                                 Segment existing list
+                                                            </mat-option>
+                                                            <mat-option *ngIf="!needsList()" value="segment">
+                                                                Segment contacts
                                                             </mat-option>
                                                             <mat-option value="update">
                                                                 Update existing list
@@ -278,7 +281,7 @@
                                                     </mat-form-field>
                                                 </div>
                                                 <div *ngIf="finalAction === 'segment'" class="flex flex-col">
-                                                    <div class="flex flex-col gt-xs:flex-row">
+                                                    <div *ngIf="needsList()" class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
                                                             <mat-label>List to segment</mat-label>
                                                             <mat-select formControlName="listId"

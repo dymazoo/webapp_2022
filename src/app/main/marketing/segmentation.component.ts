@@ -8,7 +8,7 @@ import {FormBuilder, FormGroup, FormArray, Validators, Form} from '@angular/form
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {combineLatest, map, Subject} from 'rxjs';
+import {combineLatest, map, Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
@@ -29,6 +29,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {SourceSetting} from 'app/shared/models/sourceSetting';
 import {FuseConfigService} from '@fuse/services/config';
 import {FuseMediaWatcherService} from '@fuse/services/media-watcher';
+import {DataSources} from 'app/shared/models/sources/data-sources';
 
 interface SelectionNode {
     id: string;
@@ -76,6 +77,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     public scheme;
     public theme;
     public layout;
+    public esp;
 
     nodeTreeControl = new NestedTreeControl<SelectionNode>(node => node.children);
     nodeDataSource = new MatTreeNestedDataSource<SelectionNode>();
@@ -84,6 +86,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     cardDataSource = new MatTreeNestedDataSource<SelectionNode>();
 
     private _unsubscribeAll: Subject<any>;
+    private espSubscription: Subscription;
 
     @ViewChild('selectionTrigger') selectionContextMenu: MatMenuTrigger;
     @ViewChild('cardTrigger') cardContextMenu: MatMenuTrigger;
@@ -99,10 +102,16 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         private router: Router,
         private location: Location,
         private _fuseConfigService: FuseConfigService,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private dataSources: DataSources
     ) {
         this._translocoService.setActiveLang('en');
         this._unsubscribeAll = new Subject();
+
+        this.espSubscription = this.dataSources.getEsp().subscribe(esp => {
+            this.esp = esp;
+        });
+        this.dataSources.getCurrentDescriptions();
     }
 
     isHeader = (_: number, node: SelectionNode) => (!!node.children && node.children.length > 0) ||
@@ -1234,11 +1243,25 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         this.checkCanExport();
     }
 
+    public needsList(): boolean {
+        if (this.esp !== 'sendinblue') {
+            return true
+        } else {
+            return false;
+        }
+    }
+
     protected checkCanSegment(): void {
         this.canSegment = false;
         const listId = this.selectionForm.controls['listId'];
-        if (this.selectionSegment && listId.value && this.finalCount > 0) {
-            this.canSegment = true;
+        if (this.needsList()) {
+            if (this.selectionSegment && listId.value && this.finalCount > 0) {
+                this.canSegment = true;
+            }
+        } else {
+            if (this.selectionSegment && this.finalCount > 0) {
+                this.canSegment = true;
+            }
         }
     }
 
@@ -1286,10 +1309,12 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             };
             cards.push(selectionCard);
         });
-        const listId = this.selectionForm.controls['listId'];
         let listIdValue = '';
-        if (listId.value) {
-            listIdValue = listId.value;
+        if (this.needsList()) {
+            const listId = this.selectionForm.controls['listId'];
+            if (listId.value) {
+                listIdValue = listId.value;
+            }
         }
 
         this.errors = [];
@@ -1297,7 +1322,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             cards: cards, listId: listIdValue, segment: this.selectionSegment, limit: this.selectionLimit,
         })
             .subscribe((saveResult) => {
-                this._snackBar.open('List segmentation scheduled', 'Dismiss', {
+                this._snackBar.open('Segmentation scheduled', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });

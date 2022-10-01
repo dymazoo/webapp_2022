@@ -24,6 +24,7 @@ export class DataSources {
     private activeDescriptionsSubject = new Subject<any>();
     private sourceSavedSubject = new Subject<any>();
     private errorsSubject = new Subject<any>();
+    private espSubject = new Subject<any>();
 
     private activeDescriptions: any[] = [];
     private _fuseNavigationService;
@@ -72,17 +73,23 @@ export class DataSources {
         return this.errorsSubject.asObservable().pipe(delay(0));
     }
 
+    public getEsp(): Observable<any> {
+        return this.espSubject.asObservable().pipe(delay(0));
+    }
+
     public getCurrentDescriptions(): void {
         this.httpService.getEntity('source-settings', '')
             .subscribe(result => {
                 this.sourceSettings = result;
 
-                // check if there is already an esp in use
+                // check if there is already an esp in use and make ESP available to other components
+                // via the espSubject
                 let hasEsp = false;
-                this.sourceSettings.forEach(sourceSetting => {
+                this.sourceSettings.forEach((sourceSetting) => {
                     this.sources.forEach(source => {
                         if (source.name === sourceSetting.name && source.esp) {
                             hasEsp = true;
+                            this.espSubject.next(source.name);
                         }
                     });
                 });
@@ -329,7 +336,7 @@ export class DataSources {
         }
     }
 
-    private addIntegrationChild(integrationsItem: FuseNavigationItem, item: FuseNavigationItem):void {
+    private addIntegrationChild(integrationsItem: FuseNavigationItem, item: FuseNavigationItem): void {
         let exists = false;
         integrationsItem.children.forEach(child => {
             if (child.id === item.id) {
