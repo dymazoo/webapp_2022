@@ -5,6 +5,6 @@ export class Mailchimp extends Source {
     public description: string = 'Mailchimp';
     public esp: boolean = true;
 
-    public values: string[] = ['api_key', 'permission_reminder', 'campaign_default_email'];
+    public values: string[] = ['api_key', 'permission_reminder'];
 
 }

@@ -160,6 +160,13 @@ export class DataSources {
                             automatic: 1
                         }
                     );
+                    if (sourceName === 'sendinblue' && value === 'date_format') {
+                        sourceSettingValue.value = 'MM-DD-YYYY';
+                    }
+                    if (sourceName === 'mailchimp' && value === 'permission_reminder') {
+                        sourceSettingValue.value = 'You have subscribed';
+                    }
+
                     sourceSetting.values.push(sourceSettingValue);
                 });
                 this.httpService.saveEntity('source-setting', sourceSetting)

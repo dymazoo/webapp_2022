@@ -90,7 +90,7 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.dataSourcesGetSourceSavedSubscription = this.dataSources.getSourceSaved().subscribe(refresh => {
             if (this.sourceSettingsDataSource) {
-                this._snackBar.open('Data Source added', 'Dismiss', {
+                this._snackBar.open('Integration added', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
@@ -195,7 +195,7 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
                 this.sourceSettingsDataSource.refresh();
             }
             if (settingResult.saved) {
-                this._snackBar.open('Source settings saved', 'Dismiss', {
+                this._snackBar.open('Integration values saved', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
@@ -209,7 +209,7 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
             .subscribe((deleteResult) => {
                 this.sourceSettingsDataSource.refresh();
                 this.dataSources.getCurrentDescriptions();
-                this._snackBar.open('Data Source removed', 'Dismiss', {
+                this._snackBar.open('Integration removed', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
@@ -333,11 +333,6 @@ export class SourceSettingsValuesDialogComponent implements OnInit, OnDestroy {
 
 
             } else {
-                if (this.sourceSetting.name === 'sendinblue' && value.name === 'date_format') {
-                    if (value.value.length === 0) {
-                        value.value = 'MM-DD-YYYY';
-                    }
-                }
                 (this.sourceSettingsForm.controls['values'] as FormArray).push(this._formBuilder.group({
                     id: [value.id],
                     description: [this.prettyName(value.name)],
