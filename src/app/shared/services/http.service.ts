@@ -397,7 +397,7 @@ export class HttpService {
         const regsitrationUser = {
             name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
-            client_billing_type: client.billingType, token: user.token, layout: user.layout, scheme: user.scheme,
+            token: user.token, layout: user.layout, scheme: user.scheme,
             theme: user.theme
         };
         return this.http.post(this.apiUrl + 'register', regsitrationUser, {

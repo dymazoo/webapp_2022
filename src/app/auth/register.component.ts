@@ -1,4 +1,14 @@
-import {Component, OnDestroy, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef} from '@angular/core';
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    EventEmitter,
+    Output,
+    Input,
+    ViewChild,
+    ElementRef,
+    ViewEncapsulation
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {HttpService} from 'app/shared/services/http.service';
@@ -6,9 +16,10 @@ import {GlobalValidator} from 'app/shared/global-validator';
 import {CrossFieldErrorMatcher} from 'app/shared/cross-field-errormatcher';
 import {User} from 'app/shared/models/user';
 import {Client} from 'app/shared/models/client';
-//import {StripeService, StripeCardComponent } from 'ngx-stripe';
-//import {StripeCardElementOptions, StripeElementsOptions} from '@stripe/stripe-js';
-import { TranslocoService } from '@ngneat/transloco';
+import {TranslocoService} from '@ngneat/transloco';
+import {loadStripe} from '@stripe/stripe-js';
+import {environment} from '../../environments/environment';
+
 
 @Component({
     selector: 'register',
@@ -17,57 +28,41 @@ import { TranslocoService } from '@ngneat/transloco';
 
 export class RegisterComponent implements OnInit, OnDestroy {
 
-    @Input() public plan: string;
     @Output() registered = new EventEmitter<boolean>();
 
     @ViewChild('name') nameElement: ElementRef;
 
     public registerForm: FormGroup;
     public formErrors: string[] = [];
+    public plan: string = 'analyst';
     public errors = [];
     public user: User = new User();
     public client: Client = new Client();
-    public needStripe: boolean = false;
+    public action: string = 'select';
+    public yearlyBilling: boolean = true;
+
+    stripePromise = loadStripe(environment.stripeKey);
+
     errorMatcher = new CrossFieldErrorMatcher();
-
-/*
-    cardOptions: StripeCardElementOptions = {
-        style: {
-            base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                fontWeight: '300',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '18px',
-                '::placeholder': {
-                    color: '#CFD7E0'
-                }
-            }
-        }
-    };
-
-    elementsOptions: StripeElementsOptions = {
-        locale: 'es'
-    };
-*/
 
     constructor(
         private _formBuilder: FormBuilder,
         private httpService: HttpService,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private _translocoService: TranslocoService
-//        private stripeService: StripeService
+        private _translocoService: TranslocoService,
     ) {
         this._translocoService.setActiveLang('en');
     }
 
     ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((param: any) => {
+            if (param['plan'] !== undefined) {
+                this.plan = param['plan'];
+            }
+        });
+
         this.client.plan = this.plan;
-        this.client.billingType = 'annual';
-        if (this.client.plan === 'standard' || this.client.plan === 'professional') {
-            this.needStripe = true;
-        }
         this.registerForm = this._formBuilder.group({
             name: [this.user.name, [Validators.required]],
             email: [this.user.email, [Validators.required, Validators.email]],
@@ -75,51 +70,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmPassword: ['', Validators.compose([Validators.required])],
             clientName: ['', Validators.required],
             clientPlan: [this.client.plan, Validators.required],
-            clientBillingType: [this.client.billingType, Validators.required]
         }, {
             validator: GlobalValidator.equals('password', 'confirmPassword', 'misMatchedPasswords')
         });
-        /*
-        this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
-                this.elements = elements;
-                // Only mount the element the first time
-                if (!this.card) {
-                    this.card = this.elements.create('card', {
-                        style: {
-                            base: {
-                                'iconColor': '#666EE8',
-                                'color': '#31325F',
-                                'lineHeight': '40px',
-                                'fontWeight': 300,
-                                'fontFamily': '"Helvetica Neue", Helvetica, sans-serif',
-                                'fontSize': '18px',
-                                '::placeholder': {
-                                    color: '#CFD7E0'
-                                }
-                            }
-                        }
-                    });
-                    this.card.mount('#card-element');
-                }
-            });
 
-         */
-        setTimeout(() => {
-            this.nameElement.nativeElement.focus();
-        }, 100);
     }
 
     ngOnDestroy(): void {
     }
 
-    setPlan(event): void {
-        const plan = this.registerForm.controls['clientPlan'].value;
-        if (plan === 'standard' || plan === 'professional'){
-            this.needStripe = true;
-        } else {
-            this.needStripe = false;
-        }
+    getDetails(): void {
+        setTimeout(() => {
+            this.nameElement.nativeElement.focus();
+        }, 100);
     }
 
     register(): void {
@@ -131,39 +94,41 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.user.scheme = 'light';
         this.user.theme = 'theme-brand';
         this.client.name = this.registerForm.controls['clientName'].value;
-        this.client.plan = this.registerForm.controls['clientPlan'].value;
-        this.client.billingType = this.registerForm.controls['clientBillingType'].value;
         this.errors = [];
 
-        if (this.client.plan === 'standard' || this.client.plan === 'professional') {
-            /*
-            this.stripeService
-                .createToken(this.card.element, { name: this.user.name })
-                .subscribe((result) => {
-                    if (result.token) {
-                        // Use the token
-                        console.log(result.token.id);
-                    } else if (result.error) {
-                        // Error creating the token
-                        console.log(result.error.message);
-                    }
-                });
+        this.httpService.register(this.user, this.client)
+            .subscribe(result => {
+                if (result === true) {
+                    this.registered.emit(true);
 
-             */
-        } else {
-            this.httpService.register(this.user, this.client)
-                .subscribe(result => {
-                    if (result === true) {
-                        this.registered.emit(true);
+                } else {
+                    this.errors = ['Error registering - please contact support'];
+                }
+            }, (error) => {
+                this.errors = error;
+            });
 
-                    } else {
-                        this.errors = ['Error registering - please contact support'];
-                    }
-                }, (error) => {
-                    this.errors = error;
-                });
-        }
+    }
 
+    async handlePayment() {
+        const stripe = await this.stripePromise;
+
+        this.action = 'payment';
+        this.httpService.saveEntity('register-payment-intent', {})
+            .subscribe((data) => {
+                const options = {
+                    clientSecret: data.client_secret,
+                    // Fully customizable with appearance API.
+                    appearance: {/*...*/},
+                };
+                const elements = stripe.elements(options);
+
+                // Create and mount the Payment Element
+                const paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+            }, (errors) => {
+                this.errors = errors;
+            });
     }
 
     getErrorMessage(control, name): string {
@@ -183,3 +148,4 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return returnVal;
     }
 }
+

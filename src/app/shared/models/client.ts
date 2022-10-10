@@ -10,7 +10,6 @@ export class Client {
     public telephone: string = '';
     public signUpDate: string = '';
     public plan: string = '';
-    public billingType: string = '';
 
     public constructor(init?: Partial<Client>) {
         Object.assign(this, init);

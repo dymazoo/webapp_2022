@@ -5,10 +5,10 @@ import {TranslocoModule} from '@ngneat/transloco';
 import {FuseCardModule} from '@fuse/components/card';
 import {SharedModule} from '../../shared/shared.module';
 import {HomeComponent} from './home.component';
-import {RegisterComponent} from 'app/auth/register.component';
 import {RegisterCompleteComponent} from 'app/auth/register_complete.component';
 import {NoAuthGuard} from '../../core/auth/guards/noAuth.guard';
 import {LayoutComponent} from '../../layout/layout.component';
+import {RegisterComponent} from 'app/auth/register.component';
 
 const routes = [
     // Redirect empty path to '/home'
@@ -25,6 +25,10 @@ const routes = [
             {
                 path: 'home',
                 component: HomeComponent
+            },
+            {
+                path: 'register',
+                component: RegisterComponent
             }
         ]
     },
@@ -33,8 +37,8 @@ const routes = [
 @NgModule({
     declarations: [
         HomeComponent,
-        RegisterComponent,
         RegisterCompleteComponent,
+        RegisterComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

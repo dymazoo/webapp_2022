@@ -39,11 +39,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.setLoggedInView(status.state);
         });
         this.activatedRoute.queryParams.subscribe((param: any) => {
-            if (param['register'] !== undefined) {
-                this.action = 'register';
-            }
-            if (param['plan'] !== undefined) {
-                this.plan = param['plan'];
+            if (param['login'] !== undefined) {
+                this.action = 'login';
             }
         });
         if (this.isLoggedIn) {
@@ -62,13 +59,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
     }
 
-    public toggleRegister(event): void {
-        if (this.action === 'register') {
-            this.action = 'none';
-        } else {
-            this.action = 'register';
-        }
-        event.stopPropagation();
+    public gotoRegister(event): void {
+        this.router.navigate(['/register']);
     }
 
     public toggleLogin(event): void {
@@ -79,9 +71,4 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         event.stopPropagation();
     }
-
-    public registered(success: boolean): void {
-        this.action = 'registerComplete';
-    }
-
 }

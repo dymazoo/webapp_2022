@@ -574,6 +574,41 @@ home {
     }
 }
 
+// -----------------------------------------------------------------------------------------------------
+// @Register page
+// -----------------------------------------------------------------------------------------------------
+register {
+    .register-header {
+        height: 80px;
+        width: 100%;
+
+        .home-logo {
+            width: fit-content;
+            padding: 20px;
+            display: inline-block;
+        }
+
+        .home-get-started {
+            display: inline-block;
+            float: right;
+            color: #4283d7;
+            font-size: 20px;
+            padding-right: 20px;
+
+            .home-website {
+                a {
+                    color: 4283D7FF;
+                    text-decoration: none !important;
+                }
+            }
+            .home-header-link {
+                padding-right: 30px;
+            }
+        }
+    }
+}
+
+
 @media screen and (max-width: 800px) {
     home {
         background-image: url(/assets/images/backgrounds/static-home-small.png);

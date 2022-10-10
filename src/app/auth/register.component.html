@@ -1,5 +1,465 @@
 <div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
-    <fuse-card class="card-minor">
+    <div class="register-header">
+        <div class="home-logo">
+            <a href="https://dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
+        </div>
+    </div>
+
+    <div *ngIf="action==='select'">
+        <!-- Header & Cards -->
+        <div class="relative pt-2 pb-12 sm:pt-8 sm:pb-24 px-6 sm:px-16 overflow-hidden">
+            <!-- Background - @formatter:off -->
+            <svg class="-z-1 absolute inset-0"
+                 viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
+                 xmlns="http://www.w3.org/2000/svg">
+                <g class="opacity-40 text-gray-200 dark:text-gray-800" fill="none" stroke="currentColor"
+                   stroke-width="100">
+                    <circle r="234" cx="196" cy="23"></circle>
+                    <circle r="234" cx="790" cy="491"></circle>
+                </g>
+            </svg>
+            <!-- @formatter:on -->
+            <!-- Header -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold">TAKE CONTROL OF YOUR MARKETING</h2>
+                <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
+                    A true Single Customer View for your business
+                </div>
+                <div class="mt-3 sm:text-2xl text-center tracking-tight text-secondary">
+                    <div class="">Easily create a comprehensive and unique profile for every customer</div>
+                    <div class="">Create powerful marketing segments, gain insights and identify opportunities</div>
+                </div>
+                <!-- Recurring selector -->
+                <div
+                    class="flex items-center mt-8 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                    <button
+                        class="px-6"
+                        [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
+                                'bg-transparent': !yearlyBilling}"
+                        mat-flat-button
+                        (click)="yearlyBilling = true"
+                        disableRipple>
+                        Yearly billing
+                    </button>
+                    <button
+                        class="px-6"
+                        [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
+                                'bg-transparent': yearlyBilling}"
+                        mat-flat-button
+                        (click)="yearlyBilling = false"
+                        disableRipple>
+                        Monthly billing
+                    </button>
+                </div>
+            </div>
+            <!-- Cards -->
+            <div class="flex justify-center mt-10 sm:mt-20">
+                <div class="w-full max-w-sm md:max-w-7xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
+                        <!-- Card 1 -->
+                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Analyst</div>
+                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Everything you
+                                need to get started with smarter marketing
+                            </div>
+                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                            <!-- Price -->
+                            <div class="flex items-baseline whitespace-nowrap">
+                                <div class="mr-2 text-2xl">USD</div>
+                                <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                    <ng-container *ngIf="yearlyBilling">$19.95</ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">$25.00</ng-container>
+                                </div>
+                            </div>
+                            <!-- Price details -->
+                            <div class="flex flex-col mt-2 text-secondary">
+                                <ng-container *ngIf="yearlyBilling">
+                                    <div>billed yearly</div>
+                                    <div><b>$25.00</b> billed monthly</div>
+                                </ng-container>
+                                <ng-container *ngIf="!yearlyBilling">
+                                    <div>billed monthly</div>
+                                    <div><b>$19.95</b> billed yearly</div>
+                                </ng-container>
+                            </div>
+                            <!-- CTA -->
+                            <button
+                                class="fuse-mat-button-large mt-10"
+                                mat-stroked-button
+                                [color]="'primary'" (click)='handlePayment()'>
+                                Get Started
+                            </button>
+                            <!-- Features -->
+                            <div class="flex flex-col mt-12">
+                                <div class="font-semibold">Core features, including:</div>
+                                <div class="mt-4 space-y-2">
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Monthly</b> dashboard</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Weekly</b> marketing universe build</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Deep integration with your <b>Email Service</b> Provider</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Data file importer</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Up to <b>5000</b> customer profiles</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-card>
+                        <!-- Card 2 -->
+                        <fuse-card
+                            class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10 ring-2 ring-primary overflow-visible">
+                            <div class="absolute inset-x-0 -top-4 flex items-center justify-center">
+                                <div
+                                    class="flex items-center h-8 px-8 rounded-full font-medium text-center leading-none bg-primary text-on-primary">
+                                    POPULAR
+                                </div>
+                            </div>
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Specialist</div>
+                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for growing businesses
+                                with rich data sources and an active marketing strategy
+                            </div>
+                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                            <!-- Price -->
+                            <div class="flex items-baseline whitespace-nowrap">
+                                <div class="mr-2 text-2xl">USD</div>
+                                <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                    <ng-container *ngIf="yearlyBilling">$27.95</ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">$35.00</ng-container>
+                                </div>
+                            </div>
+                            <!-- Price details -->
+                            <div class="flex flex-col mt-2 text-secondary">
+                                <ng-container *ngIf="yearlyBilling">
+                                    <div>billed yearly</div>
+                                    <div><b>$35.00</b> billed monthly</div>
+                                </ng-container>
+                                <ng-container *ngIf="!yearlyBilling">
+                                    <div>billed monthly</div>
+                                    <div><b>$27.95</b> billed yearly</div>
+                                </ng-container>
+                            </div>
+                            <!-- CTA -->
+                            <button
+                                class="fuse-mat-button-large mt-10"
+                                mat-flat-button
+                                [color]="'primary'">
+                                Grow your business
+                            </button>
+                            <!-- Features -->
+                            <div class="flex flex-col mt-12">
+                                <div class="font-semibold">Analyst features, plus:</div>
+                                <div class="mt-4 space-y-2">
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Weekly</b> dashboard</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Daily</b> marketing universe build</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Deep integration with <b>Ecommerce</b> and <b>Event management</b> Providers</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Up to <b>15000</b> customer profiles</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-card>
+                        <!-- Card 3 -->
+                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Consultant</div>
+                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for companies
+                                wanting advanced tools and absolute control
+                            </div>
+                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                            <!-- Price -->
+                            <div class="flex items-baseline whitespace-nowrap">
+                                <div class="mr-2 text-2xl">USD</div>
+                                <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                    <ng-container *ngIf="yearlyBilling">$39.95</ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">$50.00</ng-container>
+                                </div>
+                            </div>
+                            <!-- Price details -->
+                            <div class="flex flex-col mt-2 text-secondary">
+                                <ng-container *ngIf="yearlyBilling">
+                                    <div>billed yearly</div>
+                                    <div><b>$50.00</b> billed monthly</div>
+                                </ng-container>
+                                <ng-container *ngIf="!yearlyBilling">
+                                    <div>billed monthly</div>
+                                    <div><b>$39.95</b> billed yearly</div>
+                                </ng-container>
+                            </div>
+                            <!-- CTA -->
+                            <button
+                                class="fuse-mat-button-large mt-10"
+                                mat-stroked-button
+                                [color]="'primary'">
+                                Supercharge your marketing
+                            </button>
+                            <!-- Features -->
+                            <div class="flex flex-col mt-12">
+                                <div class="font-semibold">Specialist features, plus:</div>
+                                <div class="mt-4 space-y-2">
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>On Demand</b> marketing universe build</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>All</b> deep integrations</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Zapier</b> Integration</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5">Up to <b>50000</b> customer profiles</div>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-icon
+                                            class="icon-size-5 text-green-600"
+                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                        <div class="ml-2 leading-5"><b>Premium</b> support</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="flex flex-col items-center px-6 py-10 sm:px-16 sm:pt-18 sm:pb-20 bg-white dark:bg-gray-800">
+            <div class="w-full max-w-7xl">
+                <div>
+                    <div class="text-4xl font-extrabold tracking-tight leading-tight">
+                        Growing with you, as your business grows
+                    </div>
+                    <div class="max-w-xl mt-2 text-xl text-secondary">
+                        Start with the package that meets your needs today and add specific features or upgrade your package as you see results
+                    </div>
+                </div>
+                <!-- Features grid -->
+                <div
+                    class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 w-full mt-12 sm:mt-16">
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:presentation-chart-line'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Increase the number of customer profiles at any time</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Dymazoo has no limit of the number of customer profiles you can have, so you only pay for what you need, with unlimited potential
+                        </div>
+                    </div>
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:shopping-cart'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Ecommerce Deep Integration</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Search and filter within the projects, categories and custom fields. Save search and filter
+                            details for easy access.
+                        </div>
+                    </div>
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:refresh'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Real Time Updates</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Real time updates that doesn't require page reload. Lean back and watch the changes happen
+                            in real time.
+                        </div>
+                    </div>
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:tag'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Meta Information</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Add and remove meta information to custom fields to differentiate them in reports and
+                            analytics results, use them for detailed reports.
+                        </div>
+                    </div>
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:document-text'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Pre-rendered Results</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Pre-render results to make reports and analytics more accessible by screen readers and other
+                            accessibility tools.
+                        </div>
+                    </div>
+                    <div>
+                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:chart-square-bar'"></mat-icon>
+                    </span>
+                        <div class="mt-4 text-xl font-medium">Simple Analytics</div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            Simple analytics with no unnecessary data flow or weight. More readable results with less
+                            data consumption.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="px-6 py-10 sm:py-12 sm:px-16 bg-primary-600 text-on-primary-600">
+            <div class="flex flex-col items-center w-full max-w-7xl mx-auto text-center">
+                <div class="text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10">Boost your
+                    productivity.
+                </div>
+                <div
+                    class="mt-2 text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10 text-black text-opacity-70">
+                    Start using Fuse today.
+                </div>
+                <button
+                    mat-flat-button
+                    class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800">
+                    <span class="text-lg">Sign up for free</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Frequently asked questions -->
+        <div class="flex flex-col items-center pt-12 sm:pt-18 pb-8 sm:pb-20 px-6 sm:px-16 bg-gray-50 dark:bg-gray-800">
+            <div class="w-full max-w-7xl">
+                <div>
+                    <div class="text-4xl font-extrabold tracking-tight leading-tight">
+                        Frequently asked questions
+                    </div>
+                    <div class="max-w-xl mt-2 text-xl text-secondary">
+                        Here are the most frequently asked questions you may check before getting started
+                    </div>
+                </div>
+                <!-- FAQs grid -->
+                <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:gap-x-16 w-full mt-12 sm:mt-16">
+                    <div>
+                        <div class="text-xl font-semibold">
+                            What is the duration of the free trial?
+                        </div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            <p>
+                                Our app is free to try for 14 days, if you want more, you can provide
+                                payment details which will extend your trial to 30 days providing you
+                                an extra 16 more days to try our app.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-semibold">
+                            Are there discounts for non-profits or educational use?
+                        </div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            <p>
+                                Yes, our Personal and Premium packages are free for non-profits and
+                                educational use. E-mail your details to us after starting your Free
+                                Trial and we will upgrade your account if you qualify.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-semibold">
+                            What is the storage is for?
+                        </div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            <p>
+                                Since we provide an extremely detailed reporting and analytics
+                                tool, they require quite a bit storage space. For average use, you
+                                don’t have to worry about running out of space since the
+                                Personal package limits the projects you can have.
+                            </p>
+                            <p class="mt-2">
+                                For some reason if you run out of space, contact us and we will
+                                see what can be done about it and make sure you are not
+                                generating unnecessary reports and/or analytics data.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-semibold">
+                            What happens if I’m not satisfied?
+                        </div>
+                        <div class="mt-2 leading-6 text-secondary">
+                            <p>
+                                If you are still in your free trial period, you can cancel your
+                                account at anytime with a single click of a button. If you already
+                                paid for your first month, we also offer 30-day money-back
+                                guarantee with no questions asked.
+                            </p>
+                            <p class="mt-2">
+                                After first month, you can still cancel your account at any time
+                                but we will calculate the amount that corresponds to days you
+                                have been using our app for that month and refund only the
+                                remaining amount.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <fuse-card *ngIf="action==='details'" class="card-major">
         <div class="p-4">
             <div class="h1 text-white bg-primary-500">{{t('auth-register-heading')}}</div>
         </div>
@@ -15,7 +475,7 @@
                         <div class="flex flex-col gt-xs:flex-row">
                             <mat-form-field
 
-                        class="flex-auto gt-xs:pr-3">
+                                class="flex-auto gt-xs:pr-3">
                                 <mat-label>Your name</mat-label>
                                 <input matInput #name formControlName="name" autocomplete="do-not-autofill" required>
                                 <mat-error>{{ getErrorMessage(registerForm.controls.name, 'Your name')}}</mat-error>
@@ -33,7 +493,8 @@
                         <div class="flex flex-col gt-xs:flex-row">
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <mat-label>Password</mat-label>
-                                <input matInput formControlName="password" autocomplete="do-not-autofill" type="password" required>
+                                <input matInput formControlName="password" autocomplete="do-not-autofill"
+                                       type="password" required>
                                 <mat-error>{{ getErrorMessage(registerForm.controls.password, 'Password')}}</mat-error>
                             </mat-form-field>
                         </div>
@@ -41,7 +502,8 @@
                         <div class="flex flex-col gt-xs:flex-row">
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <mat-label>Confirm Password</mat-label>
-                                <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill" type="password"
+                                <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill"
+                                       type="password"
                                        required
                                        [errorStateMatcher]="errorMatcher">
                                 <mat-error>{{ getErrorMessage(registerForm.controls.confirmPassword, 'Password confirmation')}}</mat-error>
@@ -55,47 +517,6 @@
                                 <input matInput formControlName="clientName" autocomplete="do-not-autofill" required>
                                 <mat-error>{{ getErrorMessage(registerForm.controls.clientName, 'Company name')}}</mat-error>
                             </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Plan</mat-label>
-                                <mat-select formControlName="clientPlan" required
-                                            (selectionChange)="setPlan($event)">
-                                    <mat-option [value]="'free'">
-                                        Free
-                                    </mat-option>
-                                    <mat-option [value]="'standard'">
-                                        Standard
-                                    </mat-option>
-                                    <mat-option [value]="'professional'">
-                                        Professional
-                                    </mat-option>
-                                </mat-select>
-                                <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.clientPlan, 'Plan')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div *ngIf="registerForm.controls.clientPlan.value !=='free'" class="flex flex-col gt-xs:flex-row">
-
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Billed</mat-label>
-                                <mat-select formControlName="clientBillingType" required>
-                                    <mat-option [value]="'annual'">
-                                        Annual - 20% discount
-                                    </mat-option>
-                                    <mat-option [value]="'monthly'">
-                                        Monthly
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.clientBillingType, 'Billing frequency')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="mb-2" [hidden]="!needStripe">
-                            <div id="card-element" class="field"></div>
                         </div>
 
                         <div class="flex items-center justify-end">
@@ -121,4 +542,29 @@
             </div>
         </div>
     </fuse-card>
+
+    <fuse-card *ngIf="action==='payment'" class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary-500">{{t('auth-register-payment')}}</div>
+        </div>
+        <div class="filled-major-item" fuseScrollbar>
+
+            <div id="formpayments" class="simple fullwidth">
+
+                <div class="content p-3">
+                    <form id="payment-form">
+                        <div id="payment-element">
+                            <!-- Elements will create form elements here -->
+                        </div>
+                        <button id="submit">Submit</button>
+                        <div id="error-message">
+                            <!-- Display error message to your customers here -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+
 </div>
+<script src="https://js.stripe.com/v3" async></script>

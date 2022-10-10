@@ -10,7 +10,10 @@
     "account-set-admin": "Set Account Admin",
     "account-usermanagement": "User",
 
-    "auth-register-heading": "Sign Up",
+    "auth-register-heading": "Registration",
+    "auth-register-payment": "Payment",
+
+
     "auth-login": "Login",
     "auth-confirm": "Sign up Confirmed",
     "auth-forgot": "Forgotten Password",

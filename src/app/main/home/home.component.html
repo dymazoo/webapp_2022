@@ -5,7 +5,7 @@
         </div>
         <div class="home-get-started">
             <span class="home-website home-header-link"><a href="https://dymazoo.com">Website</a></span>
-            <span *ngIf="action!=='registerComplete' && !isLoggedIn" class="cursor-pointer home-header-link" (click)="toggleRegister($event)">
+            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister($event)">
                 Sign Up
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer" (click)="toggleLogin($event)">
@@ -26,10 +26,6 @@
             Targeted Marketing campaigns and customer insights at your fingertips.
         </div>
     </div>
-
-    <register [plan]="plan" *ngIf="action=='register'" (registered)="registered($event)"></register>
-
-    <registercomplete *ngIf="action=='registerComplete'"></registercomplete>
 
     <login *ngIf="action=='login'"></login>
 
