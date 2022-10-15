@@ -1,14 +1,17 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 import {FuseConfigService} from '@fuse/services/config';
 import {HttpService} from '../../shared/services/http.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import { FuseScrollbarDirective } from '@fuse/directives/scrollbar/scrollbar.directive';
 
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+    @ViewChild(FuseScrollbarDirective) private fuseBar: FuseScrollbarDirective;
 
     config: any;
     loginSubscription: Subscription;
@@ -61,6 +64,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     public gotoRegister(event): void {
         this.router.navigate(['/register']);
+    }
+
+    public gotoFeatures(): void {
+        this.fuseBar.scrollToElement('#features', 0, false, 1000);
+    }
+
+    public gotoFAQ(): void {
+        this.fuseBar.scrollToElement('#faq', 0, false, 1000);
     }
 
     public toggleLogin(event): void {

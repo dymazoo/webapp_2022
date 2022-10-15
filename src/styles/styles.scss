@@ -505,14 +505,10 @@ ul {
 // @Home page
 // -----------------------------------------------------------------------------------------------------
 home {
-    background-image: url(/assets/images/backgrounds/static-home.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
     .home-header {
         height: 80px;
         width: 100%;
+        background-color: #414f8c;
 
         .home-logo {
             width: fit-content;
@@ -525,6 +521,7 @@ home {
             float: right;
             color: #81D742;
             font-size: 20px;
+            padding-top: 15px;
             padding-right: 20px;
 
             .home-website {
@@ -539,6 +536,20 @@ home {
         }
     }
 
+    .home-body {
+        max-width: 100%;
+        max-height: calc(100vh - 90px);
+    }
+
+    .home-banner {
+        background-image: url(/assets/images/backgrounds/static-home.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-width: 100%;
+        min-height: calc(100vh - 80px);
+    }
+
     .home-message {
         position: relative;
         top: 10%;
@@ -549,29 +560,40 @@ home {
             font-weight: 400;
             color: #4cd964;
             text-transform: capitalize;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             letter-spacing: 1px;
             max-width: 80%;
         }
 
         .home-message-main {
             color: #ffffff;
-            font-size: 80px;
-            font-weight: 600;
+            font-size: 60px;
+            font-weight: 550;
             font-family: 'Barlow Condensed', sans-serif;
-            max-width: 45%;
+            max-width: 60%;
             line-height: 1;
         }
 
         .home-message-bottom {
-            font-size: 14px;
-            font-weight: 200;
+            font-size: 18px;
+            font-weight: 400;
             color: #4cd964;
             margin-top: 20px;
             letter-spacing: 1px;
             max-width: 40%;
         }
+
+        .home-banner-actions {
+            margin-top: 20px;
+
+        }
     }
+
+    .home-features {
+        min-width: 100%;
+        min-height: calc(100vh - 80px);
+    }
+
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -581,37 +603,43 @@ register {
     .register-header {
         height: 80px;
         width: 100%;
+        background-color: #414f8c;
 
         .home-logo {
             width: fit-content;
             padding: 20px;
             display: inline-block;
         }
+    }
+    .register-body {
+        max-width: 100%;
+        max-height: calc(100vh - 90px);
+    }
+}
 
-        .home-get-started {
-            display: inline-block;
-            float: right;
-            color: #4283d7;
-            font-size: 20px;
-            padding-right: 20px;
+.background-dymazoo {
+    background-color: #414f8c;
+}
 
-            .home-website {
-                a {
-                    color: 4283D7FF;
-                    text-decoration: none !important;
-                }
-            }
-            .home-header-link {
-                padding-right: 30px;
+@media screen and (max-width: 1024px) {
+    home {
+        .home-banner {
+            background-image: url(/assets/images/backgrounds/static-home-medium.png);
+        }
+
+        .home-message {
+            .home-message-main {
+                font-size: 60px;
             }
         }
     }
 }
 
-
 @media screen and (max-width: 800px) {
     home {
-        background-image: url(/assets/images/backgrounds/static-home-small.png);
+        .home-banner {
+            background-image: url(/assets/images/backgrounds/static-home-small.png);
+        }
 
         .home-message {
             .home-message-main {
@@ -621,17 +649,6 @@ register {
 
             .home-message-bottom {
                 max-width: 85%;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    home {
-
-        .home-message {
-            .home-message-main {
-                font-size: 60px;
             }
         }
     }

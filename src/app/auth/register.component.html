@@ -1,497 +1,549 @@
-<div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+<div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden" *transloco="let t">
     <div class="register-header">
         <div class="home-logo">
             <a href="https://dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
         </div>
     </div>
 
-    <div *ngIf="action==='select'">
-        <!-- Header & Cards -->
-        <div class="relative pt-2 pb-12 sm:pt-8 sm:pb-24 px-6 sm:px-16 overflow-hidden">
-            <!-- Background - @formatter:off -->
-            <svg class="-z-1 absolute inset-0"
-                 viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
-                 xmlns="http://www.w3.org/2000/svg">
-                <g class="opacity-40 text-gray-200 dark:text-gray-800" fill="none" stroke="currentColor"
-                   stroke-width="100">
-                    <circle r="234" cx="196" cy="23"></circle>
-                    <circle r="234" cx="790" cy="491"></circle>
-                </g>
-            </svg>
-            <!-- @formatter:on -->
-            <!-- Header -->
-            <div class="flex flex-col items-center">
-                <h2 class="text-xl font-semibold">TAKE CONTROL OF YOUR MARKETING</h2>
-                <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
-                    A true Single Customer View for your business
-                </div>
-                <div class="mt-3 sm:text-2xl text-center tracking-tight text-secondary">
-                    <div class="">Easily create a comprehensive and unique profile for every customer</div>
-                    <div class="">Create powerful marketing segments, gain insights and identify opportunities</div>
-                </div>
-                <!-- Recurring selector -->
-                <div
-                    class="flex items-center mt-8 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
-                    <button
-                        class="px-6"
-                        [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
+    <div class="register-body" fuseScrollbar [fuseScrollbarOptions]="{suppressScrollX: true}">
+        <div *ngIf="action==='select'">
+            <!-- Header & Cards -->
+            <div class="relative pt-2 pb-12 sm:pt-8 sm:pb-24 px-6 sm:px-16 overflow-hidden">
+                <!-- Background - @formatter:off -->
+                <svg class="-z-1 absolute inset-0"
+                     viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <g class="opacity-40 text-gray-200 dark:text-gray-800" fill="none" stroke="currentColor"
+                       stroke-width="100">
+                        <circle r="234" cx="196" cy="23"></circle>
+                        <circle r="234" cx="790" cy="491"></circle>
+                    </g>
+                </svg>
+                <!-- @formatter:on -->
+                <!-- Header -->
+                <div class="flex flex-col items-center">
+                    <h2 class="text-xl font-semibold">INCREASE YOUR REVENUE WITH TARGETED MARKETING</h2>
+                    <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
+                        A true Single Customer View for your business
+                    </div>
+                    <div class="mt-3 sm:text-2xl text-center tracking-tight text-secondary">
+                        <div class="">Easily create a comprehensive and unique profile for every customer</div>
+                        <div class="">Create powerful marketing segments, gain insights and identify new opportunities
+                        </div>
+                    </div>
+                    <!-- Recurring selector -->
+                    <div
+                        class="flex items-center mt-8 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                        <button
+                            class="px-6"
+                            [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
                                 'bg-transparent': !yearlyBilling}"
-                        mat-flat-button
-                        (click)="yearlyBilling = true"
-                        disableRipple>
-                        Yearly billing
-                    </button>
-                    <button
-                        class="px-6"
-                        [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
+                            mat-flat-button
+                            (click)="yearlyBilling = true"
+                            disableRipple>
+                            Yearly billing
+                        </button>
+                        <button
+                            class="px-6"
+                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
                                 'bg-transparent': yearlyBilling}"
-                        mat-flat-button
-                        (click)="yearlyBilling = false"
-                        disableRipple>
-                        Monthly billing
-                    </button>
+                            mat-flat-button
+                            (click)="yearlyBilling = false"
+                            disableRipple>
+                            Monthly billing
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <!-- Cards -->
-            <div class="flex justify-center mt-10 sm:mt-20">
-                <div class="w-full max-w-sm md:max-w-7xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
-                        <!-- Card 1 -->
-                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                            <div class="text-4xl font-bold tracking-tight leading-tight">Analyst</div>
-                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Everything you
-                                need to get started with smarter marketing
-                            </div>
-                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                            <!-- Price -->
-                            <div class="flex items-baseline whitespace-nowrap">
-                                <div class="mr-2 text-2xl">USD</div>
-                                <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                    <ng-container *ngIf="yearlyBilling">$19.95</ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">$25.00</ng-container>
+                <!-- Cards -->
+                <div class="flex justify-center mt-10 sm:mt-20">
+                    <div class="w-full max-w-sm md:max-w-7xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
+                            <!-- Card 1 -->
+                            <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
+                                <div class="text-4xl font-bold tracking-tight leading-tight">Analyst</div>
+                                <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Everything you
+                                    need to get started with smarter marketing
                                 </div>
-                            </div>
-                            <!-- Price details -->
-                            <div class="flex flex-col mt-2 text-secondary">
-                                <ng-container *ngIf="yearlyBilling">
-                                    <div>billed yearly</div>
-                                    <div><b>$25.00</b> billed monthly</div>
-                                </ng-container>
-                                <ng-container *ngIf="!yearlyBilling">
-                                    <div>billed monthly</div>
-                                    <div><b>$19.95</b> billed yearly</div>
-                                </ng-container>
-                            </div>
-                            <!-- CTA -->
-                            <button
-                                class="fuse-mat-button-large mt-10"
-                                mat-stroked-button
-                                [color]="'primary'" (click)='handlePayment()'>
-                                Get Started
-                            </button>
-                            <!-- Features -->
-                            <div class="flex flex-col mt-12">
-                                <div class="font-semibold">Core features, including:</div>
-                                <div class="mt-4 space-y-2">
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Monthly</b> dashboard</div>
+                                <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                                <!-- Price -->
+                                <div class="flex items-baseline whitespace-nowrap">
+                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                        <ng-container *ngIf="yearlyBilling">$19.95</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">$25.00</ng-container>
                                     </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Weekly</b> marketing universe build</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Comprehensive integration with your <b>Email Service</b>
-                                            Provider
+                                </div>
+                                <!-- Price details -->
+                                <div class="flex flex-col mt-2 text-secondary">
+                                    <ng-container *ngIf="yearlyBilling">
+                                        <div>billed yearly</div>
+                                        <div><b>$25.00</b> billed monthly</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">
+                                        <div>billed monthly</div>
+                                        <div><b>$19.95</b> billed yearly</div>
+                                    </ng-container>
+                                </div>
+                                <!-- CTA -->
+                                <button
+                                    class="fuse-mat-button-large mt-10"
+                                    mat-stroked-button
+                                    [color]="'primary'" (click)='handlePayment()'>
+                                    Get Started
+                                </button>
+                                <!-- Features -->
+                                <div class="flex flex-col mt-12">
+                                    <div class="font-semibold">Core features, including:</div>
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>360</b> degree <b>Single Customer View</b>
+                                                database
+                                            </div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Monthly</b> dashboard</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Weekly</b> marketing universe build</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Comprehensive integration with your <b>Email
+                                                Service</b>
+                                                Provider
+                                            </div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Data file <b>Importer</b></div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Up to <b>5000</b> customer profiles</div>
                                         </div>
                                     </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Data file <b>Importer</b></div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Up to <b>5000</b> customer profiles</div>
+                                </div>
+                            </fuse-card>
+                            <!-- Card 2 -->
+                            <fuse-card
+                                class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10 ring-2 ring-primary overflow-visible">
+                                <div class="absolute inset-x-0 -top-4 flex items-center justify-center">
+                                    <div
+                                        class="flex items-center h-8 px-8 rounded-full font-medium text-center leading-none bg-primary text-on-primary">
+                                        POPULAR
                                     </div>
                                 </div>
-                            </div>
-                        </fuse-card>
-                        <!-- Card 2 -->
-                        <fuse-card
-                            class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10 ring-2 ring-primary overflow-visible">
-                            <div class="absolute inset-x-0 -top-4 flex items-center justify-center">
-                                <div
-                                    class="flex items-center h-8 px-8 rounded-full font-medium text-center leading-none bg-primary text-on-primary">
-                                    POPULAR
+                                <div class="text-4xl font-bold tracking-tight leading-tight">Specialist</div>
+                                <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for growing
+                                    businesses
+                                    with rich data sources and an active marketing strategy
                                 </div>
-                            </div>
-                            <div class="text-4xl font-bold tracking-tight leading-tight">Specialist</div>
-                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for growing
-                                businesses
-                                with rich data sources and an active marketing strategy
-                            </div>
-                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                            <!-- Price -->
-                            <div class="flex items-baseline whitespace-nowrap">
-                                <div class="mr-2 text-2xl">USD</div>
-                                <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                    <ng-container *ngIf="yearlyBilling">$27.95</ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">$35.00</ng-container>
+                                <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                                <!-- Price -->
+                                <div class="flex items-baseline whitespace-nowrap">
+                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                        <ng-container *ngIf="yearlyBilling">$27.95</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">$35.00</ng-container>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Price details -->
-                            <div class="flex flex-col mt-2 text-secondary">
-                                <ng-container *ngIf="yearlyBilling">
-                                    <div>billed yearly</div>
-                                    <div><b>$35.00</b> billed monthly</div>
-                                </ng-container>
-                                <ng-container *ngIf="!yearlyBilling">
-                                    <div>billed monthly</div>
-                                    <div><b>$27.95</b> billed yearly</div>
-                                </ng-container>
-                            </div>
-                            <!-- CTA -->
-                            <button
-                                class="fuse-mat-button-large mt-10"
-                                mat-flat-button
-                                [color]="'primary'">
-                                Grow your business
-                            </button>
-                            <!-- Features -->
-                            <div class="flex flex-col mt-12">
-                                <div class="font-semibold">Analyst features, plus:</div>
-                                <div class="mt-4 space-y-2">
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Weekly</b> dashboard</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Daily</b> marketing universe build</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Comprehensive integration with leading <b>Ecommerce</b> and <b>Event
-                                            management</b> solutions
+                                <!-- Price details -->
+                                <div class="flex flex-col mt-2 text-secondary">
+                                    <ng-container *ngIf="yearlyBilling">
+                                        <div>billed yearly</div>
+                                        <div><b>$35.00</b> billed monthly</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">
+                                        <div>billed monthly</div>
+                                        <div><b>$27.95</b> billed yearly</div>
+                                    </ng-container>
+                                </div>
+                                <!-- CTA -->
+                                <button
+                                    class="fuse-mat-button-large mt-10"
+                                    mat-flat-button
+                                    [color]="'primary'">
+                                    Grow your business
+                                </button>
+                                <!-- Features -->
+                                <div class="flex flex-col mt-12">
+                                    <div class="font-semibold">Analyst features, plus:</div>
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Weekly</b> dashboard</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Daily</b> marketing universe build</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Comprehensive integration with leading <b>Ecommerce</b>
+                                                and <b>Event
+                                                    management</b> solutions
+                                            </div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Up to <b>15000</b> customer profiles</div>
                                         </div>
                                     </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Up to <b>15000</b> customer profiles</div>
+                                </div>
+                            </fuse-card>
+                            <!-- Card 3 -->
+                            <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
+                                <div class="text-4xl font-bold tracking-tight leading-tight">Consultant</div>
+                                <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for
+                                    companies
+                                    wanting advanced tools and absolute control
+                                </div>
+                                <div class="w-8 h-1 my-10 rounded bg-accent"></div>
+                                <!-- Price -->
+                                <div class="flex items-baseline whitespace-nowrap">
+                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                        <ng-container *ngIf="yearlyBilling">$39.95</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">$50.00</ng-container>
                                     </div>
                                 </div>
-                            </div>
-                        </fuse-card>
-                        <!-- Card 3 -->
-                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                            <div class="text-4xl font-bold tracking-tight leading-tight">Consultant</div>
-                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for companies
-                                wanting advanced tools and absolute control
-                            </div>
-                            <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                            <!-- Price -->
-                            <div class="flex items-baseline whitespace-nowrap">
-                                <div class="mr-2 text-2xl">USD</div>
-                                <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                    <ng-container *ngIf="yearlyBilling">$39.95</ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">$50.00</ng-container>
+                                <!-- Price details -->
+                                <div class="flex flex-col mt-2 text-secondary">
+                                    <ng-container *ngIf="yearlyBilling">
+                                        <div>billed yearly</div>
+                                        <div><b>$50.00</b> billed monthly</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">
+                                        <div>billed monthly</div>
+                                        <div><b>$39.95</b> billed yearly</div>
+                                    </ng-container>
                                 </div>
-                            </div>
-                            <!-- Price details -->
-                            <div class="flex flex-col mt-2 text-secondary">
-                                <ng-container *ngIf="yearlyBilling">
-                                    <div>billed yearly</div>
-                                    <div><b>$50.00</b> billed monthly</div>
-                                </ng-container>
-                                <ng-container *ngIf="!yearlyBilling">
-                                    <div>billed monthly</div>
-                                    <div><b>$39.95</b> billed yearly</div>
-                                </ng-container>
-                            </div>
-                            <!-- CTA -->
-                            <button
-                                class="fuse-mat-button-large mt-10"
-                                mat-stroked-button
-                                [color]="'primary'">
-                                Supercharge your marketing
-                            </button>
-                            <!-- Features -->
-                            <div class="flex flex-col mt-12">
-                                <div class="font-semibold">Specialist features, plus:</div>
-                                <div class="mt-4 space-y-2">
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>On Demand</b> marketing universe build</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>All</b> comprehensive integrations</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Zapier</b> Integration</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Up to <b>50000</b> customer profiles</div>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-icon
-                                            class="icon-size-5 text-green-600"
-                                            [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>Premium</b> support</div>
+                                <!-- CTA -->
+                                <button
+                                    class="fuse-mat-button-large mt-10"
+                                    mat-stroked-button
+                                    [color]="'primary'">
+                                    Supercharge your marketing
+                                </button>
+                                <!-- Features -->
+                                <div class="flex flex-col mt-12">
+                                    <div class="font-semibold">Specialist features, plus:</div>
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>On Demand</b> marketing universe build</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Complete <b>Data history</b></div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>All</b> comprehensive integrations</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Zapier</b> Integration</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Up to <b>50000</b> customer profiles</div>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5"><b>Premium</b> support</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </fuse-card>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features -->
-        <div class="flex flex-col items-center px-6 py-10 sm:px-16 sm:pt-18 sm:pb-20 bg-white dark:bg-gray-800">
-            <div class="w-full max-w-7xl">
-                <div>
-                    <div class="text-4xl font-extrabold tracking-tight leading-tight">
-                        Growing with you, as your business grows
-                    </div>
-                    <div class="max-w-xl mt-2 text-xl text-secondary">
-                        Start with the package that meets your needs and add specific features or upgrade to a different
-                        package as you see results and your needs grow
-                    </div>
-                </div>
-                <!-- Features grid -->
-                <div
-                    class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 w-full mt-12 sm:mt-16">
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:presentation-chart-line'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Increase the number of customer profiles at any time</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            Dymazoo has no limit of the number of customer profiles you can have. Only pay for what you
-                            need and enjoy unlimited potential
-                        </div>
-                    </div>
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:mail'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Email Service Providers</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            In-depth integration with leading email service providers, such as Mailchimp and Sendinblue, with more coming soon.
-                            Full bi-directional list management, powerful segmentation and email activity imports to track Sends, Opens, Clicks & Bounces.
-                        </div>
-                    </div>
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:database'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Single Customer View database</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            Match and merge data from unlimited sources into a unique 360 degree view of every customer. Understand who
-                            your customers are, what they buy and what they're interested in, and how they are responding to your marketing campaigns
-                        </div>
-                    </div>
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:shopping-cart'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Ecommerce Solutions</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            In-depth integration with leading ecommerce solutions, such as Shopify, with more coming soon. Automatically import customer and sales data to your SCV
-                        </div>
-                    </div>
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:chart-pie'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Powerful Dashboard</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            Track trends over time and see how your data is growing and improving with every new customer interaction. Gain insights
-                            into your customers and discover opportunities to increase profitability
-                        </div>
-                    </div>
-                    <div>
-                    <span class="flex items-center justify-center w-12 h-12 rounded bg-primary">
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Event Management Solutions</div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            In-depth integration with leading event management solutions, such as Eventbrite. Automatically import customer, booking and attendance data to your SCV
+                            </fuse-card>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- CTA -->
-        <div class="px-6 py-10 sm:py-12 sm:px-16 bg-primary-600 text-on-primary-600">
-            <div class="flex flex-col items-center w-full max-w-7xl mx-auto text-center">
-                <div class="text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10">Take control of your marketing
+            <!-- Features -->
+            <div class="flex flex-col items-center px-4 py-2 sm:px-8 sm:pt-8 sm:pb-10 dark:bg-gray-800">
+                <div class="w-full max-w-7xl">
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-tight">
+                            Growing with you as your business grows
+                        </div>
+                        <div class="max-w-4xl mt-2 text-xl text-secondary">
+                            Start with the package that meets your needs and add specific features or upgrade to a
+                            different
+                            package as you see results and your needs grow
+                        </div>
+                    </div>
+                    <!-- Features grid -->
+                    <div
+                        class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 w-full mt-6 sm:mt-6">
+                        <div>
+                            <img style="width:60px;height:100px" src="assets/images/pages/home/rocket.png">
+                            <div class="mt-4 text-xl font-medium">Increase the number of customer profiles at any time
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                Dymazoo has no limit of the number of customer profiles you can have. Only pay for what
+                                you
+                                need and enjoy unlimited potential
+                            </div>
+                        </div>
+
+                        <div>
+                            <img style="width:100px;height:100px" src="assets/images/pages/home/email_integration.jpg">
+                            <div class="mt-4 text-xl font-medium">Email Service Providers</div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                In-depth integration with leading email service providers, such as Mailchimp and
+                                Sendinblue, with more coming soon.
+                                Full bi-directional list management, powerful segmentation and email activity imports to
+                                track Sends, Opens, Clicks & Bounces.
+                            </div>
+                        </div>
+                        <div>
+                            <img style="width:100px;height:100px" src="assets/images/pages/home/svc_database.png">
+                            <div class="mt-4 text-xl font-medium">Single Customer View database</div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                Match and merge data from unlimited sources into a unique 360 degree view for every
+                                customer. Understand who
+                                your customers are, what they buy and what they're interested in, and how they are
+                                responding to your marketing campaigns
+                            </div>
+                        </div>
+                        <div>
+                            <img style="width:100px;height:100px" src="assets/images/pages/home/ecommerce.png">
+                            <div class="mt-4 text-xl font-medium">Ecommerce Solutions</div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                In-depth integration with leading ecommerce solutions, such as Shopify, with more coming
+                                soon. Automatically add customer and sales data to your SCV
+                            </div>
+                        </div>
+                        <div>
+                            <img style="width:100px;height:100px" src="assets/images/pages/home/dashboard.png">
+                            <div class="mt-4 text-xl font-medium">Powerful Dashboard</div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                Track trends over time and see how your data is growing and improving with every new
+                                customer interaction. Gain insights
+                                into your customers and discover opportunities to increase profitability
+                            </div>
+                        </div>
+                        <div>
+                            <img style="width:100px;height:100px" src="assets/images/pages/home/event.png">
+                            <div class="mt-4 text-xl font-medium">Event Management Solutions</div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                In-depth integration with leading event management solutions, such as Eventbrite.
+                                Automatically add customer, booking and attendance data to your SCV
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div
-                    class="mt-2 text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10 text-black text-opacity-70">
-                    Start using Dymazoo today.
-                </div>
-                <button
-                    mat-flat-button
-                    class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800">
-                    <span class="text-lg">Get Started Now</span>
-                </button>
             </div>
-        </div>
 
-        <!-- Frequently asked questions -->
-        <div class="flex flex-col items-center pt-12 sm:pt-18 pb-8 sm:pb-20 px-6 sm:px-16 bg-gray-50 dark:bg-gray-800">
-            <div class="w-full max-w-7xl">
-                <div>
-                    <div class="text-4xl font-extrabold tracking-tight leading-tight">
-                        Frequently asked questions
+
+            <!-- CTA -->
+            <div class="px-6 py-10 sm:py-12 sm:px-16 background-dymazoo text-on-primary-600">
+                <div class="flex flex-col items-center w-full max-w-7xl mx-auto text-center">
+                    <div>
+                        <img style="width:300px;height:265px" src="assets/images/pages/home/sign_up.png">
                     </div>
-                    <div class="max-w-xl mt-2 text-xl text-secondary">
-                        Some of our customer most frequently asked questions
+                    <div>
+                        <div class="text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10">Take
+                            control of
+                            your marketing
+                        </div>
+                        <div
+                            class="mt-2 text-3xl sm:text-4xl sm:text-5xl font-extrabold leading-6 sm:leading-10 text-black text-opacity-70">
+                            Start using Dymazoo today.
+                        </div>
+                        <button
+                            mat-flat-button
+                            class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800">
+                            <span class="text-lg">Get Started Now</span>
+                        </button>
                     </div>
                 </div>
-                <!-- FAQs grid -->
-                <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:gap-x-16 w-full mt-12 sm:mt-16">
+            </div>
+
+            <!-- Frequently asked questions -->
+            <div
+                class="flex flex-col items-center pt-12 sm:pt-18 pb-8 sm:pb-20 px-6 sm:px-16 bg-gray-50 dark:bg-gray-800">
+                <div class="w-full max-w-7xl">
                     <div>
-                        <div class="text-xl font-semibold">
-                            What is a Single Customer View (SCV) ?
+                        <div class="text-4xl font-extrabold tracking-tight leading-tight">
+                            Frequently asked questions
                         </div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            <p>
-                                You probably already have a lot of data about your customers, but it maybe scattered and difficult or impossible to use.
-                                Existing customers and their sales history could be in your On-line store, Ecommerce solution and sales history files.
-                                Contact information, like email address and phone number, may be in the Email Service Provider, often with duplication
-                                between email lists, or even mismatched and different data for the same person. There's also who you sent a specific
-                                marketing campaign to in the past, and their activity history, such as Opens, Clicks and Bounces. You may have data
-                                from on-line or physical events that you ran and who booked and/or attended. And many of our customers have a whole
-                                collection of files with all sorts of customer data, that they don;t know what to do with.
-                            </p>
-                            <p class="mt-2">
-                                The Dymazoo SCV Database takes all of this data and automatically matches and merges to create a unique
-                                360 degree view of each customer. This includes <b>Demographics</b> (age, gender, location, interests, etc), <b>Behavioral</b> (opens,
-                                clicks, page views, etc) and <b>Transactional</b> (sales, event attendance, product returns, etc).
-                            </p>
+                        <div class="max-w-xl mt-2 text-xl text-secondary">
+                            Some of our customer's most frequently asked questions
                         </div>
                     </div>
-                    <div>
-                        <div class="text-xl font-semibold">
-                            What is a Marketing Universe?
+                    <!-- FAQs grid -->
+                    <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:gap-x-16 w-full mt-12 sm:mt-16">
+                        <div>
+                            <div class="text-xl font-semibold">
+                                What is a Single Customer View (SCV) ?
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                <p>
+                                    You probably already have a lot of data about your customers, but it maybe scattered
+                                    and difficult or impossible to use.
+                                    Existing customers and their sales history could be in your On-line store, Ecommerce
+                                    solution and sales history files.
+                                    Contact information, like email address and phone number, may be in the Email
+                                    Service Provider, often with duplication
+                                    between email lists, or even mismatched and different data for the same person.
+                                    There's also who you sent a specific
+                                    marketing campaign to in the past, and their activity history, such as Opens, Clicks
+                                    and Bounces. You may have data
+                                    from on-line or physical events that you ran and who booked and/or attended. And
+                                    many of our customers have a whole
+                                    collection of files with all sorts of customer data, that they don't know what to do
+                                    with.
+                                </p>
+                                <p class="mt-2">
+                                    The Dymazoo SCV Database takes all of this data and automatically matches and merges
+                                    to create a unique
+                                    360 degree view of each customer. This includes <b>Demographics</b> (age, gender,
+                                    location, interests, etc), <b>Behavioral</b> (opens,
+                                    clicks, page views, etc) and <b>Transactional</b> (sales, event attendance, product
+                                    returns, etc).
+                                </p>
+                            </div>
                         </div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            <p>
-                                A marketing universe is the key to identifying your target audience for future marketing activities and for
-                                gaining insights into the behaviours of different groups of customers, that have similarities.
-                            </p>
-                            <p class="mt-2">
-                                Each complete customer record in the SCV is analysed and augemented with information such as <b>Recency</b>,
-                                <b>Frequency</b> and <b>Value</b> related to that customer's <b>Behavioural</b> and <b>Transactional</b> activity.
-                                How many purchases have they made in the last 30, 60, 90 or more days? How often have they opened an email from a marketing campaign?
-                                What has the total value of the customer been, broken down by lifetime and by purchasing period.
-                                Further analysis makes use of the customer's <b>Demographic</b> data add information about the <b>Quality</b> of their record and
-                                to include them into categories, such "age is 18-25, 26-30, etc" or "gender is male, female, or unknown".
-                            </p>
-                            <p class="mt-2">
-                                A marketing universe is ever changing. As new data is added to the SCV, and as time passes, the derived information added to
-                                the SCV record also changes, so it is important to rebuild the entire universe regularly.
-                            </p>
+                        <div>
+                            <div class="text-xl font-semibold">
+                                What is a Marketing Universe?
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                <p>
+                                    A marketing universe is the key to identifying your target audience for future
+                                    marketing activities and for
+                                    gaining insights into the behaviours of different groups of customers, that have
+                                    similarities.
+                                </p>
+                                <p class="mt-2">
+                                    Each complete customer record in the SCV is analysed and augemented with information
+                                    such as <b>Recency</b>,
+                                    <b>Frequency</b> and <b>Value</b> related to that customer's <b>Behavioural</b> and
+                                    <b>Transactional</b> activity.
+                                    How many purchases have they made in the last 30, 60, 90 or more days? How often
+                                    have they opened an email from a marketing campaign?
+                                    What has the total value of the customer been, broken down by lifetime and by
+                                    purchasing period.
+                                    Further analysis makes use of the customer's <b>Demographic</b> data add information
+                                    about the <b>Quality</b> of their record and
+                                    to include them into categories, such "age is 18-25, 26-30, etc" or "gender is male,
+                                    female, or unknown".
+                                </p>
+                                <p class="mt-2">
+                                    A marketing universe is ever changing. As new data is added to the SCV, and as time
+                                    passes, the derived information added to
+                                    the SCV record also changes, so it is important to rebuild the entire universe
+                                    regularly.
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div class="text-xl font-semibold">
-                            How do Target Audiences and Segmentation help my business?
+                        <div>
+                            <div class="text-xl font-semibold">
+                                How do Target Audiences and Segmentation help my business?
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                <p>
+                                    The augmented data in the marketing universe allows you to identify commonalities
+                                    between customers and segment them into
+                                    appropriate target groups. This might be something like "Woman under 40 that are
+                                    interested in fashion and have a total
+                                    sales value up to £200 in the past 90 days", "People that live within 100 miles of
+                                    Birmingham, and have signed up to a
+                                    webinar in the past year" or "Everyone that we have included in a specific marketing
+                                    campaign, that opened but did not click".
+                                    Each customer might belong to only a single target audience, or they may be in
+                                    several different audiences.
+                                </p>
+                                <p class="mt-2">
+                                    Having identified target audiences, you can create Marketing Campaigns that offer
+                                    products and services that are popular
+                                    with some customers to other, similar, customers, while at the same time not sending
+                                    irrelevant messages to customers
+                                    that the campaign would not interest.
+                                </p>
+                                <p class="mt-2">
+                                    You can also send different follow on campaigns to customers. For example by sending
+                                    a compelling re-engagement offer to
+                                    those customers that did not open, sending a call to action offer to those that did
+                                    open but did not click and sending a
+                                    "you might also like" offer to customers that went on to make a purchase from the
+                                    initial campaign.
+                                </p>
+                            </div>
                         </div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            <p>
-                                The augemted data in the marketing universe allows you to identify commonalities between customers and segment them into
-                                appropriate target groups. This might be something like "Woman under 40 that are interested in fashion and have a total
-                                sales value up to £200 in the past 90 days", "People that live within 100 miles of Birmingham, and have signed up to a
-                                webinar in the past year" or "Everyone that we have included in a specific marketing campaign, that opened but did not click".
-                                Each customer might belong to only a single target audience, or they may be in several different audiences.
-                            </p>
-                            <p class="mt-2">
-                                Having identified target audiences, you can create Marketing Campaigns that offer products and services that are popular
-                                with some customers to other, similar, customers, while at the same time not sending irrelevant messages to customers
-                                that the campaign would not interest.
-                            </p>
-                            <p class="mt-2">
-                                You can also send different follow on campaigns to customers. For example by sending a compelling re-engagement offer to
-                                those customers that did not open, sending a call to action offer to those that did open but did not click and sending a
-                                "you might also like" offer to customers that went on to make a purchase from the initial campaign.
-                            </p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-xl font-semibold">
-                            What is a typical Return on Investment (ROI) for targeted marketing?
-                        </div>
-                        <div class="mt-2 leading-6 text-secondary">
-                            <p>
-                                <b>Mass marketing</b> (also known as "spray and pray") might reach a lot of people but most of them will take no action,
-                                or may even unsubscribe losing you any future opportunity to communicate with them. <b>Targeted marketing</b> is extremely
-                                cost-effective allowing you to connect with the right audience, with the right offer while only spending on campaigns that work.
-                            </p>
-                            <p class="mt-2">
-                                ROI will vary from business to business, but studies show that on average, 77% of email marketing ROI comes from segmented,
-                                targeted campaigns.
-                            </p>
-                            <p class="mt-2">
-                                "MailChimp reports that email opens and unique opens of segmented campaigns were 14.31% higher than non-segmented campaigns.
-                                Clicks from segmented campaigns were also more than 100% higher compared to non-segmented campaigns. Finally, when emails are
-                                segmented, there are 9.37% fewer un-subscribers" according to <a href="https://marketinginsidergroup.com/content-marketing/effectively-segment-email-list/">
-                                Marketing Insider Group.
-                            </a>
-                            </p>
+                        <div>
+                            <div class="text-xl font-semibold">
+                                What is a typical Return on Investment (ROI) for targeted marketing?
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                <p>
+                                    <b>Mass marketing</b> (also known as "spray and pray") might reach a lot of people
+                                    but most of them will take no action,
+                                    or may even unsubscribe losing you any future opportunity to communicate with them.
+                                    <b>Targeted marketing</b> is extremely
+                                    cost-effective allowing you to connect with the right audience, with the right offer
+                                    while only spending on campaigns that work.
+                                </p>
+                                <p class="mt-2">
+                                    ROI will vary from business to business, but studies show that on average, 77% of
+                                    email marketing ROI comes from segmented,
+                                    targeted campaigns.
+                                </p>
+                                <p class="mt-2">
+                                    "MailChimp reports that email opens and unique opens of segmented campaigns were
+                                    14.31% higher than non-segmented campaigns.
+                                    Clicks from segmented campaigns were also more than 100% higher compared to
+                                    non-segmented campaigns. Finally, when emails are
+                                    segmented, there are 9.37% fewer un-subscribers" according to <a
+                                    href="https://marketinginsidergroup.com/content-marketing/effectively-segment-email-list/">
+                                    Marketing Insider Group.
+                                </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <fuse-card *ngIf="action==='details'" class="card-major">
         <div class="p-4">
