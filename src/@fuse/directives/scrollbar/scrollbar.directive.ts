@@ -434,7 +434,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy
         }
 
         // Return if on mobile or not on browser
-        if ( this._platform.ANDROID || this._platform.IOS || !this._platform.isBrowser )
+        if ( false && this._platform.ANDROID || this._platform.IOS || !this._platform.isBrowser )
         {
             this.fuseScrollbar = false;
             return;

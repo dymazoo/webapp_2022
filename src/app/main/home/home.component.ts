@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (this.isLoggedIn) {
             this.router.navigate(['/dashboard']);
         }
+        this.fuseBar.update();
     }
 
     ngOnDestroy(): void {
