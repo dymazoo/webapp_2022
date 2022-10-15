@@ -8,8 +8,10 @@ export class Client {
     public timeZone: string = '';
     public primaryEmail: string = '';
     public telephone: string = '';
+    public billing: string = '';
     public signUpDate: string = '';
     public plan: string = '';
+    public profiles: number = 5000;
 
     public constructor(init?: Partial<Client>) {
         Object.assign(this, init);

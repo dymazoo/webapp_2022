@@ -88,7 +88,7 @@
                                 <button
                                     class="fuse-mat-button-large mt-10"
                                     mat-stroked-button
-                                    [color]="'primary'" (click)='handlePayment()'>
+                                    [color]="'primary'" (click)='getDetails("analyst")'>
                                     Get Started
                                 </button>
                                 <!-- Features -->
@@ -177,7 +177,7 @@
                                 <button
                                     class="fuse-mat-button-large mt-10"
                                     mat-flat-button
-                                    [color]="'primary'">
+                                    [color]="'primary'" (click)='getDetails("specialist")'>
                                     Grow your business
                                 </button>
                                 <!-- Features -->
@@ -245,7 +245,7 @@
                                 <button
                                     class="fuse-mat-button-large mt-10"
                                     mat-stroked-button
-                                    [color]="'primary'">
+                                    [color]="'primary'" (click)='getDetails("consultant")'>
                                     Supercharge your marketing
                                 </button>
                                 <!-- Features -->
@@ -390,7 +390,8 @@
                         </div>
                         <button
                             mat-flat-button
-                            class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800">
+                            class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800"
+                            (click)='getDetails("specialist")'>
                             <span class="text-lg">Get Started Now</span>
                         </button>
                     </div>
@@ -465,12 +466,12 @@
                                     Further analysis makes use of the customer's <b>Demographic</b> data add information
                                     about the <b>Quality</b> of their record and
                                     to include them into categories, such "age is 18-25, 26-30, etc" or "gender is male,
-                                    female, or unknown".
+                                    female or unknown".
                                 </p>
                                 <p class="mt-2">
-                                    A marketing universe is ever changing. As new data is added to the SCV, and as time
-                                    passes, the derived information added to
-                                    the SCV record also changes, so it is important to rebuild the entire universe
+                                    A marketing universe is ever changing. As new data is added to the SCV and as time
+                                    passes the derived information added to
+                                    the SCV record also changes. So it's vital to rebuild the entire universe
                                     regularly.
                                 </p>
                             </div>
@@ -495,7 +496,7 @@
                                 <p class="mt-2">
                                     Having identified target audiences, you can create Marketing Campaigns that offer
                                     products and services that are popular
-                                    with some customers to other, similar, customers, while at the same time not sending
+                                    with some customers to other, similar customers, while at the same time not sending
                                     irrelevant messages to customers
                                     that the campaign would not interest.
                                 </p>
@@ -545,112 +546,238 @@
         </div>
     </div>
 
-    <fuse-card *ngIf="action==='details'" class="card-major">
-        <div class="p-4">
-            <div class="h1 text-white bg-primary-500">{{t('auth-register-heading')}}</div>
-        </div>
-        <div class="filled-major-item" fuseScrollbar>
+    <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component">
 
-            <div id="forms" class="simple fullwidth">
+        <fuse-card *ngIf="action==='details'" class="card-minor">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary-500">{{t('auth-register-heading')}}</div>
+            </div>
 
-                <div class="content p-3">
-                    <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
-                          name="registerForm" [formGroup]="registerForm"
-                          (ngSubmit)="register()">
+            <div class="filled-major-item" fuseScrollbar>
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
+                <div id="forms" class="simple fullwidth">
 
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Your name</mat-label>
-                                <input matInput #name formControlName="name" autocomplete="do-not-autofill" required>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.name, 'Your name')}}</mat-error>
-                            </mat-form-field>
-                        </div>
+                    <div class="content p-3">
+                        <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+                              name="registerForm" [formGroup]="registerForm"
+                              (ngSubmit)="handlePayment()">
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Email address</mat-label>
-                                <input matInput formControlName="email" autocomplete="do-not-autofill" required>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.email, 'Email address')}}</mat-error>
-                            </mat-form-field>
-                        </div>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Password</mat-label>
-                                <input matInput formControlName="password" autocomplete="do-not-autofill"
-                                       type="password" required>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.password, 'Password')}}</mat-error>
-                            </mat-form-field>
-                        </div>
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Your name</mat-label>
+                                    <input matInput #name formControlName="name" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.name, 'Your name')}}</mat-error>
+                                </mat-form-field>
+                            </div>
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Confirm Password</mat-label>
-                                <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill"
-                                       type="password"
-                                       required
-                                       [errorStateMatcher]="errorMatcher">
-                                <mat-error>{{ getErrorMessage(registerForm.controls.confirmPassword, 'Password confirmation')}}</mat-error>
-                                <mat-error>{{ getErrorMessage(registerForm, '')}}</mat-error>
-                            </mat-form-field>
-                        </div>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Email address</mat-label>
+                                    <input matInput formControlName="email" autocomplete="do-not-autofill" required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.email, 'Email address')}}</mat-error>
+                                </mat-form-field>
+                            </div>
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Company Name</mat-label>
-                                <input matInput formControlName="clientName" autocomplete="do-not-autofill" required>
-                                <mat-error>{{ getErrorMessage(registerForm.controls.clientName, 'Company name')}}</mat-error>
-                            </mat-form-field>
-                        </div>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput formControlName="password" autocomplete="do-not-autofill"
+                                           type="password" required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.password, 'Password')}}</mat-error>
+                                </mat-form-field>
+                            </div>
 
-                        <div class="flex items-center justify-end">
-                            <button
-                                class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
-                                mat-flat-button
-                                [disabled]="!registerForm.valid"
-                                type="submit"
-                            >
-                                Submit
-                            </button>
-                        </div>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Confirm Password</mat-label>
+                                    <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill"
+                                           type="password"
+                                           required
+                                           [errorStateMatcher]="errorMatcher">
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.confirmPassword, 'Password confirmation')}}</mat-error>
+                                    <mat-error>{{ getErrorMessage(registerForm, '')}}</mat-error>
+                                </mat-form-field>
+                            </div>
 
-                    </form>
-                </div>
-                <div *ngIf="errors.length > 0" class="content p-4 alert alert-danger">
-                    <ul>
-                        <li *ngFor="let message of errors">
-                            {{ message }}
-                        </li>
-                    </ul>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Company Name</mat-label>
+                                    <input matInput formControlName="clientName" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientName, 'Company name')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Plan</mat-label>
+                                    <mat-select formControlName="clientPlan" required
+                                                (selectionChange)="setPlan($event)">
+                                        <mat-option [value]="'analyst'">
+                                            Analyst
+                                        </mat-option>
+                                        <mat-option [value]="'specialist'">
+                                            Specialist
+                                        </mat-option>
+                                        <mat-option [value]="'consultant'">
+                                            Consultant
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientPlan, 'Plan')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Billing</mat-label>
+                                    <mat-select formControlName="clientBilling" required
+                                                (selectionChange)="setBilling($event)">
+                                        <mat-option [value]="'monthly'">
+                                            Monthly
+                                        </mat-option>
+                                        <mat-option [value]="'yearly'">
+                                            Yearly
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientBilling, 'Billing')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-label>Maximum expected number of customer profiles</mat-label>
+                                <mat-label>(You can always adjust this later)</mat-label>
+                                <mat-slider
+                                    formControlName="clientProfiles"
+                                    thumbLabel
+                                    [displayWith]="formatSliderLabel"
+                                    tickInterval="1"
+                                    step="5000"
+                                    min="0"
+                                    max="100000"
+                                    aria-label="units"
+                                    (change)="onSliderChange($event)"></mat-slider>
+                                <div class="flex justify-evenly items-start">
+                                    <span></span>
+                                    <span>10k</span>
+                                    <span>20k</span>
+                                    <span>30k</span>
+                                    <span>40k</span>
+                                    <span>50k</span>
+                                    <span>60k</span>
+                                    <span>70k</span>
+                                    <span>80k</span>
+                                    <span>90k</span>
+                                    <span></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-start gt-xs:flex-row">
+                                <div class="grid grid-cols-3 gap-x-2 register-prices">
+                                    <div class="flex flex-col">
+                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            &nbsp;
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Base Plan:</span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Add profiles: </span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Total: </span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col rounded" [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
+                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Monthly
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyProfilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col rounded" [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
+                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Yearly
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyProfilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="flex items-center justify-end">
+                                <button
+                                    class="fuse-mat-button-large w-50 mt-2"
+                                    mat-button
+                                    type="button" (click)="onSelect()"
+                                >
+                                    Back
+                                </button>
+
+                                <button
+                                    class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                    mat-flat-button
+                                    [disabled]="!registerForm.valid"
+                                    type="submit"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div *ngIf="errors.length > 0" class="content p-4 alert alert-danger">
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </fuse-card>
+        </fuse-card>
 
-    <fuse-card *ngIf="action==='payment'" class="card-major">
-        <div class="p-4">
-            <div class="h1 text-white bg-primary-500">{{t('auth-register-payment')}}</div>
-        </div>
-        <div class="filled-major-item" fuseScrollbar>
+        <fuse-card *ngIf="action==='payment'" class="card-major">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary-500">{{t('auth-register-payment')}}</div>
+            </div>
+            <div class="filled-major-item" fuseScrollbar>
 
-            <div id="formpayments" class="simple fullwidth">
+                <div id="formpayments" class="simple fullwidth">
 
-                <div class="content p-3">
-                    <form id="payment-form">
-                        <div id="payment-element">
-                            <!-- Elements will create form elements here -->
-                        </div>
-                        <button id="submit">Submit</button>
-                        <div id="error-message">
-                            <!-- Display error message to your customers here -->
-                        </div>
-                    </form>
+                    <div class="content p-3">
+                        <form id="payment-form">
+                            <div id="payment-element">
+                                <!-- Elements will create form elements here -->
+                            </div>
+                            <button id="submit">Submit</button>
+                            <div id="error-message">
+                                <!-- Display error message to your customers here -->
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </fuse-card>
+        </fuse-card>
+
+    </div>
 
 </div>
 <script src="https://js.stripe.com/v3" async></script>
