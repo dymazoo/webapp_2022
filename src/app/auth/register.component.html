@@ -534,7 +534,8 @@
                                     Clicks from segmented campaigns were also more than 100% higher compared to
                                     non-segmented campaigns. Finally, when emails are
                                     segmented, there are 9.37% fewer un-subscribers" according to <a
-                                    href="https://marketinginsidergroup.com/content-marketing/effectively-segment-email-list/" target="_blank">
+                                    href="https://marketinginsidergroup.com/content-marketing/effectively-segment-email-list/"
+                                    target="_blank">
                                     Marketing Insider Group.
                                 </a>
                                 </p>
@@ -548,7 +549,26 @@
 
     <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component">
 
-        <fuse-card *ngIf="action==='details'" class="card-minor">
+        <fuse-card class="card-error" *ngIf="errors.length > 0">
+            <div id="errorforms" class="simple fullwidth">
+                <div class="content p-3">
+                    <div>
+                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                            <div class="card-header">
+                                <strong>Errors</strong>
+                            </div>
+                            <ul>
+                                <li *ngFor="let message of errors">
+                                    {{ message }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fuse-card>
+
+        <fuse-card *ngIf="action==='details'" class="card-medium">
             <div class="p-4">
                 <div class="h1 text-white bg-primary-500">{{t('auth-register-heading')}}</div>
             </div>
@@ -560,7 +580,7 @@
                     <div class="content p-3">
                         <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow overflow-hidden"
                               name="registerForm" [formGroup]="registerForm"
-                              (ngSubmit)="handlePayment()">
+                              (ngSubmit)="register()">
 
                             <div class="flex flex-col gt-xs:flex-row">
                                 <mat-form-field
@@ -684,13 +704,15 @@
                                             <span class="text-md">Base Plan:</span><span class="text-2xl">&nbsp;</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row">
-                                            <span class="text-md">Add profiles: </span><span class="text-2xl">&nbsp;</span>
+                                            <span class="text-md">Add profiles: </span><span
+                                            class="text-2xl">&nbsp;</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row">
                                             <span class="text-md">Total: </span><span class="text-2xl">&nbsp;</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col rounded" [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
+                                    <div class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
                                         <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
                                             Billed Monthly
                                         </div>
@@ -704,7 +726,8 @@
                                             <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col rounded" [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
+                                    <div class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
                                         <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
                                             Billed Yearly
                                         </div>
@@ -719,7 +742,52 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
+                            <div class="flex gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Have a coupon</mat-label>
+                                    <input matInput formControlName="clientCoupon" autocomplete="do-not-autofill"
+                                           (change)="couponChange($event)">
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientCoupon, 'Coupon')}}</mat-error>
+                                </mat-form-field>
+                                <button
+                                    class="fuse-mat-button-large w-30 mt-2 bg-teal-400"
+                                    mat-flat-button
+                                    type="button"
+                                >
+                                    Apply
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-x-2 register-prices">
+                                <div class="flex flex-col">
+                                    <div class="flex items-start gt-xs:flex-row">
+                                        <span class="text-2xl">Payable Today:</span>
+                                    </div>
+
+                                    <div *ngIf="payableToday===1" class="flex items-start gt-xs:flex-row">
+                                        <span class="text-md">We will charge $1 to your card and refund it within 24 hours</span><span class="text-2xl">&nbsp;</span>
+                                    </div>
+
+                                    <div class="flex items-start gt-xs:flex-row">
+                                        <span class="text-2xl">Next Billing Date:</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex gt-xs:flex-row justify-end">
+                                        <span class="text-2xl font-bold">$ {{payableToday | number:'0.2'}}</span>
+                                    </div>
+
+                                    <div *ngIf="payableToday===1" class="flex items-start gt-xs:flex-row">
+                                        <span class="text-2xl">&nbsp;</span>
+                                    </div>
+
+                                    <div class="flex gt-xs:flex-row justify-end">
+                                        <span class="text-2xl font-bold">{{nextBillingDate}}</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="flex items-center justify-end">
@@ -743,13 +811,6 @@
 
                         </form>
                     </div>
-                    <div *ngIf="errors.length > 0" class="content p-4 alert alert-danger">
-                        <ul>
-                            <li *ngFor="let message of errors">
-                                {{ message }}
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </fuse-card>
@@ -767,7 +828,15 @@
                             <div id="payment-element">
                                 <!-- Elements will create form elements here -->
                             </div>
-                            <button id="submit">Submit</button>
+                            <button
+                                class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
+                                mat-flat-button
+                                [disabled]="!paymentReady"
+                                (click)="processPayment()"
+                                type="submit"
+                            >
+                                Pay Now
+                            </button>
                             <div id="error-message">
                                 <!-- Display error message to your customers here -->
                             </div>

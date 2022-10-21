@@ -12,6 +12,9 @@ export class Client {
     public signUpDate: string = '';
     public plan: string = '';
     public profiles: number = 5000;
+    public coupon: string = '';
+    public billingStartDate: string = '';
+    public offer: string = '';
 
     public constructor(init?: Partial<Client>) {
         Object.assign(this, init);

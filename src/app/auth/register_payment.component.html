@@ -1,0 +1,77 @@
+<div id="registerComplete" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-error" *ngIf="errors.length > 0">
+        <div id="errorforms" class="simple fullwidth">
+            <div class="content p-3">
+                <div>
+                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                        <div class="card-header">
+                            <strong>Errors</strong>
+                        </div>
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+
+    <fuse-card *ngIf="action==='result'" class="card-minor">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary-500">{{t('auth-register-payment-status')}}</div>
+        </div>
+        <div id="message">
+            {{ stripeMessage }}
+        </div>
+        <div>
+            <button
+                class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                mat-flat-button
+                [disabled]="stripeMessage.length === 0"
+                (click)="confirmResult()"
+                type="button"
+            >
+                Continue
+            </button>
+
+        </div>
+    </fuse-card>
+
+    <fuse-card *ngIf="action==='payment'" class="card-major">
+        <div class="p-4">
+            <div class="h1 text-white bg-primary-500">{{t('auth-register-payment')}}</div>
+        </div>
+        <div class="filled-major-item" fuseScrollbar>
+
+            <div id="message">
+                {{ stripeMessage }}
+            </div>
+
+            <div id="formpayments" class="simple fullwidth">
+
+                <div class="content p-3">
+                    <form id="payment-form">
+                        <div id="payment-element">
+                            <!-- Elements will create form elements here -->
+                        </div>
+                        <button
+                            class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                            mat-flat-button
+                            [disabled]="!paymentReady"
+                            (click)="processPayment()"
+                            type="submit"
+                        >
+                            Pay Now
+                        </button>
+                        <div id="error-message">
+                            <!-- Display error message to your customers here -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+
+</div>

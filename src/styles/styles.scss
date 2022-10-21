@@ -120,6 +120,17 @@ ul {
         list-style-type: none;
     }
 }
+.card-medium {
+    display: flex !important;
+    flex-direction: column;
+    min-width: 45% !important;
+    max-width: 80% !important;
+    text-align: center;
+
+    ul {
+        list-style-type: none;
+    }
+}
 
 .card-minor {
     display: flex !important;
@@ -1094,6 +1105,9 @@ a {
     .card-major {
         min-width: 80% !important;
     }
+    .card-medium {
+        min-width: 80% !important;
+    }
     .card-minor {
         min-width: 80% !important;
     }
@@ -1117,6 +1131,9 @@ a {
 
 @media screen and (max-width: 1024px) {
     .card-major {
+        min-width: 80% !important;
+    }
+    .card-medium {
         min-width: 80% !important;
     }
     .card-minor {

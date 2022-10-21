@@ -8,6 +8,7 @@ import {User} from '../models/user';
 import {Client} from '../models/client';
 import {FuseSplashScreenService} from '@fuse/services/splash-screen/splash-screen.service';
 import * as moment from 'moment';
+import {getProjectIndexFiles} from '@angular/cdk/schematics';
 
 @Injectable()
 export class HttpService {
@@ -397,10 +398,37 @@ export class HttpService {
         const regsitrationUser = {
             name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
-            token: user.token, layout: user.layout, scheme: user.scheme,
-            theme: user.theme
+            client_billing: client.billing, client_profiles: client.profiles,  client_coupon: client.coupon,
+            client_billing_start_date: client.billingStartDate,
+            token: user.token, layout: user.layout, scheme: user.scheme, theme: user.theme
         };
-        return this.http.post(this.apiUrl + 'register', regsitrationUser, {
+        const result = this.http.post(this.apiUrl + 'register', regsitrationUser, {
+            headers: headers
+        }).pipe(
+            timeout(this.timeout),
+            map(pipeResult => {
+                return pipeResult['data'];
+            }),
+            catchError((error: any) => {
+                if (error.status === 406) {
+                    const body = error.error;
+                    return observableThrowError(body.errors);
+                }
+                if (error.name === 'TimeoutError') {
+                    return observableThrowError(['Server timeout']);
+                }
+                return observableThrowError(['Unknown error - please contact support']);
+            }),);
+        return result;
+    }
+
+    /**
+     * Process the confirmation of payment during registration
+     * @param payload
+     */
+    public confirmPayment(payload: any): any {
+        const headers = this.getJsonHeader();
+        const result = this.http.post(this.apiUrl + 'register-payment-complete', payload, {
             headers: headers
         }).pipe(
             timeout(this.timeout),
@@ -417,6 +445,8 @@ export class HttpService {
                 }
                 return observableThrowError(['Unknown error - please contact support']);
             }),);
+
+        return result;
     }
 
     /**

@@ -6,6 +6,7 @@ import {FuseCardModule} from '@fuse/components/card';
 import {SharedModule} from '../../shared/shared.module';
 import {HomeComponent} from './home.component';
 import {RegisterCompleteComponent} from 'app/auth/register_complete.component';
+import {RegisterPaymentComponent} from 'app/auth/register_payment.component';
 import {NoAuthGuard} from '../../core/auth/guards/noAuth.guard';
 import {LayoutComponent} from '../../layout/layout.component';
 import {RegisterComponent} from 'app/auth/register.component';
@@ -29,6 +30,14 @@ const routes = [
             {
                 path: 'register',
                 component: RegisterComponent
+            },
+            {
+                path: 'register-payment/:clientId',
+                component: RegisterPaymentComponent
+            },
+            {
+                path: 'register-complete',
+                component: RegisterCompleteComponent
             }
         ]
     },
@@ -38,6 +47,7 @@ const routes = [
     declarations: [
         HomeComponent,
         RegisterCompleteComponent,
+        RegisterPaymentComponent,
         RegisterComponent,
     ],
     imports: [

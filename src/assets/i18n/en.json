@@ -11,8 +11,9 @@
     "account-usermanagement": "User",
 
     "auth-register-heading": "Sign Up",
+    "auth-register-payment-status": "Payment Status",
     "auth-register-payment": "Payment",
-
+    "auth-register-complete": "Sign up Complete",
 
     "auth-login": "Login",
     "auth-confirm": "Sign up Confirmed",
