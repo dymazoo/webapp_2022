@@ -1,5 +1,5 @@
 <div *transloco="let t">
-    <div class="h1 text-white bg-primary central">Confirm</div>
+    <div class="h1 text-white bg-primary central">{{title}}</div>
     <div mat-dialog-content>
         <div id="forms" class="simple fullwidth">
 
@@ -8,15 +8,38 @@
                       [formGroup]="confirmForm"
                       (submit)="onConfirm()">
 
-                    <p class="text-center font-bold">{{ confirmMessage }}</p>
-                    <p class="text-center" *ngIf="informationMessage.length > 0">{{ informationMessage }}</p>
+                    <div *ngIf="buttons==='close'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Close
+                        </button>
+                    </div>
+                    <div *ngIf="buttons==='ok'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Ok
+                        </button>
+                    </div>
 
-                    <div class="flex items-center justify-end">
+                    <p class="text-center font-bold">{{ confirmMessage }}</p>
+                    <p class="text-center" *ngIf="informationMessage.length > 0" >{{ informationMessage }}</p>
+                    <div *ngIf="rawHtml.length > 0" [innerHTML]="rawHtml | safe: 'html'" ></div>
+
+                    <div *ngIf="buttons==='yesno'" class="flex items-center justify-end">
                         <button class="fuse-mat-button-large w-20 mt-2"
                                 mat-stroked-button type="button" (click)="onCancel()">No
                         </button>
                         <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
                                 mat-flat-button type="submit">Yes
+                        </button>
+                    </div>
+
+                    <div *ngIf="buttons==='close'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Close
+                        </button>
+                    </div>
+                    <div *ngIf="buttons==='ok'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Ok
                         </button>
                     </div>
 

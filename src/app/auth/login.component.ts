@@ -14,6 +14,8 @@ import { TranslocoService } from '@ngneat/transloco';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 
+declare const gtag: Function;
+
 @Component({
     selector: 'login',
     templateUrl: './login.component.html'
@@ -40,6 +42,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        gtag('event', 'page_view', {
+            'page_title': 'Login',
+            'page_location': 'login',
+            'page_path': 'login',
+            'send_to': 'G-0PP76HTMT0'
+        });
+
         this.loginForm = this._formBuilder.group({
             email: [this.user.email, [Validators.required, Validators.email]],
             password: [this.user.password, Validators.required]

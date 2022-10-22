@@ -35,12 +35,14 @@ import {MaterialFileInputModule } from 'ngx-material-file-input';
 import {AbandonDialogComponent} from './components/abandon-dialog.component';
 import {ConfirmDialogComponent} from './components/confirm-dialog.component';
 import {LoginComponent} from 'app/auth/login.component';
+import {SafePipe} from './safe.pipe';
 
 @NgModule({
     declarations: [
         AbandonDialogComponent,
         ConfirmDialogComponent,
         LoginComponent,
+        SafePipe,
     ],
 
     imports: [
@@ -115,7 +117,7 @@ import {LoginComponent} from 'app/auth/login.component';
         AbandonDialogComponent,
         ConfirmDialogComponent,
         LoginComponent,
-
+        SafePipe,
     ],
 })
 export class SharedModule
