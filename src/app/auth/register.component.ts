@@ -178,6 +178,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.errors = ['Coupon is not valid, or no longer active'];
                 }
                 this.client.offer = this.offer;
+                this.client.coupon = coupon;
                 this.doCalculate();
             }, (error) => {
                 this.errors = ['Coupon is not valid, or no longer active'];
@@ -242,7 +243,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
         let freeMonths = 0;
         let discount = 0;
-        if (this.offer.substring(0,4) === 'free') {
+        if (this.offer.substring(0, 4) === 'free') {
             const months = this.offer.substring(5);
             if (months === 'forever') {
                 freeMonths = -1;
@@ -250,7 +251,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 freeMonths = parseInt(this.offer.substring(5), 10);
             }
         }
-        if (this.offer.substring(0,8) === 'discount') {
+        if (this.offer.substring(0, 8) === 'discount') {
             discount = parseInt(this.offer.substring(9), 10);
         }
 
@@ -259,7 +260,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         yearlyPrice = yearlyPlanPrice + yearlyProfilePrice;
         this.monthlyPlanPrice = monthlyPlanPrice;
         this.yearlyPlanPrice = yearlyPlanPrice;
-        this.monthlyProfilePrice= monthlyProfilePrice;
+        this.monthlyProfilePrice = monthlyProfilePrice;
         this.yearlyProfilePrice = yearlyProfilePrice;
         this.monthlyPrice = monthlyPrice;
         this.yearlyPrice = yearlyPrice;
@@ -276,7 +277,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.payableToday = 1;
                 }
                 this.nextBillingDate = moment().add(1 + freeMonths, 'month').format('LL');
-                this.client.nextBillingDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');;
+                this.client.nextBillingDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');
+                ;
             }
         } else {
             if (freeMonths === -1) {
@@ -286,7 +288,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
             } else {
                 this.payableToday = this.monthlyPrice * (12 - freeMonths) * ((100 - discount) / 100);
                 this.nextBillingDate = moment().add(1, 'year').format('LL');
-                this.client.nextBillingDate = moment().add(1 , 'year').format('YYYY-MM-DD');;
+                this.client.nextBillingDate = moment().add(1, 'year').format('YYYY-MM-DD');
+                ;
             }
         }
     }
@@ -311,7 +314,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
                         this.action = 'payment';
                         this.handlePayment();
                     } else {
-                       this.registered.emit(true);
+                        this.registered.emit(true);
+                        this.router.navigate(['/register-complete']);
                     }
                 } else {
                     this.errors = ['Error registering - please contact support'];

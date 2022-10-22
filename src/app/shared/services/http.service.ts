@@ -402,14 +402,14 @@ export class HttpService {
         this.loggedIn = false;
         this.dashboardLoggedInConfirmed = false;
 
-        const regsitrationUser = {
+        const registrationUser = {
             name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
             client_billing: client.billing, client_profiles: client.profiles,  client_coupon: client.coupon,
             client_billing_start_date: client.nextBillingDate,
             token: user.token, layout: user.layout, scheme: user.scheme, theme: user.theme
         };
-        const result = this.http.post(this.apiUrl + 'register', regsitrationUser, {
+        const result = this.http.post(this.apiUrl + 'register', registrationUser, {
             headers: headers
         }).pipe(
             timeout(this.timeout),
