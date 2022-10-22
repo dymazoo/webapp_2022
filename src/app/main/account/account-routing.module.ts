@@ -7,6 +7,7 @@ import {AuthGuard} from 'app/_guards/index';
 // Module Components
 import {ProfileComponent} from './profile.component';
 import {UserManagementComponent} from './usermanagement.component';
+import {AccountManagementComponent} from './accountmanagement.component';
 
 const routes: Routes = [
     {
@@ -20,7 +21,14 @@ const routes: Routes = [
         component: UserManagementComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]
+    },
+    {
+        path: 'management',
+        component: AccountManagementComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard]
     }
+
 
 ];
 

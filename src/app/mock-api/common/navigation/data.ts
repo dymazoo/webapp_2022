@@ -62,14 +62,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:table',
                 link : '/data/layouts'
             },
-//            {
-//                id   : 'data.custom-fields',
-//                title: 'Custom fields',
-//                type : 'basic',
-//                disabled : true,
-//                icon : 'heroicons_outline:dots-circle-horizontal',
-//                link : '/data/custom-fields'
-//            },
             {
                 id   : 'data.sales-categories',
                 title: 'Sales categories',

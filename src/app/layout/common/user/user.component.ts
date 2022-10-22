@@ -98,6 +98,10 @@ export class UserComponent implements OnInit, OnDestroy
         this._router.navigate(['/account/user-management']);
     }
 
+    public accountManagement(value): void {
+        this._router.navigate(['/account/management']);
+    }
+
     public startImpersonating(): void {
         const dialogRef = this.dialog.open(UserImpersonateDialogComponent, {
             minWidth: '40%',

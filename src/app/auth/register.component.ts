@@ -268,7 +268,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             if (freeMonths === -1) {
                 this.payableToday = 0;
                 this.nextBillingDate = 'Never';
-                this.client.billingStartDate = 'never';
+                this.client.nextBillingDate = 'never';
             } else {
                 if (freeMonths === 0) {
                     this.payableToday = this.monthlyPrice * ((100 - discount) / 100);
@@ -276,17 +276,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.payableToday = 1;
                 }
                 this.nextBillingDate = moment().add(1 + freeMonths, 'month').format('LL');
-                this.client.billingStartDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');;
+                this.client.nextBillingDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');;
             }
         } else {
             if (freeMonths === -1) {
                 this.payableToday = 0;
                 this.nextBillingDate = 'Never';
-                this.client.billingStartDate = 'never';
+                this.client.nextBillingDate = 'never';
             } else {
                 this.payableToday = this.monthlyPrice * (12 - freeMonths) * ((100 - discount) / 100);
                 this.nextBillingDate = moment().add(1, 'year').format('LL');
-                this.client.billingStartDate = moment().add(1 , 'year').format('YYYY-MM-DD');;
+                this.client.nextBillingDate = moment().add(1 , 'year').format('YYYY-MM-DD');;
             }
         }
     }

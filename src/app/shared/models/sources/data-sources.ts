@@ -80,6 +80,10 @@ export class DataSources {
     public getCurrentDescriptions(): void {
         this.httpService.getEntity('source-settings', '')
             .subscribe(result => {
+                let plan = 'analyst';
+                if (this.userData.plan !== undefined) {
+                    plan = this.userData.plan;
+                }
                 this.sourceSettings = result;
 
                 // check if there is already an esp in use and make ESP available to other components
@@ -114,6 +118,19 @@ export class DataSources {
                     if (source.esp && hasEsp) {
                         sourceActive = true;
                     }
+
+                    if (plan === 'analyst') {
+                        if (source.name === 'shopify' || source.name === 'eventbrite' || source.name === 'dymazooapi' || source.name === 'zapier') {
+                            sourceActive = true;
+                        }
+                    }
+
+                    if (plan === 'specialist') {
+                        if (source.name === 'dymazooapi' || source.name === 'zapier') {
+                            sourceActive = true;
+                        }
+                    }
+
                     if (!sourceActive) {
                         availableDescriptions.push({name: source.name, description: source.description});
                     }

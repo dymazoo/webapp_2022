@@ -68,7 +68,7 @@
                                                         [cdkDragData]="{node:node}"
                                                         (dblclick)="nodeAddToCard($event, node)"
                                                         (contextmenu)="onSelectionContextMenu($event, node)">
-                                                        <span class="text-bold">{{node.value}}</span>
+                                                        <span class="font-bold">{{node.value}}</span>
                                                         <span *cdkDragPreview>
                                                             <ng-container
                                                                 *ngIf="node.select || node.list">{{node.title}}
@@ -110,7 +110,7 @@
                                                         [cdkDragData]="{card:card}"
                                                         (dblclick)="cardAddToLane($event, card)"
                                                         (contextmenu)="onCardContextMenu($event, card)">
-                                                        <span class="text-bold">{{card.value}}</span>
+                                                        <span class="font-bold">{{card.value}}</span>
                                                         <div class="select-card select-card-preview" *cdkDragPreview>
                                                             <div class="select-card-header blue-100">
                                                                 <span>{{card.value}}</span>
@@ -161,7 +161,7 @@
                                                 (click)="addCard($event, lane.id)">
                                                 playlist_add
                                             </mat-icon>
-                                            <span class="text-bold">Group {{lane.sequence}}</span> [{{ lane.count }}]
+                                            <span class="font-bold">Group {{lane.sequence}}</span> [{{ lane.count }}]
                                             <mat-icon
                                                 matTooltip="Insert group after" class="float-right cursor-pointer"
                                                 (click)="addLane($event, lane.id)">
@@ -251,7 +251,7 @@
                                      class="select-lane {{getFinalLaneClass()}} shrink basis-3/12">
                                     <div class="select-lane-header {{getFinalLaneHeaderClass()}}">
                                         <div class="select-lane-header-text">
-                                            <span class="text-bold">Final Result</span> [{{ finalCount }}]
+                                            <span class="font-bold">Final Result</span> [{{ finalCount }}]
                                         </div>
                                     </div>
                                     <div class="select-lane-cards flex flex-col">

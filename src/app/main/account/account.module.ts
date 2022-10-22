@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import {AccountRoutingModule} from './account-routing.module';
 import {ProfileComponent, ProfilePasswordDialogComponent, ProfileEmailDialogComponent } from './profile.component';
 import {UserManagementComponent, UserManagementAdminDialogComponent, UserManagementDialogComponent } from './usermanagement.component';
+import {AccountManagementComponent} from './accountmanagement.component';
 import {SharedModule} from '../../shared/shared.module';
 
 @NgModule({
@@ -14,6 +15,7 @@ import {SharedModule} from '../../shared/shared.module';
         UserManagementComponent,
         UserManagementAdminDialogComponent,
         UserManagementDialogComponent,
+        AccountManagementComponent,
     ],
     imports     : [
         AccountRoutingModule,

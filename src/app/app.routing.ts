@@ -26,12 +26,6 @@ export const appRoutes: Route[] = [
                 path: 'auth',
                 loadChildren: () => import('app/auth/auth.module').then(m => m.AuthModule)
             },
-            {path: 'pricing', children: [
-                {path: 'modern', loadChildren: () => import('app/modules/admin/pages/pricing/modern/modern.module').then(m => m.PricingModernModule)},
-                {path: 'simple', loadChildren: () => import('app/modules/admin/pages/pricing/simple/simple.module').then(m => m.PricingSimpleModule)},
-                {path: 'single', loadChildren: () => import('app/modules/admin/pages/pricing/single/single.module').then(m => m.PricingSingleModule)},
-                {path: 'table', loadChildren: () => import('app/modules/admin/pages/pricing/table/table.module').then(m => m.PricingTableModule)}
-            ]},
         ],
     },
     {

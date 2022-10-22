@@ -1,7 +1,7 @@
 <div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden" *transloco="let t">
     <div class="register-header">
         <div class="home-logo">
-            <a href="https://www.dymazoo.com"><img src="assets/images/logo/dymazoo-flat.png"></a>
+            <a href="https://www.dymazoo.com"></a>
         </div>
     </div>
 
@@ -713,8 +713,11 @@
                                     </div>
                                     <div class="flex flex-col rounded"
                                          [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
-                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                        <div *ngIf="!yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
                                             Billed Monthly
+                                        </div>
+                                        <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Monthly Equivalent
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
@@ -728,7 +731,10 @@
                                     </div>
                                     <div class="flex flex-col rounded"
                                          [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
-                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                        <div *ngIf="!yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Yearly Equivalent
+                                        </div>
+                                        <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
                                             Billed Yearly
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">

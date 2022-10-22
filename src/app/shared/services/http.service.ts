@@ -26,6 +26,7 @@ export class HttpService {
         'layout': '',
         'scheme': '',
         'theme': '',
+        'plan': '',
         'impersonateUserName': ''
     };
     public impersonateUserData = {
@@ -35,6 +36,7 @@ export class HttpService {
         'layout': '',
         'scheme': '',
         'theme': '',
+        'plan': '',
         'impersonateUserName': ''
     };
     public dashboardRecency: any;
@@ -98,6 +100,7 @@ export class HttpService {
                         this.userData.layout = data['layout'];
                         this.userData.scheme = data['scheme'];
                         this.userData.theme = data['theme'];
+                        this.userData.plan = data['plan'];
                         this.userData.impersonateUserName = impersonateUsername;
                         this.setLoggedInState(true);
                         if (this.pendingRoute.length > 0) {
@@ -135,6 +138,7 @@ export class HttpService {
             this.userData.layout = '';
             this.userData.scheme = '';
             this.userData.theme = '';
+            this.userData.plan = '';
             localStorage.removeItem('dymazooUser');
             localStorage.removeItem('dymazooDashboard');
             localStorage.removeItem('dymazooImpersonate');
@@ -227,6 +231,7 @@ export class HttpService {
                 this.userData.layout = '';
                 this.userData.scheme = '';
                 this.userData.theme = '';
+                this.userData.plan = '';
                 this.homeUrl = '/dashboard';
                 this.userData.permissions = [];
                 this.token = token;
@@ -283,6 +288,7 @@ export class HttpService {
             this.userData.layout = '';
             this.userData.scheme = '';
             this.userData.theme = '';
+            this.userData.plan = '';
             localStorage.removeItem('dymazooUser');
             localStorage.removeItem('dymazooDashboard');
             localStorage.removeItem('dymazooImpersonate');
@@ -326,6 +332,7 @@ export class HttpService {
                     this.userData.layout = data['layout'];
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
+                    this.userData.plan = data['plan'];
                     this.setLoggedInState(true);
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
@@ -399,7 +406,7 @@ export class HttpService {
             name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
             client_billing: client.billing, client_profiles: client.profiles,  client_coupon: client.coupon,
-            client_billing_start_date: client.billingStartDate,
+            client_billing_start_date: client.nextBillingDate,
             token: user.token, layout: user.layout, scheme: user.scheme, theme: user.theme
         };
         const result = this.http.post(this.apiUrl + 'register', regsitrationUser, {
@@ -515,6 +522,7 @@ export class HttpService {
                     this.userData.layout = data['layout'];
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
+                    this.userData.plan = data['plan'];
                     this.userData.impersonateUserName = this.impersonateUserData.userName;
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
@@ -598,6 +606,7 @@ export class HttpService {
                 'layout': '',
                 'scheme': '',
                 'theme': '',
+                'plan': '',
                 impersonateUserName: ''
             };
             this.impersonateToken = null;
@@ -613,6 +622,7 @@ export class HttpService {
                     this.userData.layout = data['layout'];
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
+                    this.userData.plan = data['plan'];
 
                     this.userSubject.next(this.userData);
 

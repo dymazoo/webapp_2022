@@ -522,9 +522,14 @@ home {
         background-color: #414f8c;
 
         .home-logo {
-            width: fit-content;
+            min-width: 240px;
+            min-height: 79px;
             padding: 20px;
             display: inline-block;
+            background-image: url(/assets/images/logo/dymazoo-flat.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto;
         }
 
         .home-get-started {
@@ -617,9 +622,14 @@ register {
         background-color: #414f8c;
 
         .home-logo {
-            width: fit-content;
+            min-width: 240px;
+            min-height: 79px;
             padding: 20px;
             display: inline-block;
+            background-image: url(/assets/images/logo/dymazoo-flat.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto;
         }
     }
     .register-body {
@@ -633,6 +643,13 @@ register {
         margin-bottom: 10px;
     }
 }
+
+.account-prices {
+    min-width: 100%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
 
 .background-dymazoo {
     background-color: #414f8c;
@@ -654,6 +671,36 @@ register {
 
 @media screen and (max-width: 800px) {
     home {
+        .home-header {
+            height: 100px;
+
+            .home-logo {
+                height: 100px;
+                min-width: 110px;
+                padding: 20px;
+                display: inline-block;
+                background-image: url(/assets/images/logo/dymazoo-stacked.png);
+            }
+
+            .home-get-started {
+                display: inline-block;
+                float: right;
+                color: #81D742;
+                font-size: 20px;
+                padding-top: 15px;
+                padding-right: 10px;
+
+                .home-website {
+                    a {
+                        color: #81D742;
+                        text-decoration: none !important;
+                    }
+                }
+                .home-header-link {
+                    padding-right: 10px;
+                }
+            }
+        }
         .home-banner {
             background-image: url(/assets/images/backgrounds/static-home-small.png);
         }

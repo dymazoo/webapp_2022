@@ -13,7 +13,8 @@ export class Client {
     public plan: string = '';
     public profiles: number = 5000;
     public coupon: string = '';
-    public billingStartDate: string = '';
+    public nextBillingDate: string = '';
+    public leftDate: string = '';
     public offer: string = '';
 
     public constructor(init?: Partial<Client>) {

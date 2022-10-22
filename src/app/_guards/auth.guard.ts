@@ -80,11 +80,19 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
         // permission controlled links
         if (localStorage.getItem('dymazooUser')) {
             let result = true;
+            const dymazooUser = JSON.parse(localStorage.getItem('dymazooUser'));
+            const plan = dymazooUser.plan;
             // logged in so check permissions
             url = state.url.toString();
             switch (url) {
                 case '/account/settings':
                     result = this.httpService.hasRoutePermission('settings', url);
+                    break;
+                case '/integrations/source-settings':
+                    result = this.httpService.hasRoutePermission('settings', url);
+                    break;
+                case '/account/management':
+                    result = this.httpService.hasRoutePermission('client_admin', url);
                     break;
                 case '/account/user-management':
                     result = this.httpService.hasRoutePermission('user_management', url);
@@ -92,9 +100,37 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
                 case '/data/import':
                     result = this.httpService.hasRoutePermission('import', url);
                     break;
+                case '/data/layout':
+                    result = this.httpService.hasRoutePermission('layout', url);
+                    break;
+                case '/data/layout':
+                    result = this.httpService.hasRoutePermission('import', url);
+                    break;
+                case '/marketing/segmentation':
+                    result = this.httpService.hasRoutePermission('selections', url);
+                    break;
+                case '/marketing/campaigns':
+                    result = this.httpService.hasRoutePermission('esp_integration', url);
+                    break;
+                case '/data/custom-fields':
+                    result = this.httpService.hasRoutePermission('custom_management', url);
+                    break;
+                case '/data/sales-categories':
+                    result = this.httpService.hasRoutePermission('sales', url);
+                    break;
+                case '/data/event-categories':
+                case '/data/events':
+                    result = this.httpService.hasRoutePermission('event', url);
+                    break;
+                case '/data/preferences':
+                    result = this.httpService.hasRoutePermission('settings', url);
+                    break;
+                case '/data/compliance':
+                    result = this.httpService.hasRoutePermission('compliance', url);
+                    break;
             }
             if (!result) {
-               ` this.router.navigate(['/dashboard']);`
+               this.router.navigate(['/dashboard']);
             }
             return of(result);;
         } else {

@@ -35,6 +35,10 @@
         <mat-icon [svgIcon]="'heroicons_outline:user-group'"></mat-icon>
         <span>User management</span>
     </button>
+    <button mat-menu-item *ngIf="canClientAdmin" (click)="accountManagement($event)">
+        <mat-icon [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
+        <span>Account management</span>
+    </button>
     <mat-divider class="my-2"></mat-divider>
     <button mat-menu-item *ngIf="!isImpersonating && canImpersonate" (click)="startImpersonating()">
         <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
