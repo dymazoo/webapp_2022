@@ -270,6 +270,10 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
         });
     }
 
+    clearErrors(): void {
+        this.errors = [];
+    }
+
 }
 
 @Component({
@@ -378,6 +382,8 @@ export class UserManagementDialogComponent implements OnInit {
                 roles.push(this.roles[index].name);
             }
         });
+        this.currentUser.name = this.usermanagementForm.controls['name'].value;
+        this.currentUser.email = this.usermanagementForm.controls['email'].value;
         this.currentUser.roles = roles;
 
         this.dialogRef.close({action: 'save', user: this.currentUser});

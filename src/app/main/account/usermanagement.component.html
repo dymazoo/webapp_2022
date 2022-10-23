@@ -1,4 +1,23 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-error" *ngIf="errors.length > 0">
+        <div id="errorforms" class="simple fullwidth">
+            <div class="content p-3">
+                <div>
+                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                        <div class="card-header">
+                            <strong>Errors</strong>
+                        </div>
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+
     <fuse-card class="card-major">
         <div class="p-4">
             <div class="h1 text-white bg-primary">{{t('account-usermanagement-heading')}}</div>
@@ -81,13 +100,6 @@
                             Back
                         </button>
                     </div>
-                </div>
-                <div *ngIf="errors.length > 0" class="content p-3 alert alert-danger">
-                    <ul>
-                        <li *ngFor="let message of errors">
-                            {{ message }}
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
