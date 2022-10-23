@@ -850,11 +850,12 @@ export class HttpService {
         const now = moment();
         let refreshDashboard = true;
         if (this.dashboardRecency !== undefined) {
-            if (now.diff(this.dashboardRecency, 'minutes') < 5) {
+            if (now.diff(this.dashboardRecency, 'hours') < 2) {
                 refreshDashboard = false;
             }
         }
         if (this.dashboardLoggedInConfirmed && (refreshDashboard || force)) {
+            this.dashboardData = undefined;
             this.getEntity('dashboard', '')
                 .subscribe(result => {
                     this.dashboardData = result;

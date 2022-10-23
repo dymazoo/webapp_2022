@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     config: any;
 
+    private processingDashboard: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -59,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this.dashboardSubscription = this.httpService.getDashboardData().subscribe(dashboardData => {
             this.dashboardData = dashboardData;
-            this.processDashboardData(false);
+            this.processDashboardData(true);
         });
     }
 
@@ -76,13 +77,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     public forceRefreshDashboard(): void {
         this.dashboardData = this.httpService.fetchDashboardData(true);
-        if (this.dashboardData !== undefined) {
-            this.processDashboardData(true);
-        }
     }
 
     protected processDashboardData(force: boolean): void {
         this.dataReady = false;
+        if (this.processingDashboard) {
+            return;
+        }
+        this.processingDashboard = true;
 
         const storedDashboard = this.httpService.getStoredDashboard();
         if (!force && storedDashboard && storedDashboard.hasData) {
@@ -237,7 +239,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
                             this.refreshDashboard(this.dateItem.value);
                         }, (errors) => {
-
+                            this.processingDashboard = false;
                         });
                 }
             }
@@ -245,6 +247,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     protected refreshDashboard(dashboardDate): void {
+        this.processingDashboard = false;
         this.chartPeople = {
             chart  : {
                 animations: {
