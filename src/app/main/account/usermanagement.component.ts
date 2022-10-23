@@ -376,10 +376,11 @@ export class UserManagementDialogComponent implements OnInit {
     }
 
     save(): void {
-        const roles = [];
+        let roles = [];
+        let test;
         (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
             if (roleControl.value === true) {
-                roles.push(this.roles[index].name);
+                roles.push(this.roles[index]);
             }
         });
         this.currentUser.name = this.usermanagementForm.controls['name'].value;
