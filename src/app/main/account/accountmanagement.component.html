@@ -1,294 +1,300 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
-    <fuse-card class="card-error" *ngIf="errors.length > 0">
-        <div id="errorforms" class="simple fullwidth">
-            <div class="content p-3">
-                <div>
-                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                        <div class="card-header">
-                            <strong>Errors</strong>
+    <div class="card-major">
+        <fuse-card class="card-error" *ngIf="errors.length > 0">
+            <div id="errorforms" class="simple fullwidth">
+                <div class="content p-3">
+                    <div>
+                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                            <div class="card-header">
+                                <strong>Errors</strong>
+                            </div>
+                            <ul>
+                                <li *ngFor="let message of errors">
+                                    {{ message }}
+                                </li>
+                            </ul>
                         </div>
-                        <ul>
-                            <li *ngFor="let message of errors">
-                                {{ message }}
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-    </fuse-card>
+        </fuse-card>
 
-    <fuse-card class="card-major">
-        <div class="p-4">
-            <div class="h1 text-white bg-primary">{{t('account-management-heading')}}</div>
-        </div>
+        <fuse-card class="card-major">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary">{{t('account-management-heading')}}</div>
+            </div>
 
-        <div class="major-item" fuseScrollbar>
+            <div class="major-item" fuseScrollbar>
 
-            <div id="forms" class="simple fullwidth">
+                <div id="forms" class="simple fullwidth">
 
-                <div class="content p-3">
-                    <form *ngIf="hasData" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
-                          name="accountForm" [formGroup]="accountForm"
-                          (submit)="save()">
+                    <div class="content p-3">
+                        <form *ngIf="hasData" class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                              name="accountForm" [formGroup]="accountForm"
+                              (submit)="save()">
 
-                        <div *ngIf="!leaving" class="flex items-center justify-end">
-                            <button mat-stroked-button type="button" [color]="'warn'" (click)="endSubscription()">
-                                End Subscription
-                            </button>
-                        </div>
-
-                        <div *ngIf="leaving" class="flex items-center justify-end">
-                            <button mat-raised-button type="button" [color]="'warn'" (click)="cancelLeaving()">
-                                Keep Your Subscription
-                            </button>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Company name</mat-label>
-                                <input matInput #name formControlName="name" autocomplete="do-not-autofill"
-                                       required>
-                                <mat-error>{{ getErrorMessage(accountForm.controls.name, 'Company name')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Address 1</mat-label>
-                                <input matInput formControlName="address1" autocomplete="do-not-autofill">
-                                <mat-error>{{ getErrorMessage(accountForm.controls.address1, 'Address 1')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Address 2</mat-label>
-                                <input matInput formControlName="address2" autocomplete="do-not-autofill">
-                                <mat-error>{{ getErrorMessage(accountForm.controls.address2, 'Address 2')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>City</mat-label>
-                                <input matInput formControlName="city" autocomplete="do-not-autofill">
-                                <mat-error>{{ getErrorMessage(accountForm.controls.city, 'City')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Zip / Post Code</mat-label>
-                                <input matInput formControlName="postcode" autocomplete="do-not-autofill">
-                                <mat-error>{{ getErrorMessage(accountForm.controls.postcode, 'Zip / Post Code')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Country</mat-label>
-                                <mat-select formControlName="country">
-                                    <ng-container *ngFor="let country of countryList">
-                                        <mat-option [value]=country>
-                                            {{country}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                                <mat-error>{{ getErrorMessage(accountForm.controls.country, 'Country')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field
-                                class="flex-auto gt-xs:pr-3">
-                                <mat-label>Telephone</mat-label>
-                                <input matInput formControlName="telephone" autocomplete="do-not-autofill">
-                                <mat-error>{{ getErrorMessage(accountForm.controls.telephone, 'Telephone')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Time Zone</mat-label>
-                                <mat-select formControlName="timezone">
-                                    <ng-container *ngFor="let zone of timeZoneList">
-                                        <mat-option [value]=zone>
-                                            {{zone}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                                <mat-error>{{ getErrorMessage(accountForm.controls.timezone, 'Time Zone')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Plan</mat-label>
-                                <mat-select formControlName="plan" required
-                                            (selectionChange)="setPlan($event)">
-                                    <mat-option [value]="'analyst'">
-                                        Analyst
-                                    </mat-option>
-                                    <mat-option [value]="'specialist'">
-                                        Specialist
-                                    </mat-option>
-                                    <mat-option [value]="'consultant'">
-                                        Consultant
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>{{ getErrorMessage(accountForm.controls.plan, 'Plan')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>Billing</mat-label>
-                                <mat-select formControlName="billing" required
-                                            (selectionChange)="setBilling($event)">
-                                    <mat-option [value]="'monthly'">
-                                        Monthly
-                                    </mat-option>
-                                    <mat-option [value]="'yearly'">
-                                        Yearly
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>{{ getErrorMessage(accountForm.controls.billing, 'Billing')}}</mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-label>Maximum number of customer profiles</mat-label>
-                            <mat-slider
-                                formControlName="profiles"
-                                thumbLabel
-                                [displayWith]="formatSliderLabel"
-                                tickInterval="1"
-                                step="5000"
-                                min="0"
-                                max="200000"
-                                aria-label="units"
-                                (change)="onSliderChange($event)"></mat-slider>
-                            <div class="flex justify-evenly items-start">
-                                <span></span>
-                                <span>10k</span>
-                                <span>20k</span>
-                                <span>30k</span>
-                                <span>40k</span>
-                                <span>50k</span>
-                                <span>60k</span>
-                                <span>70k</span>
-                                <span>80k</span>
-                                <span>90k</span>
-                                <span>100k</span>
-                                <span>110k</span>
-                                <span>120k</span>
-                                <span>130k</span>
-                                <span>140k</span>
-                                <span>150k</span>
-                                <span>160k</span>
-                                <span>170k</span>
-                                <span>180k</span>
-                                <span>190k</span>
+                            <div *ngIf="!leaving" class="flex items-center justify-end">
+                                <button mat-stroked-button type="button" [color]="'warn'" (click)="endSubscription()">
+                                    End Subscription
+                                </button>
                             </div>
-                        </div>
 
-                        <div class="flex flex-col items-start gt-xs:flex-row">
-                            <div class="grid grid-cols-3 gap-x-2 account-prices">
+                            <div *ngIf="leaving" class="flex items-center justify-end">
+                                <button mat-raised-button type="button" [color]="'warn'" (click)="cancelLeaving()">
+                                    Keep Your Subscription
+                                </button>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Company name</mat-label>
+                                    <input matInput #name formControlName="name" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.name, 'Company name')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Address 1</mat-label>
+                                    <input matInput formControlName="address1" autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.address1, 'Address 1')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Address 2</mat-label>
+                                    <input matInput formControlName="address2" autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.address2, 'Address 2')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>City</mat-label>
+                                    <input matInput formControlName="city" autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.city, 'City')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Zip / Post Code</mat-label>
+                                    <input matInput formControlName="postcode" autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.postcode, 'Zip / Post Code')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <ng-container *ngFor="let country of countryList">
+                                            <mat-option [value]=country>
+                                                {{country}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.country, 'Country')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Telephone</mat-label>
+                                    <input matInput formControlName="telephone" autocomplete="do-not-autofill">
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.telephone, 'Telephone')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Time Zone</mat-label>
+                                    <mat-select formControlName="timezone">
+                                        <ng-container *ngFor="let zone of timeZoneList">
+                                            <mat-option [value]=zone>
+                                                {{zone}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.timezone, 'Time Zone')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Plan</mat-label>
+                                    <mat-select formControlName="plan" required
+                                                (selectionChange)="setPlan($event)">
+                                        <mat-option [value]="'analyst'">
+                                            Analyst
+                                        </mat-option>
+                                        <mat-option [value]="'specialist'">
+                                            Specialist
+                                        </mat-option>
+                                        <mat-option [value]="'consultant'">
+                                            Consultant
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.plan, 'Plan')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Billing</mat-label>
+                                    <mat-select formControlName="billing" required
+                                                (selectionChange)="setBilling($event)">
+                                        <mat-option [value]="'monthly'">
+                                            Monthly
+                                        </mat-option>
+                                        <mat-option [value]="'yearly'">
+                                            Yearly
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(accountForm.controls.billing, 'Billing')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-label>Maximum number of customer profiles</mat-label>
+                                <mat-slider
+                                    formControlName="profiles"
+                                    thumbLabel
+                                    [displayWith]="formatSliderLabel"
+                                    tickInterval="1"
+                                    step="5000"
+                                    min="0"
+                                    max="200000"
+                                    aria-label="units"
+                                    (change)="onSliderChange($event)"></mat-slider>
+                                <div class="flex justify-evenly items-start">
+                                    <span></span>
+                                    <span>10k</span>
+                                    <span>20k</span>
+                                    <span>30k</span>
+                                    <span>40k</span>
+                                    <span>50k</span>
+                                    <span>60k</span>
+                                    <span>70k</span>
+                                    <span>80k</span>
+                                    <span>90k</span>
+                                    <span>100k</span>
+                                    <span>110k</span>
+                                    <span>120k</span>
+                                    <span>130k</span>
+                                    <span>140k</span>
+                                    <span>150k</span>
+                                    <span>160k</span>
+                                    <span>170k</span>
+                                    <span>180k</span>
+                                    <span>190k</span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-start gt-xs:flex-row">
+                                <div class="grid grid-cols-3 gap-x-2 account-prices">
+                                    <div class="flex flex-col">
+                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            &nbsp;
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Base Plan:</span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Add profiles: </span><span
+                                            class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Total: </span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
+                                        <div *ngIf="!yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Monthly
+                                        </div>
+                                        <div *ngIf="yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Monthly Equivalent
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyProfilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
+                                        <div *ngIf="!yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Yearly Equivalent
+                                        </div>
+                                        <div *ngIf="yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Yearly
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyProfilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> $ {{yearlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-x-2 account-prices">
                                 <div class="flex flex-col">
-                                    <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                        &nbsp;
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row">
-                                        <span class="text-md">Base Plan:</span><span class="text-2xl">&nbsp;</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row">
-                                        <span class="text-md">Add profiles: </span><span
-                                        class="text-2xl">&nbsp;</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row">
-                                        <span class="text-md">Total: </span><span class="text-2xl">&nbsp;</span>
+                                    <div class="flex items-start gt-xs:flex-row">
+                                        <span class="text-2xl">Next Billing Date:</span>
                                     </div>
                                 </div>
-                                <div class="flex flex-col rounded"
-                                     [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
-                                    <div *ngIf="!yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                        Billed Monthly
-                                    </div>
-                                    <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                        Monthly Equivalent
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{monthlyProfilePrice | number:'0.2'}}</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col rounded"
-                                     [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
-                                    <div *ngIf="!yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                        Yearly Equivalent
-                                    </div>
-                                    <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                        Billed Yearly
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{yearlyPlanPrice | number:'0.2'}}</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{yearlyProfilePrice | number:'0.2'}}</span>
-                                    </div>
-                                    <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                        <span class="text-2xl"> $ {{yearlyPrice | number:'0.2'}}</span>
+                                <div class="flex flex-col">
+                                    <div class="flex gt-xs:flex-row justify-end">
+                                        <span class="text-2xl font-bold">{{nextBillingDate}}</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="grid grid-cols-2 gap-x-2 account-prices">
-                            <div class="flex flex-col">
-                                <div class="flex items-start gt-xs:flex-row">
-                                    <span class="text-2xl">Next Billing Date:</span>
-                                </div>
+                            <div class="flex items-center justify-end">
+                                <button class="fuse-mat-button-large w-20 mt-2"
+                                        mat-button
+                                        type="button" (click)="onBack()">
+                                    Back
+                                </button>
+                                <button class="fuse-mat-button-large w-20 mt-2"
+                                        mat-stroked-button
+                                        type="button" (click)="onCancel()">
+                                    Cancel
+                                </button>
+                                <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                        mat-flat-button
+                                        [disabled]="!accountForm.valid"
+                                        type="submit">
+                                    Save
+                                </button>
                             </div>
-                            <div class="flex flex-col">
-                                <div class="flex gt-xs:flex-row justify-end">
-                                    <span class="text-2xl font-bold">{{nextBillingDate}}</span>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="flex items-center justify-end">
-                            <button class="fuse-mat-button-large w-20 mt-2"
-                                    mat-button
-                                    type="button" (click)="onBack()">
-                                Back
-                            </button>
-                            <button class="fuse-mat-button-large w-20 mt-2"
-                                    mat-stroked-button
-                                    type="button" (click)="onCancel()">
-                                Cancel
-                            </button>
-                            <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
-                                    mat-flat-button
-                                    [disabled]="!accountForm.valid"
-                                    type="submit">
-                                Save
-                            </button>
-                        </div>
-
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </fuse-card>
+        </fuse-card>
+    </div>
 </div>

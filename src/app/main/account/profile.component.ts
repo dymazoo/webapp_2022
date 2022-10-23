@@ -169,6 +169,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    clearErrors(): void {
+        this.errors = [];
+    }
+
     openEmailDialog(): void {
         this.errors = [];
         const dialogRef = this.dialog.open(ProfileEmailDialogComponent, {

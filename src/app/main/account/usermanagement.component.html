@@ -1,107 +1,110 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
-    <fuse-card class="card-error" *ngIf="errors.length > 0">
-        <div id="errorforms" class="simple fullwidth">
-            <div class="content p-3">
-                <div>
-                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                        <div class="card-header">
-                            <strong>Errors</strong>
-                        </div>
-                        <ul>
-                            <li *ngFor="let message of errors">
-                                {{ message }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </fuse-card>
-
-    <fuse-card class="card-major">
-        <div class="p-4">
-            <div class="h1 text-white bg-primary">{{t('account-usermanagement-heading')}}</div>
-        </div>
-
-        <div class="major-item" fuseScrollbar>
-
-            <div id="forms" class="simple fullwidth">
-
+    <div class="card-major">
+        <fuse-card class="card-error" *ngIf="errors.length > 0">
+            <div id="errorforms" class="simple fullwidth">
                 <div class="content p-3">
-
-                    <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
-                                mat-flat-button type="button"
-                                (click)="addUser()">Add User
-                        </button>
-                    </div>
-
-                    <div class="flex flex-col gt-xs:flex-row p-2">
-                        <div>
-                            <table mat-table #table matSort
-                                   [dataSource]="paginatedDataSource"
-                                   [@fadeIn]="true">
-                                <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.name}}</td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="email">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.email}}</td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="lastLogin">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Login</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.lastLogin}}</td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="admin">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-                                    <td mat-cell *matCellDef="let row">
-                                        <button  *ngIf="canClientAdmin && row.clientAdmin !== 1" class="fuse-mat-button-large w-50 mt-2 bg-warn-300"
-                                                 mat-flat-button
-                                                 type="button" (click)="openAdminDialog(row.id)">
-                                            Set as Account Admin
-                                        </button>
-                                        <span *ngIf="row.clientAdmin === 1" class="font-bold">Account Admin</span>
-                                    </td>
-                                </ng-container>
-
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
-                                    tabindex="999"
-                                    class="cursor-pointer"
-                                    (click)="onSelect(row, i)"
-                                    (keydown.arrowdown)="onArrowDown()"
-                                    (keydown.arrowup)="onArrowUp()"
-                                    (keydown.enter)="onConfirm()"
-                                    [ngClass]="{'bg-primary-200' : row == selectedRow}"
-                                    matRipple [@fadeIn]="true">
-                                    >
-                                </tr>
-                            </table>
+                    <div>
+                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                            <div class="card-header">
+                                <strong>Errors</strong>
+                            </div>
+                            <ul>
+                                <li *ngFor="let message of errors">
+                                    {{ message }}
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="flex items-center justify-end">
-                        <mat-form-field class="basis-5/12">
-                            <input matInput #filter type="text" (keyup)="filterUsers($event.target.value)"
-                                   autocomplete="do-not-autofill"
-                                   placeholder="Filter">
-                        </mat-form-field>
-
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                    </div>
-
-                    <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
-                                mat-button
-                                type="button" (click)="onBack()">
-                            Back
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-    </fuse-card>
+        </fuse-card>
+
+        <fuse-card class="card-major">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary">{{t('account-usermanagement-heading')}}</div>
+            </div>
+
+            <div class="major-item" fuseScrollbar>
+
+                <div id="forms" class="simple fullwidth">
+
+                    <div class="content p-3">
+
+                        <div class="flex items-center justify-end">
+                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                                    mat-flat-button type="button"
+                                    (click)="addUser()">Add User
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row p-2">
+                            <div>
+                                <table mat-table #table matSort
+                                       [dataSource]="paginatedDataSource"
+                                       [@fadeIn]="true">
+                                    <ng-container matColumnDef="name">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                                        <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="email">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                                        <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="lastLogin">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Login</th>
+                                        <td mat-cell *matCellDef="let row"> {{row.lastLogin}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="admin">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                                        <td mat-cell *matCellDef="let row">
+                                            <button *ngIf="canClientAdmin && row.clientAdmin !== 1"
+                                                    class="fuse-mat-button-large w-50 mt-2 bg-warn-300"
+                                                    mat-flat-button
+                                                    type="button" (click)="openAdminDialog(row.id)">
+                                                Set as Account Admin
+                                            </button>
+                                            <span *ngIf="row.clientAdmin === 1" class="font-bold">Account Admin</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"
+                                        tabindex="999"
+                                        class="cursor-pointer"
+                                        (click)="onSelect(row, i)"
+                                        (keydown.arrowdown)="onArrowDown()"
+                                        (keydown.arrowup)="onArrowUp()"
+                                        (keydown.enter)="onConfirm()"
+                                        [ngClass]="{'bg-primary-200' : row == selectedRow}"
+                                        matRipple [@fadeIn]="true">
+                                        >
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end">
+                            <mat-form-field class="basis-5/12">
+                                <input matInput #filter type="text" (keyup)="filterUsers($event.target.value)"
+                                       autocomplete="do-not-autofill"
+                                       placeholder="Filter">
+                            </mat-form-field>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+                        <div class="flex items-center justify-end">
+                            <button class="fuse-mat-button-large w-20 mt-2"
+                                    mat-button
+                                    type="button" (click)="onBack()">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fuse-card>
+    </div>
 </div>

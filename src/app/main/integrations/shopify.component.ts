@@ -38,6 +38,7 @@ export class ShopifyComponent implements OnInit, OnDestroy {
     public paginatedSummaryDataSource;
     public selectedSummaryRow: {};
     public selectedSummaryIndex: number = -1;
+    public busy: boolean = false;
 
     public summary: any[];
     canClientAdmin = false;
@@ -138,10 +139,10 @@ export class ShopifyComponent implements OnInit, OnDestroy {
     }
 
     syncCustomers(): void {
+        this.busy = true;
         this.syncCustomersTitle = 'Scheduling ...';
         this.httpService.getEntity('sync-ecommerce-customers', 'shopify')
             .subscribe(result => {
-                this.syncCustomersTitle = 'Full Customer Sync';
                 this._snackBar.open('Customer Synchronisation Scheduled', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
@@ -152,10 +153,10 @@ export class ShopifyComponent implements OnInit, OnDestroy {
     }
 
     syncOrders(): void {
+        this.busy = true;
         this.syncOrdersTitle = 'Scheduling ...';
         this.httpService.getEntity('sync-ecommerce-orders', 'shopify')
             .subscribe(result => {
-                this.syncOrdersTitle = 'Full Order Sync';
                 this._snackBar.open('Order Synchronisation Scheduled', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']

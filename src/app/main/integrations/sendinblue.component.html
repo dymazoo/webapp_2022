@@ -1,24 +1,24 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
-    <div class="cards">
-        <fuse-card class="card-error" *ngIf="errors.length > 0">
-            <div id="errorforms" class="simple fullwidth">
-                <div class="content p-3">
-                    <div>
-                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                            <div class="card-header">
-                                <strong>Errors</strong>
-                            </div>
-                            <ul>
-                                <li *ngFor="let message of errors">
-                                    {{ message }}
-                                </li>
-                            </ul>
+    <fuse-card class="card-error" *ngIf="errors.length > 0">
+        <div id="errorforms" class="simple fullwidth">
+            <div class="content p-3">
+                <div>
+                    <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                        <div class="card-header">
+                            <strong>Errors</strong>
                         </div>
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </fuse-card>
+        </div>
+    </fuse-card>
 
+    <div class="cards">
         <fuse-card class="card-form">
             <div class="p-4">
                 <div class="h1 text-white bg-primary">{{t('integration-sendinblue-list-heading')}}</div>
@@ -67,7 +67,7 @@
                                         (keydown.enter)="onSelectList()"
                                         [ngClass]="{'bg-primary-200' : row == selectedListsRow}"
                                         matRipple [@fadeIn]="true">
-                                    >
+                                        >
                                     </tr>
                                 </table>
                             </div>
@@ -80,7 +80,8 @@
                             </mat-form-field>
                         </div>
                         <div class="flex items-center justify-end">
-                            <mat-paginator #listPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator #listPaginator [pageSizeOptions]="[5, 10, 20]"
+                                           showFirstLastButtons></mat-paginator>
                         </div>
 
                         <div class="flex items-center justify-end">
@@ -147,7 +148,7 @@
                                         (keydown.enter)="onSelectCampaign()"
                                         [ngClass]="{'bg-primary-200' : row == selectedCampaignsRow}"
                                         matRipple [@fadeIn]="true">
-                                    >
+                                        >
                                     </tr>
                                 </table>
                             </div>
@@ -155,12 +156,14 @@
 
                         <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start start">
                             <mat-form-field class="basis-7/12">
-                                <input matInput #campaignFilter type="text" (keyup)="filterCampaigns($event.target.value)"
+                                <input matInput #campaignFilter type="text"
+                                       (keyup)="filterCampaigns($event.target.value)"
                                        placeholder="Filter" autocomplete="do-not-autofill">
                             </mat-form-field>
                         </div>
                         <div class="flex items-center justify-end">
-                            <mat-paginator #campaignPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator #campaignPaginator [pageSizeOptions]="[5, 10, 20]"
+                                           showFirstLastButtons></mat-paginator>
                         </div>
 
                         <div class="flex items-center justify-end">

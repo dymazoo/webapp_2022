@@ -172,20 +172,21 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
             if (result.action === 'remove') {
                 const id = result.id;
                 this.errors = [];
-                this.httpService.deleteEntity('user', id.value)
+                this.httpService.deleteEntity('user', id)
                     .subscribe(data => {
                         this._snackBar.open('User removed', 'Dismiss', {
                             duration: 5000,
                             panelClass: ['snackbar-teal']
                         });
 
-                        // refresh the salesCategorys after the delete is confirmed
+                        // refresh the users after the delete is confirmed
                         this.httpService.getEntity('users', '')
                             .subscribe(result => {
+                                this.userDataSource.refresh();
                                 this.users = result;
                             }, (errors) => {
                                 this.errors = errors;
-
+                                this.userDataSource.refresh();
                             });
                     }, (errors) => {
                         this.errors = errors;
@@ -340,7 +341,6 @@ export class UserManagementDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.usermanagementForm = this._formBuilder.group({
-            'id': [{value: ''}],
             'name': [{value: '', disabled: true}, Validators.required],
             'email': [{value: '', disabled: true}, Validators.compose([Validators.required, GlobalValidator.mailFormat])],
             'roles': this._formBuilder.array([]),
@@ -368,7 +368,7 @@ export class UserManagementDialogComponent implements OnInit {
             roleControl.enable();
             roleControl.reset(false);
             this.currentUser.roles.forEach((userRole) => {
-                if (this.roles[index].name === userRole) {
+                if (this.roles[index] === userRole) {
                     roleControl.setValue(true);
                 }
             });
@@ -391,8 +391,7 @@ export class UserManagementDialogComponent implements OnInit {
     }
 
     onRemove(): void {
-        const id = this.usermanagementForm.controls['id'];
-        this.dialogRef.close({action: 'remove', id: id});
+        this.dialogRef.close({action: 'remove', id: this.currentUser.id});
     }
 
     onCancel(): void {
