@@ -45,6 +45,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
     public showFields = false;
     public hasData = false;
     public hasFile = false;
+    public fileName = '';
     public hasHeader = false;
     public sample1 = 1;
     public sample2 = 2;
@@ -126,6 +127,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
         const reader = new FileReader();
 
         this.file = null;
+        this.fileName = '';
         if (fileInput && fileInput.files[0]) {
             this.file = fileInput.files[0];
             this.importForm.controls['file-name'].setValue(this.file.name);
@@ -138,11 +140,15 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.fileSample = e.target.result;
             let layoutId = '';
             const fileName = this.importForm.controls['file-name'].value;
+            this.fileName = fileName;
             if (this.currentLayout.id) {
                 layoutId = this.currentLayout.id;
             }
-            this.httpService.saveEntity('import-sample', {sample: this.fileSample, id: layoutId, fileName: fileName})
+            this.httpService.saveEntity('import-sample', {sample: this.fileSample, id: layoutId, fileName: this.fileName})
                 .subscribe(result => {
+                    this.fields.forEach((field, index) => {
+                        this.fields[index].inLayout = false;
+                    });
                     this.hasFile = true;
                     const sampleHasHeader = result.header;
                     this.importForm.controls['header'].setValue(sampleHasHeader);
@@ -194,6 +200,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
         let i = 0;
         while (i < fieldsLength) {
             (this.importForm.controls['layoutFields'] as FormArray).removeAt(0);
+
             i++;
         }
         (this.importForm.controls['layoutFields'] as FormArray).reset();
@@ -450,9 +457,15 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                 this.getLayoutName = true;
                 if (this.fileSample.length > 0) {
                     const layoutId = this.currentLayout.id;
-                    this.httpService.saveEntity('import-sample', {sample: this.fileSample, id: layoutId})
+                    this.httpService.saveEntity('import-sample', {sample: this.fileSample, id: layoutId, fileName: this.fileName})
                         .subscribe(result => {
-                            this.layoutFields = result;
+                            this.fields.forEach((field, index) => {
+                                this.fields[index].inLayout = false;
+                            });
+                            const sampleHasHeader = result.header;
+                            this.importForm.controls['header'].setValue(sampleHasHeader);
+                            this.setHeader(sampleHasHeader);
+                            this.layoutFields = result.layoutFields;
                             this.layoutFields.forEach(layoutField => {
                                 this.fields.forEach((field, index) => {
                                     if (layoutField.fieldId === field.id && field.id !== 'blank') {
