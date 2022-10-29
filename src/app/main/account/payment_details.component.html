@@ -1,5 +1,4 @@
-<div id="registerComplete" class="relative flex flex-col flex-auto min-w-0 overflow-hidden component"
-     *transloco="let t">
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
     <div class="card-major">
         <fuse-card class="card-error" *ngIf="errors.length > 0">
             <div id="errorforms" class="simple fullwidth">
@@ -22,7 +21,7 @@
 
         <fuse-card *ngIf="action==='result'" class="card-major">
             <div class="p-4">
-                <div class="h1 text-white bg-primary-500">{{t('auth-register-payment-status')}}</div>
+                <div class="h1 text-white bg-primary-500">{{t('account-management-payment')}}</div>
             </div>
             <div id="message">
                 {{ stripeMessage }}
@@ -43,7 +42,7 @@
 
         <fuse-card *ngIf="action==='payment'" class="card-major">
             <div class="p-4">
-                <div class="h1 text-white bg-primary-500">{{t('auth-register-payment')}}</div>
+                <div class="h1 text-white bg-primary-500">{{t('account-management-payment')}}</div>
             </div>
             <div class="filled-major-item" fuseScrollbar>
 
@@ -58,6 +57,7 @@
                             <div id="payment-element">
                                 <!-- Elements will create form elements here -->
                             </div>
+                            <span class="text-md">We will charge $1 to your card and refund it within 24 hours</span><span class="text-2xl">&nbsp;</span>
                             <button
                                 class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
                                 mat-flat-button
@@ -65,7 +65,7 @@
                                 (click)="processPayment()"
                                 type="submit"
                             >
-                                Pay Now
+                                Update Now
                             </button>
                             <div id="error-message">
                                 <!-- Display error message to your customers here -->

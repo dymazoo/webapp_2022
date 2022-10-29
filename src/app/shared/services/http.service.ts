@@ -430,6 +430,60 @@ export class HttpService {
     }
 
     /**
+     * Process the confirmation of payment details
+     * @param payload
+     */
+    public confirmPaymentDetails(payload: any): any {
+        const headers = this.createAuthorizationHeader();
+        const result = this.http.post(this.apiUrl + 'payment-details-complete', payload, {
+            headers: headers
+        }).pipe(
+            timeout(this.timeout),
+            map(data => {
+                return true;
+            }),
+            catchError((error: any) => {
+                if (error.status === 406) {
+                    const body = error.error;
+                    return observableThrowError(body.errors);
+                }
+                if (error.name === 'TimeoutError') {
+                    return observableThrowError(['Server timeout']);
+                }
+                return observableThrowError(['Unknown error - please contact support']);
+            }),);
+
+        return result;
+    }
+
+    /**
+     * Record that payment details failed
+     * @param payload
+     */
+    public paymentDetailsFailed(payload: any): any {
+        const headers = this.createAuthorizationHeader();
+        const result = this.http.post(this.apiUrl + 'payment-details-failed', payload, {
+            headers: headers
+        }).pipe(
+            timeout(this.timeout),
+            map(data => {
+                return true;
+            }),
+            catchError((error: any) => {
+                if (error.status === 406) {
+                    const body = error.error;
+                    return observableThrowError(body.errors);
+                }
+                if (error.name === 'TimeoutError') {
+                    return observableThrowError(['Server timeout']);
+                }
+                return observableThrowError(['Unknown error - please contact support']);
+            }),);
+
+        return result;
+    }
+
+    /**
      * Process the confirmation of payment during registration
      * @param payload
      */
@@ -895,6 +949,23 @@ export class HttpService {
         }
         return this.storedDashboard;
     }
+
+    public getPricingData(): any {
+        return {
+            'analystProfiles': 2000,
+            'specialistProfiles': 5000,
+            'consultantProfiles': 10000,
+            'profileAddition': 2500,
+            'analystMonthly': 25,
+            'analystYearly': 19.95,
+            'specialistMonthly': 35,
+            'specialistYearly': 27.95,
+            'consultantMonthly': 50,
+            'consultantYearly': 39.95,
+            'profileAdditionCost': 2.5
+        };
+    }
+
 
     public getLoggedInState(): Observable < any > {
         return this.loggedinSubject.asObservable().pipe(delay(0));

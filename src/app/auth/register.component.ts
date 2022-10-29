@@ -43,18 +43,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public yearlyBilling: boolean = true;
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
-    public monthlyProfilePrice: number = 0;
-    public yearlyProfilePrice: number = 0;
+    public profilePrice: number = 0;
     public monthlyPrice: number = 0;
     public yearlyPrice: number = 0;
     public payableToday: number = 0;
     public nextBillingDate: string = '';
     public offer: string = '';
-    public stripeKey: string = '';
     public paymentReady: boolean = false;
     private stripe: any;
     private elements: any;
     private clientId: string = '';
+    private pricingData: any;
 
     stripePromise = loadStripe(environment.stripeKey);
 
@@ -68,7 +67,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         private _translocoService: TranslocoService,
     ) {
         this._translocoService.setActiveLang('en');
-        this.stripeKey = moment().toISOString();
+        this.pricingData = this.httpService.getPricingData();
     }
 
     ngOnInit(): void {
@@ -89,8 +88,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     formatSliderLabel(value: number): string {
-        if (value >= 1000) {
-            return Math.round(value / 1000) + 'k';
+        if (value >= 500) {
+            const blocks = Math.round(value / 500);
+            return (blocks / 2) + 'k';
         }
 
         return '0';
@@ -101,13 +101,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.plan = plan;
         this.client.plan = plan;
         if (plan === 'analyst') {
-            this.client.profiles = 5000;
+            this.client.profiles = this.pricingData.analystProfiles;
         }
         if (plan === 'specialist') {
-            this.client.profiles = 15000;
+            this.client.profiles = this.pricingData.specialistProfiles;
         }
         if (plan === 'consultant') {
-            this.client.profiles = 50000;
+            this.client.profiles = this.pricingData.consultantProfiles;
         }
         if (this.yearlyBilling) {
             this.client.billing = 'yearly';
@@ -139,20 +139,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const plan = this.registerForm.controls['clientPlan'].value;
         this.client.plan = plan;
         if (plan === 'analyst') {
-            this.client.profiles = 5000;
+            this.client.profiles = this.pricingData.analystProfiles;
         }
         if (plan === 'specialist') {
-            this.client.profiles = 15000;
+            this.client.profiles = this.pricingData.specialistProfiles;
         }
         if (plan === 'consultant') {
-            this.client.profiles = 50000;
+            this.client.profiles = this.pricingData.consultantProfiles;
         }
         this.registerForm.controls['clientProfiles'].setValue(this.client.profiles);
         this.doCalculate();
     }
 
-    setBilling(event): void {
-        const billing = this.registerForm.controls['clientBilling'].value;
+    setBilling(event, billing): void {
+        event.stopPropagation();
         this.client.billing = billing;
         if (billing === 'monthly') {
             this.yearlyBilling = false;
@@ -165,6 +165,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     onSliderChange(event): void {
         const profiles = this.registerForm.controls['clientProfiles'].value;
         this.client.profiles = profiles;
+        const plan = this.client.plan;
+        if (plan === 'analyst' && profiles < this.pricingData.analystProfiles) {
+            this.client.profiles = this.pricingData.analystProfiles;
+        }
+        if (plan === 'specialist' && profiles < this.pricingData.specialistProfiles) {
+            this.client.profiles = this.pricingData.specialistProfiles;
+        }
+        if (plan === 'consultant' && profiles < this.pricingData.consultantProfiles) {
+            this.client.profiles = this.pricingData.consultantProfiles;
+        }
+        this.registerForm.controls['clientProfiles'].setValue(this.client.profiles);
         this.doCalculate();
     }
 
@@ -189,58 +200,40 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
     }
 
-
     doCalculate(): void {
         const plan = this.client.plan;
         const billing = this.client.billing;
         const profiles = this.client.profiles;
-        let freeProfiles = 5000;
+        let freeProfiles = this.pricingData.analystProfiles;
         let paidProfiles = 0;
-        let monthlyProfilePrice = 0;
-        let yearlyProfilePrice = 0;
+        let profilePrice = 0;
         let monthlyPlanPrice = 0;
         let yearlyPlanPrice = 0;
         let monthlyPrice = 0;
         let yearlyPrice = 0;
-        if (billing === 'monthly') {
-            if (plan === 'analyst') {
-                freeProfiles = 5000;
-                monthlyPlanPrice = 25;
-
-            }
-            if (plan === 'specialist') {
-                freeProfiles = 15000;
-                monthlyPlanPrice = 35;
-            }
-            if (plan === 'consultant') {
-                freeProfiles = 50000;
-                monthlyPlanPrice = 50;
-            }
-            if (profiles > freeProfiles) {
-                paidProfiles = profiles - freeProfiles;
-                monthlyProfilePrice = paidProfiles / 10000 * 5;
-            }
-            monthlyPrice = monthlyPlanPrice + monthlyProfilePrice;
-        } else {
-            if (plan === 'analyst') {
-                freeProfiles = 5000;
-                monthlyPlanPrice = 19.95;
-
-            }
-            if (plan === 'specialist') {
-                freeProfiles = 15000;
-                monthlyPlanPrice = 27.95;
-            }
-            if (plan === 'consultant') {
-                freeProfiles = 50000;
-                monthlyPlanPrice = 39.95;
-            }
-            if (profiles > freeProfiles) {
-                paidProfiles = profiles - freeProfiles;
-                monthlyProfilePrice = paidProfiles / 5000 * 2.5;
-            }
-            monthlyPrice = monthlyPlanPrice + monthlyProfilePrice;
+        if (plan === 'analyst') {
+            freeProfiles = this.pricingData.analystProfiles;
+            monthlyPlanPrice = this.pricingData.analystMonthly;
+            yearlyPlanPrice = this.pricingData.analystYearly;
         }
+        if (plan === 'specialist') {
+            freeProfiles = this.pricingData.specialistProfiles;
+            monthlyPlanPrice = this.pricingData.specialistMonthly;
+            yearlyPlanPrice = this.pricingData.specialistYearly;
+        }
+        if (plan === 'consultant') {
+            freeProfiles = this.pricingData.consultantProfiles;
+            monthlyPlanPrice = this.pricingData.consultantMonthly;
+            yearlyPlanPrice = this.pricingData.consultantYearly;
+        }
+        if (profiles > freeProfiles) {
+            paidProfiles = profiles - freeProfiles;
+            profilePrice = paidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+        }
+
+        monthlyPrice = monthlyPlanPrice + profilePrice;
+        yearlyPrice = yearlyPlanPrice + profilePrice;
+
         let freeMonths = 0;
         let discount = 0;
         if (this.offer.substring(0, 4) === 'free') {
@@ -255,16 +248,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             discount = parseInt(this.offer.substring(9), 10);
         }
 
-        yearlyPlanPrice = monthlyPlanPrice * 12;
-        yearlyProfilePrice = monthlyProfilePrice * 12;
-        yearlyPrice = yearlyPlanPrice + yearlyProfilePrice;
-        this.monthlyPlanPrice = monthlyPlanPrice;
-        this.yearlyPlanPrice = yearlyPlanPrice;
-        this.monthlyProfilePrice = monthlyProfilePrice;
-        this.yearlyProfilePrice = yearlyProfilePrice;
-        this.monthlyPrice = monthlyPrice;
-        this.yearlyPrice = yearlyPrice;
-
         if (billing === 'monthly') {
             if (freeMonths === -1) {
                 this.payableToday = 0;
@@ -272,7 +255,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 this.client.nextBillingDate = 'never';
             } else {
                 if (freeMonths === 0) {
-                    this.payableToday = this.monthlyPrice * ((100 - discount) / 100);
+                    this.payableToday = monthlyPrice * ((100 - discount) / 100);
                 } else {
                     this.payableToday = 1;
                 }
@@ -286,12 +269,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 this.nextBillingDate = 'Never';
                 this.client.nextBillingDate = 'never';
             } else {
-                this.payableToday = this.monthlyPrice * (12 - freeMonths) * ((100 - discount) / 100);
+                this.payableToday = yearlyPrice * (12 - freeMonths) * ((100 - discount) / 100);
                 this.nextBillingDate = moment().add(1, 'year').format('LL');
                 this.client.nextBillingDate = moment().add(1, 'year').format('YYYY-MM-DD');
-                ;
             }
+            monthlyPlanPrice = monthlyPlanPrice * 12;
+            yearlyPlanPrice = yearlyPlanPrice * 12;
+            profilePrice = profilePrice * 12;
+
+            monthlyPrice = monthlyPlanPrice + profilePrice;
+            yearlyPrice = yearlyPlanPrice + profilePrice;
+
         }
+        this.monthlyPlanPrice = monthlyPlanPrice;
+        this.yearlyPlanPrice = yearlyPlanPrice;
+        this.profilePrice = profilePrice;
+        this.monthlyPrice = monthlyPrice;
+        this.yearlyPrice = yearlyPrice;
     }
 
     register(): void {
@@ -329,7 +323,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     async handlePayment() {
         const stripe = await this.stripePromise;
         this.stripe = stripe;
-        const paymentData = {'stripeKey': this.stripeKey, 'clientId': this.clientId, 'amount': this.payableToday};
+        const paymentData = {'clientId': this.clientId, 'amount': this.payableToday};
         this.httpService.saveEntity('register-pre-payment', paymentData)
             .subscribe((data) => {
                 this.action = 'payment';
@@ -359,7 +353,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
                         this.paymentReady = true;
                     }
                 });
-                paymentElement.mount('#payment-element');
+                setTimeout(() => {
+                    paymentElement.mount('#payment-element');
+                }, 1);
             }, (errors) => {
                 this.errors = errors;
             });

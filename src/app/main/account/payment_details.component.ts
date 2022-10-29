@@ -1,17 +1,19 @@
 import {Component, OnDestroy, OnInit, ViewChild, ElementRef, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {HttpService} from '../shared/services/http.service';
+import {HttpService} from 'app/shared/services/http.service';
 import {TranslocoService} from '@ngneat/transloco';
 import {loadStripe} from '@stripe/stripe-js';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 import * as moment from 'moment';
+import {fuseAnimations} from '@fuse/animations';
 
 @Component({
-    selector: 'registerpayment',
-    templateUrl: './register_payment.component.html'
+    selector: 'payment-details',
+    templateUrl: './payment_details.component.html',
+    animations: fuseAnimations
 })
 
-export class RegisterPaymentComponent implements OnInit, OnDestroy {
+export class PaymentDetailsComponent implements OnInit, OnDestroy {
 
     @Output() registered = new EventEmitter<boolean>();
 
@@ -23,7 +25,6 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
     stripeSuccess: boolean = false;
     public paymentReady: boolean = false;
     public action: string = 'result';
-    public stripeKey: string = '';
 
     private stripe: any;
     private elements: any;
@@ -39,7 +40,6 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
         private _translocoService: TranslocoService
     ) {
         this._translocoService.setActiveLang('en');
-        this.stripeKey = moment().toISOString();
         this.errors = [];
         activatedRoute.params.subscribe((param: any) => {
             this.clientId = param['clientId'];
@@ -83,9 +83,9 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
             // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
             switch (paymentIntent.status) {
                 case 'succeeded':
-                    this.stripeMessage = 'Success! Payment received.';
+                    this.stripeMessage = 'Success! Payment method updated.';
                     this.stripeSuccess = true;
-                    this.httpService.confirmPayment({'clientId': this.clientId, 'reference': this.paymentIntent})
+                    this.httpService.confirmPaymentDetails({'clientId': this.clientId, 'reference': this.paymentIntent})
                         .subscribe(data => {
                         }, (errors) => {
                             this.errors = errors;
@@ -112,7 +112,7 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
     confirmResult(): void {
         if (this.stripeSuccess) {
             this.registered.emit(true);
-            this.router.navigate(['/register-complete']);
+            this.router.navigate(['/account/management']);
         } else {
 
         }
@@ -120,7 +120,7 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
 
     handlePayment() {
         const paymentData = {'clientId': this.clientId, 'reference': this.paymentIntent};
-        this.httpService.saveEntity('register-retry-payment', paymentData)
+        this.httpService.saveEntity('retry-payment-details', paymentData)
             .subscribe((data) => {
                 this.action = 'payment';
                 const myTheme = 'stripe' as const;
@@ -161,7 +161,7 @@ export class RegisterPaymentComponent implements OnInit, OnDestroy {
             //`Elements` instance that was used to create the Payment Element
             elements: this.elements,
             confirmParams: {
-                return_url: 'https://www.dymazoo.com/register-payment/' + this.clientId,
+                return_url: 'https://www.dymazoo.com/account/payment-details/' + this.clientId,
             },
         });
 

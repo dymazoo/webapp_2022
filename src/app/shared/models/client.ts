@@ -1,4 +1,5 @@
 export class Client {
+    public clientId: string = '';
     public name: string = '';
     public address1: string = '';
     public address2: string = '';
@@ -11,11 +12,12 @@ export class Client {
     public billing: string = '';
     public signUpDate: string = '';
     public plan: string = '';
-    public profiles: number = 5000;
+    public profiles: number = 2500;
     public coupon: string = '';
     public nextBillingDate: string = '';
     public leftDate: string = '';
     public offer: string = '';
+    public payableToday = 0;
 
     public constructor(init?: Partial<Client>) {
         Object.assign(this, init);

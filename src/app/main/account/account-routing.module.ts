@@ -8,6 +8,7 @@ import {AuthGuard} from 'app/_guards/index';
 import {ProfileComponent} from './profile.component';
 import {UserManagementComponent} from './usermanagement.component';
 import {AccountManagementComponent} from './accountmanagement.component';
+import {PaymentDetailsComponent} from './payment_details.component';
 
 const routes: Routes = [
     {
@@ -27,9 +28,13 @@ const routes: Routes = [
         component: AccountManagementComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]
+    },
+    {
+        path: 'payment-details/:clientId',
+        component: PaymentDetailsComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard]
     }
-
-
 ];
 
 @NgModule({

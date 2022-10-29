@@ -18,6 +18,7 @@ import {TranslocoService} from '@ngneat/transloco';
 import {fuseAnimations} from '@fuse/animations';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Observable, Subject} from 'rxjs';
+import {loadStripe} from '@stripe/stripe-js';
 
 import {HttpService} from 'app/shared/services/http.service';
 import {AbandonDialogService} from 'app/shared/services/abandon-dialog.service';
@@ -25,6 +26,7 @@ import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.com
 import {Client} from 'app/shared/models/client';
 import {GlobalValidator} from '../../shared/global-validator';
 import * as moment from 'moment';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'account-management',
@@ -43,19 +45,31 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
 
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
-    public monthlyProfilePrice: number = 0;
-    public yearlyProfilePrice: number = 0;
+    public profilePrice: number = 0;
     public monthlyPrice: number = 0;
     public yearlyPrice: number = 0;
+
+    public currentPlan: string = '';
+    public currentProfiles: number = 0;
+    public currentBilling: string = '';
+    public currentNextBillingDate: string = '';
+    public payableToday: number = 0;
     public nextBillingDate: string = '';
     public yearlyBilling: boolean = true;
     public countryList;
     public timeZoneList;
     public leaving: boolean = false;
+    public paymentReady: boolean = false;
+    public action: string = 'account';
+
+    stripePromise = loadStripe(environment.stripeKey);
 
     private touchStart = 0;
     private _unsubscribeAll: Subject<any>;
-
+    private pricingData: any;
+    private stripe: any;
+    private clientId: string = '';
+    private elements: any;
 
     constructor(
         private _formBuilder: FormBuilder,
@@ -69,6 +83,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
     ) {
         this._translocoService.setActiveLang('en');
         this._unsubscribeAll = new Subject();
+        this.pricingData = this.httpService.getPricingData();
 
         // Check permissions
         this.canClientAdmin = this.httpService.hasPermission('client_admin');
@@ -78,6 +93,11 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         this.httpService.getEntity('client', '')
             .subscribe((result) => {
                 this.client = result;
+                this.currentPlan = this.client.plan;
+                this.currentProfiles = this.client.profiles;
+                this.currentBilling = this.client.billing;
+                this.currentNextBillingDate = this.client.nextBillingDate;
+                this.clientId = this.client.clientId;
                 this.hasData = true;
                 if (this.client.billing === 'monthly') {
                     this.yearlyBilling = false;
@@ -145,14 +165,24 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         this.client.plan = this.accountForm.controls['plan'].value;
         this.client.profiles = this.accountForm.controls['profiles'].value;
         this.client.telephone = this.accountForm.controls['telephone'].value;
+        this.client.payableToday = this.payableToday;
 
         this.httpService.saveEntity('client', this.client)
-            .subscribe((data: Response) => {
+            .subscribe((data) => {
                 this._snackBar.open('Account saved', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
                 this.accountForm.markAsPristine();
+                this.currentPlan = this.client.plan;
+                this.currentProfiles = this.client.profiles;
+                this.currentBilling = this.client.billing;
+                this.currentNextBillingDate = this.client.nextBillingDate;
+                const retryPayable = this.payableToday;
+                this.payableToday = 0;
+                if (data.result !== undefined && data.result === 'Authorise') {
+                    this.authorisePaymentDetails(data.client_secret, data.payment_intent, data.payment_method, retryPayable);
+                }
             }, (errors) => {
                 this.errors = errors;
             });
@@ -204,11 +234,106 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
 
+    async authorisePaymentDetails(clientSecret: any, paymentIntentId: any, paymentMethodId: any, payableToday) {
+        const stripe = await this.stripePromise;
+        this.stripe = stripe;
+        const {error} = await this.stripe.confirmCardPayment(clientSecret, {
+            payment_method: paymentMethodId
+        });
+
+        if (error) {
+            this.errors = ['Authorisation failed'];
+            this.payableToday = payableToday;
+            this.httpService.paymentDetailsFailed({'clientId': this.clientId, 'reference': paymentIntentId})
+                .subscribe(data => {
+                }, (errors) => {
+                    this.errors = errors;
+                });
+        } else {
+            this.httpService.confirmPaymentDetails({'clientId': this.clientId, 'reference': paymentIntentId})
+                .subscribe(data => {
+                }, (errors) => {
+                    this.errors = errors;
+                });
+        }
+    }
+
+    async paymentDetails() {
+        const stripe = await this.stripePromise;
+        this.stripe = stripe;
+        const paymentData = {};
+        this.httpService.saveEntity('payment-details', paymentData)
+            .subscribe((data) => {
+                this.action = 'payment';
+                const myTheme = 'stripe' as const;
+                const stripeAppearance = {
+                    theme: myTheme,
+                    variables: {
+                        colorPrimary: '#0570de',
+                        colorBackground: '#ffffff',
+                        colorText: '#30313d',
+                        colorDanger: '#df1b41',
+                        fontFamily: 'Ideal Sans, system-ui, sans-serif',
+                        spacingUnit: '2px',
+                        borderRadius: '4px',
+                    }
+                };
+                const options = {
+                    clientSecret: data.client_secret,
+                    appearance: stripeAppearance,
+                };
+                this.elements = stripe.elements(options);
+
+                // Create and mount the Payment Element
+                const paymentElement = this.elements.create('payment');
+                paymentElement.on('change', (event) => {
+                    if (event.complete) {
+                        this.paymentReady = true;
+                    }
+                });
+                setTimeout(() => {
+                    paymentElement.mount('#payment-element');
+                }, 1);
+            }, (errors) => {
+                this.errors = errors;
+            });
+    }
+
+    async processPayment() {
+        this.paymentReady = false;
+        const {error} = await this.stripe.confirmPayment({
+            //`Elements` instance that was used to create the Payment Element
+            elements: this.elements,
+            confirmParams: {
+                return_url: 'https://www.dymazoo.com/account/payment-details/' + this.clientId,
+            },
+        });
+
+        if (error) {
+            // This point will only be reached if there is an immediate error when
+            // confirming the payment. Show error to your customer (for example, payment
+            // details incomplete)
+            const messageContainer = document.querySelector('#error-message');
+            messageContainer.textContent = error.message;
+            this.paymentReady = true;
+        } else {
+            // Your customer will be redirected to your `return_url`. For some payment
+            // methods like iDEAL, your customer will be redirected to an intermediate
+            // site first to authorize the payment, then redirected to the `return_url`.
+        }
+    }
+
     onCancel(): void {
         this.httpService.getEntity('client', '')
             .subscribe(result => {
                 this.hasData = true;
                 this.client = result;
+
+                this.currentPlan = this.client.plan;
+                this.currentProfiles = this.client.profiles;
+                this.currentBilling = this.client.billing;
+                this.currentNextBillingDate = this.client.nextBillingDate;
+
                 if (this.client.billing === 'monthly') {
                     this.yearlyBilling = false;
                 } else {
@@ -255,8 +380,9 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     formatSliderLabel(value: number): string {
-        if (value >= 1000) {
-            return Math.round(value / 1000) + 'k';
+        if (value >= 500) {
+            const blocks = Math.round(value / 500);
+            return (blocks / 2) + 'k';
         }
 
         return '0';
@@ -264,12 +390,11 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
 
     setPlan(event): void {
         const plan = this.accountForm.controls['plan'].value;
-        const clientPlan = this.client.plan;
         let serviceDowngrade = false;
-        if (clientPlan === 'consultant' && plan !== 'consultant') {
+        if (this.currentPlan === 'consultant' && plan !== 'consultant') {
             serviceDowngrade = true;
         }
-        if (clientPlan === 'specialist' && plan === 'analyst') {
+        if (this.currentPlan === 'specialist' && plan === 'analyst') {
             serviceDowngrade = true;
         }
         if (serviceDowngrade) {
@@ -278,7 +403,8 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
                 width: '300px',
                 data: {
                     confirmMessage: 'Changing your plan will reduce the features you are using!',
-                    informationMessage: 'Your current features will remain active until the end of the current period'
+                    informationMessage: 'Your current features will remain active until the end of the current period',
+                    buttons: 'ok'
                 }
             });
             dialogRef.afterClosed().subscribe(result => {
@@ -290,19 +416,18 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
             });
         } else {
             this.client.plan = plan;
-            if (plan === 'specialist' && this.client.profiles < 15000) {
-                this.client.profiles = 15000;
+            if (plan === 'specialist' && this.client.profiles < this.pricingData.specialistProfiles) {
+                this.client.profiles = this.pricingData.specialistProfiles;
             }
-            if (plan === 'consultant' && this.client.profiles < 50000) {
-                this.client.profiles = 50000;
+            if (plan === 'consultant' && this.client.profiles < this.pricingData.consultantProfiles) {
+                this.client.profiles = this.pricingData.consultantProfiles;
             }
             this.accountForm.controls['profiles'].setValue(this.client.profiles);
             this.doCalculate();
         }
     }
 
-    setBilling(event): void {
-        const billing = this.accountForm.controls['billing'].value;
+    setBilling(event, billing): void {
         this.client.billing = billing;
         if (billing === 'monthly') {
             this.yearlyBilling = false;
@@ -316,14 +441,14 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         const profiles = this.accountForm.controls['profiles'].value;
         this.client.profiles = profiles;
         const plan = this.client.plan;
-        if (plan === 'analyst' && profiles < 5000) {
-            this.client.profiles = 5000;
+        if (plan === 'analyst' && profiles < this.pricingData.analystProfiles) {
+            this.client.profiles = this.pricingData.analystProfiles;
         }
-        if (plan === 'specialist' && profiles < 15000) {
-            this.client.profiles = 15000;
+        if (plan === 'specialist' && profiles < this.pricingData.specialistProfiles) {
+            this.client.profiles = this.pricingData.specialistProfiles;
         }
-        if (plan === 'consultant' && profiles < 50000) {
-            this.client.profiles = 50000;
+        if (plan === 'consultant' && profiles < this.pricingData.consultantProfiles) {
+            this.client.profiles = this.pricingData.consultantProfiles;
         }
         this.accountForm.controls['profiles'].setValue(this.client.profiles);
         this.doCalculate();
@@ -333,64 +458,115 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         const plan = this.client.plan;
         const billing = this.client.billing;
         const profiles = this.client.profiles;
-        let freeProfiles = 5000;
+
+        let currentFreeProfiles = this.pricingData.analystProfiles;
+        let currentPaidProfiles = 0;
+        let currentProfilePrice = 0;
+        let currentMonthlyPlanPrice = 0;
+        let currentYearlyPlanPrice = 0;
+        let currentMonthlyPrice = 0;
+        let currentYearlyPrice = 0;
+
+        let freeProfiles = this.pricingData.analystProfiles;
         let paidProfiles = 0;
-        let monthlyProfilePrice = 0;
-        let yearlyProfilePrice = 0;
+        let profilePrice = 0;
         let monthlyPlanPrice = 0;
         let yearlyPlanPrice = 0;
         let monthlyPrice = 0;
         let yearlyPrice = 0;
-        if (billing === 'monthly') {
-            if (plan === 'analyst') {
-                freeProfiles = 5000;
-                monthlyPlanPrice = 25;
 
-            }
-            if (plan === 'specialist') {
-                freeProfiles = 15000;
-                monthlyPlanPrice = 35;
-            }
-            if (plan === 'consultant') {
-                freeProfiles = 50000;
-                monthlyPlanPrice = 50;
-            }
-            if (profiles > freeProfiles) {
-                paidProfiles = profiles - freeProfiles;
-                monthlyProfilePrice = paidProfiles / 10000 * 5;
-            }
-            monthlyPrice = monthlyPlanPrice + monthlyProfilePrice;
-        } else {
-            if (plan === 'analyst') {
-                freeProfiles = 5000;
-                monthlyPlanPrice = 19.95;
-
-            }
-            if (plan === 'specialist') {
-                freeProfiles = 15000;
-                monthlyPlanPrice = 27.95;
-            }
-            if (plan === 'consultant') {
-                freeProfiles = 50000;
-                monthlyPlanPrice = 39.95;
-            }
-            if (profiles > freeProfiles) {
-                paidProfiles = profiles - freeProfiles;
-                monthlyProfilePrice = paidProfiles / 5000 * 2.5;
-            }
-            monthlyPrice = monthlyPlanPrice + monthlyProfilePrice;
+        if (this.currentPlan === 'analyst') {
+            currentFreeProfiles = this.pricingData.analystProfiles;
+            currentMonthlyPlanPrice = this.pricingData.analystMonthly;
+            currentYearlyPlanPrice = this.pricingData.analystYearly;
+        }
+        if (this.currentPlan === 'specialist') {
+            currentFreeProfiles = this.pricingData.specialistProfiles;
+            currentMonthlyPlanPrice = this.pricingData.specialistMonthly;
+            currentYearlyPlanPrice = this.pricingData.specialistYearly;
+        }
+        if (this.currentPlan === 'consultant') {
+            currentFreeProfiles = this.pricingData.consultantProfiles;
+            currentMonthlyPlanPrice = this.pricingData.consultantMonthly;
+            currentYearlyPlanPrice = this.pricingData.consultantYearly;
+        }
+        if (this.currentProfiles > freeProfiles) {
+            currentPaidProfiles = this.currentProfiles - currentFreeProfiles;
+            currentProfilePrice = currentPaidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+        }
+        if (this.currentBilling === 'yearly') {
+            currentMonthlyPlanPrice = currentMonthlyPlanPrice * 12;
+            currentYearlyPlanPrice = currentYearlyPlanPrice * 12;
+            currentProfilePrice = currentProfilePrice * 12;
         }
 
-        yearlyPlanPrice = monthlyPlanPrice * 12;
-        yearlyProfilePrice = monthlyProfilePrice * 12;
-        yearlyPrice = yearlyPlanPrice + yearlyProfilePrice;
+        currentMonthlyPrice = currentMonthlyPlanPrice + currentProfilePrice;
+        currentYearlyPrice = currentYearlyPlanPrice + currentProfilePrice;
+
+        if (plan === 'analyst') {
+            freeProfiles = this.pricingData.analystProfiles;
+            monthlyPlanPrice = this.pricingData.analystMonthly;
+            yearlyPlanPrice = this.pricingData.analystYearly;
+        }
+        if (plan === 'specialist') {
+            freeProfiles = this.pricingData.specialistProfiles;
+            monthlyPlanPrice = this.pricingData.specialistMonthly;
+            yearlyPlanPrice = this.pricingData.specialistYearly;
+        }
+        if (plan === 'consultant') {
+            freeProfiles = this.pricingData.consultantProfiles;
+            monthlyPlanPrice = this.pricingData.consultantMonthly;
+            yearlyPlanPrice = this.pricingData.consultantYearly;
+        }
+        if (profiles > freeProfiles) {
+            paidProfiles = profiles - freeProfiles;
+            profilePrice = paidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+        }
+
+        monthlyPrice = monthlyPlanPrice + profilePrice;
+        yearlyPrice = yearlyPlanPrice + profilePrice;
+
+        this.payableToday = 0 ;
+        this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').format('LL');;
+        this.client.nextBillingDate = this.currentNextBillingDate;
+
+        if (billing === 'monthly') {
+            if (this.currentBilling === 'monthly') {
+                if (currentMonthlyPrice < monthlyPrice) {
+                    const daysToPay = moment(this.currentNextBillingDate, 'YYYY-MM-DD').diff(moment(), 'days');
+                    if (daysToPay > 0) {
+                        this.payableToday = (monthlyPrice - currentMonthlyPrice) / 30 * daysToPay;
+                    }
+                }
+            }
+        } else {
+            monthlyPlanPrice = monthlyPlanPrice * 12;
+            yearlyPlanPrice = yearlyPlanPrice * 12;
+            profilePrice = profilePrice * 12;
+
+            monthlyPrice = monthlyPlanPrice + profilePrice;
+            yearlyPrice = yearlyPlanPrice + profilePrice;
+
+            if (this.currentBilling === 'yearly') {
+                if (currentYearlyPrice < yearlyPrice) {
+                    this.payableToday = yearlyPrice - currentYearlyPrice;
+                }
+            } else {
+                const daysToDiscount = moment(this.client.nextBillingDate, 'YYYY-MM-DD').diff(moment(), 'days');
+                let amountToDiscount = 0;
+                if (daysToDiscount > 0) {
+                    amountToDiscount = currentMonthlyPrice / 30 * daysToDiscount;
+                }
+                this.payableToday = yearlyPrice - amountToDiscount;
+                this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('LL');
+                this.client.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('YYYY-MM-DD');
+            }
+        }
         this.monthlyPlanPrice = monthlyPlanPrice;
         this.yearlyPlanPrice = yearlyPlanPrice;
-        this.monthlyProfilePrice= monthlyProfilePrice;
-        this.yearlyProfilePrice = yearlyProfilePrice;
+        this.profilePrice = profilePrice;
         this.monthlyPrice = monthlyPrice;
         this.yearlyPrice = yearlyPrice;
-
     }
 
     getErrorMessage(control, name): string {

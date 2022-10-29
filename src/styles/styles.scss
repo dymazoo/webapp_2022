@@ -513,6 +513,33 @@ ul {
 }
 
 // -----------------------------------------------------------------------------------------------------
+// @mat-slider
+// -----------------------------------------------------------------------------------------------------
+
+.mat-slider-thumb-label {
+    transform: rotate(45deg) !important;
+    border-radius: 50% 50% 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.mat-slider-thumb {
+    transform: scale(0) !important;
+}
+
+.mat-slider-thumb-label-text {
+    opacity: 1 !important;
+}
+
+.mat-flat-button {
+    color: #FFFFFF !important;
+}
+
+.dark-text {
+    color: #1e293b !important;
+}
+
+// -----------------------------------------------------------------------------------------------------
 // @Home page
 // -----------------------------------------------------------------------------------------------------
 home {

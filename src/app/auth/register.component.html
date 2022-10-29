@@ -36,6 +36,7 @@
                             class="px-6"
                             [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
                                 'bg-transparent': !yearlyBilling}"
+                            class="dark-text"
                             mat-flat-button
                             (click)="yearlyBilling = true"
                             disableRipple>
@@ -45,6 +46,7 @@
                             class="px-6"
                             [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
                                 'bg-transparent': yearlyBilling}"
+                            class="dark-text"
                             mat-flat-button
                             (click)="yearlyBilling = false"
                             disableRipple>
@@ -65,21 +67,19 @@
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                                 <!-- Price -->
                                 <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="mr-2 text-2xl">from USD</div>
                                     <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">$19.95</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">$25.00</ng-container>
+                                        <ng-container *ngIf="yearlyBilling">${{pricingData.analystYearly}}</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.analystMonthly}}</ng-container>
                                     </div>
                                 </div>
                                 <!-- Price details -->
                                 <div class="flex flex-col mt-2 text-secondary">
                                     <ng-container *ngIf="yearlyBilling">
-                                        <div>billed yearly</div>
-                                        <div><b>$25.00</b> billed monthly</div>
+                                        <div><b>${{pricingData.analystMonthly}}</b> if billed monthly</div>
                                     </ng-container>
                                     <ng-container *ngIf="!yearlyBilling">
-                                        <div>billed monthly</div>
-                                        <div><b>$19.95</b> billed yearly</div>
+                                        <div><b>${{pricingData.analystYearly}}</b> if billed yearly</div>
                                     </ng-container>
                                 </div>
                                 <!-- CTA -->
@@ -132,7 +132,7 @@
                                             <mat-icon
                                                 class="icon-size-5 text-green-600"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                            <div class="ml-2 leading-5">Up to <b>5000</b> customer profiles</div>
+                                            <div class="ml-2 leading-5">Up to <b>{{pricingData.analystProfiles}}</b> customer profiles</div>
                                         </div>
                                     </div>
                                 </div>
@@ -154,21 +154,19 @@
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                                 <!-- Price -->
                                 <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="mr-2 text-2xl">from USD</div>
                                     <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">$27.95</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">$35.00</ng-container>
+                                        <ng-container *ngIf="yearlyBilling">${{pricingData.specialistYearly}}</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.specialistMonthly}}</ng-container>
                                     </div>
                                 </div>
                                 <!-- Price details -->
                                 <div class="flex flex-col mt-2 text-secondary">
                                     <ng-container *ngIf="yearlyBilling">
-                                        <div>billed yearly</div>
-                                        <div><b>$35.00</b> billed monthly</div>
+                                        <div><b>${{pricingData.specialistMonthly}}</b> if billed monthly</div>
                                     </ng-container>
                                     <ng-container *ngIf="!yearlyBilling">
-                                        <div>billed monthly</div>
-                                        <div><b>$27.95</b> billed yearly</div>
+                                        <div><b>${{pricingData.specialistYearly}}</b> if billed yearly</div>
                                     </ng-container>
                                 </div>
                                 <!-- CTA -->
@@ -207,7 +205,7 @@
                                             <mat-icon
                                                 class="icon-size-5 text-green-600"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                            <div class="ml-2 leading-5">Up to <b>15000</b> customer profiles</div>
+                                            <div class="ml-2 leading-5">Up to <b>{{pricingData.specialistProfiles}}</b> customer profiles</div>
                                         </div>
                                     </div>
                                 </div>
@@ -222,21 +220,19 @@
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                                 <!-- Price -->
                                 <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">USD</div>
+                                    <div class="mr-2 text-2xl">from USD</div>
                                     <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">$39.95</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">$50.00</ng-container>
+                                        <ng-container *ngIf="yearlyBilling">${{pricingData.consultantYearly}}</ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.consultantMonthly}}</ng-container>
                                     </div>
                                 </div>
                                 <!-- Price details -->
                                 <div class="flex flex-col mt-2 text-secondary">
                                     <ng-container *ngIf="yearlyBilling">
-                                        <div>billed yearly</div>
-                                        <div><b>$50.00</b> billed monthly</div>
+                                        <div><b>${{pricingData.consultantMonthly}}</b> if billed monthly</div>
                                     </ng-container>
                                     <ng-container *ngIf="!yearlyBilling">
-                                        <div>billed monthly</div>
-                                        <div><b>$39.95</b> billed yearly</div>
+                                        <div><b>${{pricingData.consultantYearly}}</b> if billed yearly</div>
                                     </ng-container>
                                 </div>
                                 <!-- CTA -->
@@ -278,7 +274,7 @@
                                             <mat-icon
                                                 class="icon-size-5 text-green-600"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                            <div class="ml-2 leading-5">Up to <b>50000</b> customer profiles</div>
+                                            <div class="ml-2 leading-5">Up to <b>{{pricingData.consultantProfiles}}</b> customer profiles</div>
                                         </div>
                                         <div class="flex">
                                             <mat-icon
@@ -388,7 +384,7 @@
                         </div>
                         <button
                             mat-flat-button
-                            class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800"
+                            class="fuse-mat-button-large mt-8 px-12 bg-white text-primary-800 dark-text"
                             (click)='getDetails("specialist")'>
                             <span class="text-lg">Get Started Now</span>
                         </button>
@@ -648,20 +644,32 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="flex flex-col gt-xs:flex-row">
-                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                    <mat-label>Billing</mat-label>
-                                    <mat-select formControlName="clientBilling" required
-                                                (selectionChange)="setBilling($event)">
-                                        <mat-option [value]="'monthly'">
-                                            Monthly
-                                        </mat-option>
-                                        <mat-option [value]="'yearly'">
-                                            Yearly
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientBilling, 'Billing')}}</mat-error>
-                                </mat-form-field>
+                            <div class="flex justify-evenly gt-xs:flex-row">
+                                <div
+                                    class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
+                                'bg-transparent': !yearlyBilling}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setBilling($event, 'yearly')"
+                                        disableRipple>
+                                        Yearly billing
+                                    </button>
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
+                                'bg-transparent': yearlyBilling}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setBilling($event,'monthly')"
+                                        disableRipple>
+                                        Monthly billing
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="flex flex-col gt-xs:flex-row">
@@ -672,13 +680,15 @@
                                     thumbLabel
                                     [displayWith]="formatSliderLabel"
                                     tickInterval="1"
-                                    step="5000"
+                                    step={{this.pricingData.profileAddition}}
                                     min="0"
                                     max="100000"
                                     aria-label="units"
                                     (change)="onSliderChange($event)"></mat-slider>
-                                <div class="flex justify-evenly items-start">
-                                    <span></span>
+                            </div>
+                            <div class="flex gt-xs:flex-row">
+                                <div class="flex mr-6"></div>
+                                <div class="flex justify-evenly" style="flex:1">
                                     <span>10k</span>
                                     <span>20k</span>
                                     <span>30k</span>
@@ -688,8 +698,8 @@
                                     <span>70k</span>
                                     <span>80k</span>
                                     <span>90k</span>
-                                    <span></span>
                                 </div>
+                                <div class="flex ml-6"></div>
                             </div>
 
                             <div class="flex flex-col items-start gt-xs:flex-row">
@@ -715,13 +725,13 @@
                                             Billed Monthly
                                         </div>
                                         <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                            Monthly Equivalent
+                                            If Billed Monthly
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{monthlyProfilePrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> $ {{profilePrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
@@ -730,7 +740,7 @@
                                     <div class="flex flex-col rounded"
                                          [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
                                         <div *ngIf="!yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
-                                            Yearly Equivalent
+                                            If Billed Yearly
                                         </div>
                                         <div *ngIf="yearlyBilling" class="flex gt-xs:flex-row text-2xl font-bold justify-end">
                                             Billed Yearly
@@ -739,7 +749,7 @@
                                             <span class="text-2xl"> $ {{yearlyPlanPrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{yearlyProfilePrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> $ {{profilePrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> $ {{yearlyPrice | number:'0.2'}}</span>

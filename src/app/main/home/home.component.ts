@@ -227,7 +227,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'WIRRAL <br/>' +
                     'ENGLAND <br/>' +
                     'CH49 0AB ',
-                buttons: 'close'
+                buttons: 'close2'
             }
         });
     }
@@ -434,7 +434,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'WIRRAL <br/>' +
                     'ENGLAND <br/>' +
                     'CH49 0AB ',
-                buttons: 'close'
+                buttons: 'close2'
             }
         });
     }
@@ -502,7 +502,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'WIRRAL <br/>' +
                     'ENGLAND <br/>' +
                     'CH49 0AB ',
-                buttons: 'close'
+                buttons: 'close2'
             }
         });
     }
