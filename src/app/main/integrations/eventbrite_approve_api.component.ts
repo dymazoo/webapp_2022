@@ -45,38 +45,6 @@ export class EventbriteApproveApiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this._fuseConfigService.config = {
-            colorTheme: 'theme-default',
-            layout: {
-                style: 'vertical-layout-1',
-                width: 'fullwidth',
-                navbar: {
-                    primaryBackground: 'fuse-navy-700',
-                    secondaryBackground: 'fuse-navy-900',
-                    folded: false,
-                    hidden: true,
-                    position: 'left',
-                    variant: 'vertical-style-2'
-                },
-                toolbar: {
-                    customBackgroundColor: false,
-                    background: 'fuse-white-500',
-                    hidden: true,
-                    position: 'below-static'
-                },
-                footer: {
-                    customBackgroundColor: true,
-                    background: 'fuse-navy-900',
-                    hidden: true,
-                    position: 'below-fixed'
-                },
-                sidepanel: {
-                    hidden: false,
-                    position: 'right'
-                }
-            },
-            customScrollbars: true
-        };
         this.resultMessage = 'Checking authorisation - one moment please';
 
         this.activatedRoute.queryParams

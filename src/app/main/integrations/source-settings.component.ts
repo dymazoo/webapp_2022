@@ -127,7 +127,12 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
                         this.paginatedDataSource.filterPredicate =
                             (data: SourceSetting, filter: string) => this.sourceSettingsFilterPredicate(data, filter);
                         this.filterElement.nativeElement.focus();
+                    } else {
+                        this.paginatedDataSource = undefined;
                     }
+                } else {
+                    this.sourceSettings = [];
+                    this.paginatedDataSource = undefined;
                 }
             });
     }
