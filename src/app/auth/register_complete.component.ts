@@ -4,7 +4,7 @@ import {HttpService} from '../shared/services/http.service';
 import {TranslocoService} from '@ngneat/transloco';
 
 @Component({
-    selector: 'registercomplete',
+    selector: 'home',
     templateUrl: './register_complete.component.html'
 })
 

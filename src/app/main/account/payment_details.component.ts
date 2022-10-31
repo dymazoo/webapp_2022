@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import {fuseAnimations} from '@fuse/animations';
 
 @Component({
-    selector: 'payment-details',
+    selector: 'home',
     templateUrl: './payment_details.component.html',
     animations: fuseAnimations
 })

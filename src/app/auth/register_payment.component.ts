@@ -7,7 +7,7 @@ import {environment} from '../../environments/environment';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'registerpayment',
+    selector: 'home',
     templateUrl: './register_payment.component.html'
 })
 
