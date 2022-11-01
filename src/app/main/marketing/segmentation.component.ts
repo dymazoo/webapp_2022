@@ -339,7 +339,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     getFinalCardClass(): string {
         let cardClass;
         if (this.scheme === 'light') {
-            cardClass = 'bg-primary-300';
+            cardClass = 'bg-primary-400';
         } else {
             cardClass = 'bg-primary-900';
         }
@@ -349,7 +349,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     getFinalCardHeaderClass(): string {
         let cardClass;
         if (this.scheme === 'light') {
-            cardClass = 'bg-primary-300';
+            cardClass = 'bg-primary-400';
         } else {
             cardClass = 'bg-primary-800';
         }

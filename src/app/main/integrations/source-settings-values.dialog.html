@@ -26,28 +26,18 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col gt-xs:flex-row">
-                        <div class="mat-form-field">
-                            <mat-checkbox name="enabled" formControlName="enabled">
-                                Enable integration
-                            </mat-checkbox>
-
-                            <mat-error>{{ getErrorMessage(sourceSettingsForm.controls.enabled, 'Enabled')}}</mat-error>
-                        </div>
-                    </div>
-
                     <div class="source-sourceSettings" formArrayName="values">
                         <table class="table-full-width table-scroll-body">
                             <thead>
                             <tr>
-                                <th style="width: 30%;" class="table-header table-framed">Description</th>
-                                <th style="width: 30%;" class="table-header table-framed">Field name</th>
-                                <th style="width: 30%;" class="table-header table-framed">Value</th>
-                                <th style="width: 10%;" class="table-header table-framed">
-                                    <button class="fuse-mat-button-large w-20 bg-primary-300"
+                                <th style="width: 25%;" class="table-header table-framed">Description</th>
+                                <th style="width: 25%;" class="table-header table-framed">Value</th>
+                                <th style="width: 20%;" class="table-header table-framed">Field name</th>
+                                <th style="width: 30%;" class="table-header table-framed">
+                                    <button class="fuse-mat-button-large w-50 bg-primary-400"
                                             mat-flat-button type="button"
                                             (click)="addSetting()">
-                                        Add
+                                        Add New Setting
                                     </button>
                                 </th>
                             </tr>
@@ -55,14 +45,21 @@
                             <tbody>
                             <tr *ngFor="let sourceSetting of getValueControls(); let i=index">
                                 <ng-container [formGroupName]="i">
-                                    <td style="width: 30%;" class="table-framed table-field-no-underline">
+                                    <td style="width: 25%;" class="table-framed table-field-no-underline">
                                         <mat-form-field appearance="none" class="table-field-full-width">
                                             <input readonly matInput
                                                    formControlName="description"
                                             >
                                         </mat-form-field>
                                     </td>
-                                    <td style="width: 30%;" class="table-framed table-field-no-underline">
+                                    <td style="width: 25%;" class="table-framed">
+                                        <mat-form-field appearance="none" class="table-field-full-width">
+                                            <input matInput formControlName="value" autocomplete="do-not-autofill"
+                                                   required>
+                                            <mat-error>{{ getErrorMessage(sourceSetting.controls.value, 'Value')}}</mat-error>
+                                        </mat-form-field>
+                                    </td>
+                                    <td style="width: 20%;" class="table-framed table-field-no-underline">
                                         <mat-form-field appearance="none" class="table-field-full-width">
                                             <input [readonly]="sourceSetting.controls.automatic.value === 1" matInput
                                                    formControlName="name"
@@ -72,27 +69,22 @@
                                             <mat-error>{{ getErrorMessage(sourceSetting.controls.name, 'Name')}}</mat-error>
                                         </mat-form-field>
                                     </td>
-                                    <td style="width: 30%;" class="table-framed">
-                                        <mat-form-field appearance="none" class="table-field-full-width">
-                                            <input matInput formControlName="value" autocomplete="do-not-autofill"
-                                                   required>
-                                            <mat-error>{{ getErrorMessage(sourceSetting.controls.value, 'Value')}}</mat-error>
-                                        </mat-form-field>
-                                    </td>
-                                    <td style="width: 10%; text-align: center;" class="table-framed">
-                                        <div *ngIf="sourceSetting.controls.automatic.value === 0">
-                                            <button class="fuse-mat-button-large w-30 bg-warn-300"
-                                                    mat-flat-button type="button"
-                                                    (click)="removeSetting(i)">
-                                                Remove
-                                            </button>
-                                        </div>
-                                        <div *ngIf="sourceSetting.controls.oauth.value === 1">
-                                            <button class="fuse-mat-button-large w-50 bg-primary-300"
-                                                    mat-flat-button type="button"
-                                                    (click)="doAuth(sourceSetting.controls.oauth_url.value)">
-                                                Grant API Access
-                                            </button>
+                                    <td style="width: 30%; text-align: center;" class="table-framed">
+                                        <div>
+                                            <div class="div-block-inline" *ngIf="sourceSetting.controls.automatic.value === 0">
+                                                <button class="fuse-mat-button-large w-20 bg-warn-300"
+                                                        mat-flat-button type="button"
+                                                        (click)="removeSetting(i)">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <div class="div-block-inline" *ngIf="sourceSetting.controls.oauth.value === 1">
+                                                <button class="fuse-mat-button-large w-40 bg-primary-400"
+                                                        mat-flat-button type="button"
+                                                        (click)="doAuth(sourceSetting.controls.oauth_url.value)">
+                                                    Grant API Access
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
                                 </ng-container>
@@ -122,7 +114,7 @@
                     </ng-container>
                     <ng-container *ngIf="oAuthInProgress">
                         <div class="flex items-center justify-end">
-                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
                                     mat-flat-button type="button"
                                     (click)="onClose()">
                                 Continue

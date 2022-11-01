@@ -16,7 +16,7 @@ import {DymazooApiComponent} from '../integrations/dymazoo-api.component';
 
 const routes: Routes = [
     {
-        path: 'source-settings',
+        path: 'settings',
         component: SourceSettingsComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]

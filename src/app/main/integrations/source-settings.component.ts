@@ -88,13 +88,17 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
             this.errors = dataSourcesErrors;
         });
 
-        this.dataSourcesGetSourceSavedSubscription = this.dataSources.getSourceSaved().subscribe(refresh => {
+        this.dataSourcesGetSourceSavedSubscription = this.dataSources.getSourceSaved().subscribe(response => {
             if (this.sourceSettingsDataSource) {
                 this._snackBar.open('Integration added', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
                 this.sourceSettingsDataSource.refresh();
+            }
+            if (response.sourceSetting !== undefined){
+                const sourceSetting = response.sourceSetting;
+                this.sourceSettingValues(sourceSetting);
             }
         });
     }
@@ -189,10 +193,16 @@ export class SourceSettingsComponent implements OnInit, OnDestroy, AfterViewInit
 
     onSelectSourceSetting(row): void {
         const selectedSourceSetting = new SourceSetting(row);
+        if (selectedSourceSetting.enabled === 1) {
+            this.sourceSettingValues(selectedSourceSetting);
+        }
+    }
+
+    sourceSettingValues(sourceSetting): void {
         const dialogRef = this.dialog.open(SourceSettingsValuesDialogComponent, {
             width: '70%',
             minWidth: '1000px',
-            data: {'sourceSetting' : selectedSourceSetting}
+            data: {'sourceSetting' : sourceSetting}
         });
 
         dialogRef.afterClosed().subscribe(settingResult => {

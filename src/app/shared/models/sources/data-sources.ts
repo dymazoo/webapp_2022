@@ -174,7 +174,6 @@ export class DataSources {
                     sourceSettingValue = new SourceSettingValue(
                         {
                             name: value,
-                            automatic: 1
                         }
                     );
                     if (sourceName === 'sendinblue' && value === 'date_format') {
@@ -190,7 +189,7 @@ export class DataSources {
                     .subscribe((data: Response) => {
                         this.errorsSubject.next([]);
                         this.getCurrentDescriptions();
-                        this.sourceSavedSubject.next(true);
+                        this.sourceSavedSubject.next({'refresh': true, 'sourceSetting': sourceSetting});
                     }, (errors) => {
                         this.errorsSubject.next(errors);
                     });
@@ -262,7 +261,7 @@ export class DataSources {
                 type: 'basic',
                 disabled: !this.canClientAdmin,
                 icon: 'heroicons_outline:cog',
-                link: '/integrations/source-settings'
+                link: '/integrations/settings'
             } as FuseNavigationItem);
             integrationsItem.children.push(integrationsSettingsItem);
             this.setIntegrationsNavigation(integrationsItem);

@@ -33,22 +33,27 @@
                                        [@fadeIn]="true">
                                     <ng-container matColumnDef="description">
                                         <th mat-header-cell style="font-size: 1.5rem;"
-                                            *matHeaderCellDef mat-sort-header>Description</th>
-                                        <td mat-cell *matCellDef="let row" style="height: 4rem;"> {{row.description}}</td>
+                                            *matHeaderCellDef mat-sort-header>Description
+                                        </th>
+                                        <td mat-cell *matCellDef="let row"
+                                            style="height: 4rem;"> {{row.description}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="action">
                                         <th mat-header-cell *matHeaderCellDef></th>
                                         <td mat-cell *matCellDef="let row; let i=index" style="height: 4rem;">
-                                            <button class="fuse-mat-button-large w-30 bg-primary-300"
-                                                    mat-flat-button type="button"
-                                                    (click)="onSelectSourceSetting(row)">
-                                                Values
-                                            </button>
-                                            <button *ngIf="row.description !== 'File Import'" class="fuse-mat-button-large w-30 bg-warn-300"
-                                                    mat-flat-button type="button"
-                                                    (click)="removeSource(row)">
-                                                Remove
-                                            </button>
+                                            <ng-container *ngIf="row.enabled === 1">
+                                                <button class="fuse-mat-button-large w-30 bg-primary-400"
+                                                        mat-flat-button type="button"
+                                                        (click)="onSelectSourceSetting(row)">
+                                                    Settings
+                                                </button>
+                                                <button *ngIf="row.description !== 'File Import'"
+                                                        class="fuse-mat-button-large w-30 bg-warn-300"
+                                                        mat-flat-button type="button"
+                                                        (click)="removeSource(row)">
+                                                    Stop Using
+                                                </button>
+                                            </ng-container>
                                         </td>
                                     </ng-container>
 
@@ -62,7 +67,7 @@
                                         (keydown.enter)="onSelectSourceSetting(row)"
                                         [ngClass]="{'bg-primary-200' : row == selectedRow}"
                                         matRipple [@fadeIn]="true">
-                                    >
+                                        >
                                     </tr>
                                 </table>
                             </div>
@@ -79,7 +84,7 @@
                         <div *ngIf="!addingDataSource && dataSourcesAvailableDescriptions.length > 0"
                              class="flex flex-col gt-xs:flex-row">
                             <div class="flex items-center justify-start">
-                                <button class="fuse-mat-button-large w-70 mt-2 bg-primary-300"
+                                <button class="fuse-mat-button-large w-70 mt-2 bg-primary-400"
                                         mat-flat-button type="button"
                                         (click)="addingSource()">
                                     Add Another Integration
@@ -98,7 +103,7 @@
                             </mat-form-field>
                             <div style="width: 5%">
                             </div>
-                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-300"
+                            <button class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
                                     mat-flat-button type="button"
                                     (click)="addSource(newSource)">
                                 Add Selected
