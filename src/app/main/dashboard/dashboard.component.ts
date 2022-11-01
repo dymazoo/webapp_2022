@@ -27,12 +27,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public chartPeople: ApexOptions;
     public chartSales: ApexOptions;
     public chartEvents: ApexOptions;
-    public chartActions: ApexOptions;
+    public chartSent: ApexOptions;
+    public chartOpen: ApexOptions;
+    public chartClick: ApexOptions;
+    public chartUnsubscribe: ApexOptions;
+    public chartBounce: ApexOptions;
 
     public peopleData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'People', 'data':[]}]};
     public salesData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Sales', 'data':[]}]};
-    public eventsData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Events', 'data':[]}]};
-    public actionsData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Actions', 'data':[]}]};
+    public eventsData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Event Actions', 'data':[]}]};
+    public sentData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Sent', 'data':[]}]};
+    public openData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Open', 'data':[]}]};
+    public clickData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Click', 'data':[]}]};
+    public unsubscribeData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Unsubscribe', 'data':[]}]};
+    public bounceData = {'amount': -1, 'trend': -1, 'labels' : [], 'series' : [{'name': 'Bounce', 'data':[]}]};
+
+    public showSales: boolean = false;
+    public showEvents: boolean = false;
+    public showSent: boolean = false;
+    public showOpen: boolean = false;
+    public showClick: boolean = false;
+    public showUnsubscribe: boolean = false;
+    public showBounce: boolean = false;
 
     public allChartData = [];
     public chartAll = [];
@@ -92,12 +108,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.peopleData = storedDashboard.peopleData;
             this.salesData = storedDashboard.salesData;
             this.eventsData = storedDashboard.eventsData;
-            this.actionsData = storedDashboard.actionsData;
+            this.sentData = storedDashboard.sentData;
+            this.openData = storedDashboard.openData;
+            this.clickData = storedDashboard.clickData;
+            this.unsubscribeData = storedDashboard.unsubscribeData;
+            this.bounceData = storedDashboard.bounceData;
             this.allChartData = storedDashboard.allChartData;
             this.showCharts = storedDashboard.showCharts;
             this.dashboardDates = storedDashboard.dashboardDates;
             this.dateItem = storedDashboard.dateItem;
             this.settingList = storedDashboard.settingList;
+            this.showSales = storedDashboard.showSales;
+            this.showSent = storedDashboard.showSent;
+            this.showOpen = storedDashboard.showOpen;
+            this.showClick = storedDashboard.showClick;
+            this.showUnsubscribe = storedDashboard.showUnsubscribe;
+            this.showBounce = storedDashboard.showBounce;
+            this.showEvents = storedDashboard.showEvents;
             this.refreshDashboard(this.dateItem.value);
         } else {
             if (!this.dashboardData || !this.dashboardData.hasData) {
@@ -124,13 +151,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         'amount': -1,
                         'trend': -1,
                         'labels': [],
-                        'series': [{'name': 'Events', 'data': []}]
+                        'series': [{'name': 'Event Actions', 'data': []}]
                     };
-                    this.actionsData = {
+                    this.sentData = {
                         'amount': -1,
                         'trend': -1,
                         'labels': [],
-                        'series': [{'name': 'Actions', 'data': []}]
+                        'series': [{'name': 'Sent', 'data': []}]
+                    };
+                    this.openData = {
+                        'amount': -1,
+                        'trend': -1,
+                        'labels': [],
+                        'series': [{'name': 'Open', 'data': []}]
+                    };
+                    this.clickData = {
+                        'amount': -1,
+                        'trend': -1,
+                        'labels': [],
+                        'series': [{'name': 'Click', 'data': []}]
+                    };
+                    this.unsubscribeData = {
+                        'amount': -1,
+                        'trend': -1,
+                        'labels': [],
+                        'series': [{'name': 'Unsubscribe', 'data': []}]
+                    };
+                    this.bounceData = {
+                        'amount': -1,
+                        'trend': -1,
+                        'labels': [],
+                        'series': [{'name': 'Bounce', 'data': []}]
                     };
 
                     this.dateLabels = [];
@@ -139,7 +190,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     let summaryDates = [];
                     let salesData = [];
                     let eventsData = [];
-                    let actionsData = [];
+                    let sentData = [];
+                    let openData = [];
+                    let clickData = [];
+                    let unsubscribeData = [];
+                    let bounceData = [];
                     summaryData.dates.forEach((dateItem) => {
                         summaryDates.push({
                             value: dateItem.date,
@@ -159,6 +214,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                                 this.peopleData.series[0].data.unshift(dataItem.value);
                             }
                             if (dataItem.label === 'sales') {
+                                if (dataItem.value !== 0) {
+                                    this.showSales = true;
+                                }
                                 if (this.salesData.amount === -1) {
                                     this.salesData.amount = dataItem.value;
                                 } else {
@@ -170,6 +228,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                                 this.salesData.series[0].data.unshift(dataItem.value);
                             }
                             if (dataItem.label === 'events') {
+                                if (dataItem.value !== 0) {
+                                    this.showEvents = true;
+                                }
                                 if (this.eventsData.amount === -1) {
                                     this.eventsData.amount = dataItem.value;
                                 } else {
@@ -180,16 +241,75 @@ export class DashboardComponent implements OnInit, OnDestroy {
                                 this.eventsData.labels.unshift(dateItem.date);
                                 this.eventsData.series[0].data.unshift(dataItem.value);
                             }
-                            if (dataItem.label === 'actions') {
-                                if (this.actionsData.amount === -1) {
-                                    this.actionsData.amount = dataItem.value;
+                            if (dataItem.label === 'sent') {
+                                if (dataItem.value !== 0) {
+                                    this.showSent = true;
+                                }
+                                if (this.sentData.amount === -1) {
+                                    this.sentData.amount = dataItem.value;
                                 } else {
-                                    if (this.actionsData.trend === -1) {
-                                        this.actionsData.trend = this.actionsData.amount - dataItem.value;
+                                    if (this.sentData.trend === -1) {
+                                        this.sentData.trend = this.sentData.amount - dataItem.value;
                                     }
                                 }
-                                this.actionsData.labels.unshift(dateItem.date);
-                                this.actionsData.series[0].data.unshift(dataItem.value);
+                                this.sentData.labels.unshift(dateItem.date);
+                                this.sentData.series[0].data.unshift(dataItem.value);
+                            }
+                            if (dataItem.label === 'open') {
+                                if (dataItem.value !== 0) {
+                                    this.showOpen = true;
+                                }
+                                if (this.openData.amount === -1) {
+                                    this.openData.amount = dataItem.value;
+                                } else {
+                                    if (this.openData.trend === -1) {
+                                        this.openData.trend = this.openData.amount - dataItem.value;
+                                    }
+                                }
+                                this.openData.labels.unshift(dateItem.date);
+                                this.openData.series[0].data.unshift(dataItem.value);
+                            }
+                            if (dataItem.label === 'click') {
+                                if (dataItem.value !== 0) {
+                                    this.showClick = true;
+                                }
+                                if (this.clickData.amount === -1) {
+                                    this.clickData.amount = dataItem.value;
+                                } else {
+                                    if (this.clickData.trend === -1) {
+                                        this.clickData.trend = this.clickData.amount - dataItem.value;
+                                    }
+                                }
+                                this.clickData.labels.unshift(dateItem.date);
+                                this.clickData.series[0].data.unshift(dataItem.value);
+                            }
+                            if (dataItem.label === 'unsubscribe') {
+                                if (dataItem.value !== 0) {
+                                    this.showUnsubscribe = true;
+                                }
+                                if (this.unsubscribeData.amount === -1) {
+                                    this.unsubscribeData.amount = dataItem.value;
+                                } else {
+                                    if (this.unsubscribeData.trend === -1) {
+                                        this.unsubscribeData.trend = this.unsubscribeData.amount - dataItem.value;
+                                    }
+                                }
+                                this.unsubscribeData.labels.unshift(dateItem.date);
+                                this.unsubscribeData.series[0].data.unshift(dataItem.value);
+                            }
+                            if (dataItem.label === 'bounce') {
+                                if (dataItem.value !== 0) {
+                                    this.showBounce = true;
+                                }
+                                if (this.bounceData.amount === -1) {
+                                    this.bounceData.amount = dataItem.value;
+                                } else {
+                                    if (this.bounceData.trend === -1) {
+                                        this.bounceData.trend = this.bounceData.amount - dataItem.value;
+                                    }
+                                }
+                                this.bounceData.labels.unshift(dateItem.date);
+                                this.bounceData.series[0].data.unshift(dataItem.value);
                             }
                         });
                     });
@@ -212,11 +332,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     if (this.eventsData.trend === -1) {
                         this.eventsData.trend = 0;
                     }
-                    if (this.actionsData.amount === -1) {
-                        this.actionsData.amount = 0;
+                    if (this.sentData.amount === -1) {
+                        this.sentData.amount = 0;
                     }
-                    if (this.actionsData.trend === -1) {
-                        this.actionsData.trend = 0;
+                    if (this.sentData.trend === -1) {
+                        this.sentData.trend = 0;
+                    }
+                    if (this.openData.amount === -1) {
+                        this.openData.amount = 0;
+                    }
+                    if (this.openData.trend === -1) {
+                        this.openData.trend = 0;
+                    }
+                    if (this.clickData.amount === -1) {
+                        this.clickData.amount = 0;
+                    }
+                    if (this.clickData.trend === -1) {
+                        this.clickData.trend = 0;
+                    }
+                    if (this.unsubscribeData.amount === -1) {
+                        this.unsubscribeData.amount = 0;
+                    }
+                    if (this.unsubscribeData.trend === -1) {
+                        this.unsubscribeData.trend = 0;
+                    }
+                    if (this.bounceData.amount === -1) {
+                        this.bounceData.amount = 0;
+                    }
+                    if (this.bounceData.trend === -1) {
+                        this.bounceData.trend = 0;
                     }
                 }
 
@@ -285,7 +429,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
         };
 
-        this.chartActions = {
+        this.chartSent = {
             chart  : {
                 animations: {
                     enabled: true
@@ -303,7 +447,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 colors : ['#F6AD55'],
                 opacity: 0.5
             },
-            series : this.actionsData.series,
+            series : this.sentData.series,
             stroke : {
                 curve: 'smooth'
             },
@@ -313,7 +457,155 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             xaxis  : {
                 type      : 'category',
-                categories: this.actionsData.labels
+                categories: this.sentData.labels
+            },
+            yaxis  : {
+                labels: {
+                    formatter: (val): string => val.toString()
+                }
+            }
+        };
+
+        this.chartOpen = {
+            chart  : {
+                animations: {
+                    enabled: true
+                },
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'area',
+                sparkline : {
+                    enabled: true
+                }
+            },
+            colors : ['#d97e41'],
+            fill   : {
+                colors : ['#d97e41'],
+                opacity: 0.5
+            },
+            series : this.openData.series,
+            stroke : {
+                curve: 'smooth'
+            },
+            tooltip: {
+                followCursor: true,
+                theme       : 'dark'
+            },
+            xaxis  : {
+                type      : 'category',
+                categories: this.openData.labels
+            },
+            yaxis  : {
+                labels: {
+                    formatter: (val): string => val.toString()
+                }
+            }
+        };
+
+        this.chartClick = {
+            chart  : {
+                animations: {
+                    enabled: true
+                },
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'area',
+                sparkline : {
+                    enabled: true
+                }
+            },
+            colors : ['#5562f6'],
+            fill   : {
+                colors : ['#5562f6'],
+                opacity: 0.5
+            },
+            series : this.clickData.series,
+            stroke : {
+                curve: 'smooth'
+            },
+            tooltip: {
+                followCursor: true,
+                theme       : 'dark'
+            },
+            xaxis  : {
+                type      : 'category',
+                categories: this.clickData.labels
+            },
+            yaxis  : {
+                labels: {
+                    formatter: (val): string => val.toString()
+                }
+            }
+        };
+
+        this.chartUnsubscribe = {
+            chart  : {
+                animations: {
+                    enabled: true
+                },
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'area',
+                sparkline : {
+                    enabled: true
+                }
+            },
+            colors : ['#f6557b'],
+            fill   : {
+                colors : ['#f6557b'],
+                opacity: 0.5
+            },
+            series : this.unsubscribeData.series,
+            stroke : {
+                curve: 'smooth'
+            },
+            tooltip: {
+                followCursor: true,
+                theme       : 'dark'
+            },
+            xaxis  : {
+                type      : 'category',
+                categories: this.unsubscribeData.labels
+            },
+            yaxis  : {
+                labels: {
+                    formatter: (val): string => val.toString()
+                }
+            }
+        };
+
+        this.chartBounce = {
+            chart  : {
+                animations: {
+                    enabled: true
+                },
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'area',
+                sparkline : {
+                    enabled: true
+                }
+            },
+            colors : ['#e1f655'],
+            fill   : {
+                colors : ['#e1f655'],
+                opacity: 0.5
+            },
+            series : this.bounceData.series,
+            stroke : {
+                curve: 'smooth'
+            },
+            tooltip: {
+                followCursor: true,
+                theme       : 'dark'
+            },
+            xaxis  : {
+                type      : 'category',
+                categories: this.bounceData.labels
             },
             yaxis  : {
                 labels: {
@@ -664,9 +956,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         const storedDashboard = {
             'peopleData': this.peopleData, 'salesData': this.salesData, 'eventsData': this.eventsData,
-            'actionsData': this.actionsData, 'allChartData': this.allChartData, 'showCharts': this.showCharts,
+            'sentData': this.sentData, 'openData': this.openData, 'clickData': this.clickData, 'unsubscribeData': this.unsubscribeData,
+            'bounceData': this.bounceData, 'allChartData': this.allChartData, 'showCharts': this.showCharts,
             'dateItem': this.dateItem, 'hasData': true, 'dashboardDates': this.dashboardDates,
-            'settingList': this.settingList
+            'settingList': this.settingList, 'showSales': this.showSales, 'showSent': this.showSent, 'showOpen': this.showOpen,
+            'showClick': this.showClick, 'showUnsubscribe': this.showUnsubscribe, 'showBounce': this.showBounce,
+            'showEvents': this.showEvents
         };
         this.httpService.storeDashboard(storedDashboard);
         this.dataReady = true;
