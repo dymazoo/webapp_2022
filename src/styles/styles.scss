@@ -590,7 +590,7 @@ home {
         background-position: center;
         background-repeat: no-repeat;
         min-width: 100%;
-        min-height: calc(100vh - 80px);
+        min-height: 70vh;
     }
 
     .home-message {
@@ -610,7 +610,7 @@ home {
 
         .home-message-main {
             color: #ffffff;
-            font-size: 60px;
+            font-size: 50px;
             font-weight: 550;
             font-family: 'Barlow Condensed', sans-serif;
             max-width: 60%;
@@ -637,6 +637,15 @@ home {
         min-height: calc(100vh - 80px);
     }
 
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @Embedded Videos
+// -----------------------------------------------------------------------------------------------------
+.embedded-video {
+    width: 420px;
+    height: 237px;
+    margin-left: 40px;
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -685,6 +694,17 @@ register {
     background-color: #414f8c;
 }
 
+@media screen and (max-width: 1366px) {
+    home {
+
+        .home-message {
+            .home-message-main {
+                font-size: 40px;
+            }
+        }
+    }
+}
+
 @media screen and (max-width: 1024px) {
     home {
         .home-banner {
@@ -693,13 +713,24 @@ register {
 
         .home-message {
             .home-message-main {
-                font-size: 60px;
+                max-width: 85%;
+                font-size: 40px;
+            }
+
+            .home-message-bottom {
+                max-width: 75%;
             }
         }
     }
 }
 
 @media screen and (max-width: 800px) {
+    .embedded-video {
+        width: 336px;
+        height: 190px;
+        margin-left: 0px;
+    }
+
     home {
         .home-header {
             height: 100px;
@@ -737,7 +768,7 @@ register {
 
         .home-message {
             .home-message-main {
-                font-size: 60px;
+                font-size: 40px;
                 max-width: 85%;
             }
 
@@ -748,6 +779,16 @@ register {
     }
 }
 
+// -----------------------------------------------------------------------------------------------------
+// @Dashboard
+// -----------------------------------------------------------------------------------------------------
+.proxy_dashboard {
+    background-image: url(/assets/images/backgrounds/dashboard_sample.png);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: contain;
+    min-height: 150vh;
+}
 
 // -----------------------------------------------------------------------------------------------------
 // @Dashboard sidebar

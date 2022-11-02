@@ -103,6 +103,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.processingDashboard = true;
 
         const storedDashboard = this.httpService.getStoredDashboard();
+        if (!storedDashboard || !storedDashboard.hasData) {
+            this.emptyDashboard = true;
+        }
         if (!force && storedDashboard && storedDashboard.hasData) {
             this.emptyDashboard = false;
             this.peopleData = storedDashboard.peopleData;
@@ -129,7 +132,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else {
             if (!this.dashboardData || !this.dashboardData.hasData) {
                 this.emptyDashboard = true;
+                this.processingDashboard = false;
             } else {
+                this.emptyDashboard = false;
+
                 this.allChartData = [];
                 this.chartAll = [];
                 this.showCharts = [];

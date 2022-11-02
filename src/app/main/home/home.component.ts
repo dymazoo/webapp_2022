@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FuseScrollbarDirective} from '@fuse/directives/scrollbar/scrollbar.directive';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare const gtag: Function;
 
@@ -22,12 +23,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     action: string = 'none';
     isLoggedIn: boolean = false;
     plan: string = 'standard';
+    cdpURL: any;
 
     constructor(private _fuseConfigService: FuseConfigService,
                 private httpService: HttpService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
-                public dialog: MatDialog
+                public dialog: MatDialog,
+                private _sanitizer: DomSanitizer
     ) {
         if (!this.httpService.loggedIn) {
             this.setLoggedInView(false);
@@ -37,6 +40,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+
+        this.cdpURL = this._sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/dKqG8h8o-0w');
+
         // Subscribe to config change
         this._fuseConfigService.config$
             .subscribe((config) => {

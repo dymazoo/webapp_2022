@@ -16,18 +16,15 @@
                     </div>
 
                     <div *ngIf="emptyDashboard" class="p-3">
-                        <p class="label-bold">Your dashboard doesn't have any data yet!</p>
-                        <p class="">Load customer data from integrations (such as Mailchimp, Shopify or EventBrite)
-                            or import data from files</p>
-                        <p> New dashboards are built either daily or weekly, depending on your plan</p>
+                        <p class="label-bold">Your dashboard doesn't have any data yet. You can see a sample below of what your dashboard could look like</p>
+                        <p class="">Load customer data from integrations (such as Mailchimp, Sendinblue, Shopify or EventBrite)
+                            or import data from files. Your dashboard will be populated as soon as you load some data and new dashboards are built daily, weekly or on-demand, depending on your plan</p>
                         <p>For help on getting started visit our <a
                             href="https://dymazoo.freshdesk.com/support/home" target="_blank">Support</a> site or
-                            checkout our <a href="https://www.youtube.com/channel/UCm8SNowzwJifgK52lU3CxAQ"
-                                            target="_blank">YouTube channel</a></p>
-                        <p class="label-bold">There's a sample below of what your dashboard could look like</p>
+                            check out our <a href="https://www.youtube.com/@dymazoo" target="_blank">YouTube channel</a></p>
                         <div class="proxy_dashboard"></div>
                     </div>
-                    <div *ngIf="!emptyDashboard && dataReady" class="flex flex-col gt-xs:flex-row">
+                    <div *ngIf="emptyDashboard || dataReady" class="flex flex-col gt-xs:flex-row">
                         <div class='div-block'>
                             <mat-icon class="cursor-pointer" (click)="forceRefreshDashboard()">
                                 refresh

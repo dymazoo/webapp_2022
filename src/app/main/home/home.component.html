@@ -3,6 +3,9 @@
         <a class="home-logo" href="https://www.dymazoo.com"></a>
         <div class="home-get-started">
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
+                Pricing
+            </span>
+            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
                 Sign Up
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer" (click)="toggleLogin($event)">
@@ -16,25 +19,26 @@
         <div class="home-banner">
             <div class="home-message">
                 <div class="home-message-top">
-                    INCREASE YOUR REVENUE WITH TARGETED MARKETING
+                    GROW YOUR REVENUES WITH TARGETED MARKETING
                 </div>
                 <div class="home-message-main">
-                    A true Single Customer View for your business
+                    A complete Customer Data Platform at a price you can afford
                 </div>
                 <div class="home-message-bottom">
-                    <p>Easily create a comprehensive and unique profile for every customer</p>
-                    <p>Create powerful marketing segments, gain insights and identify new opportunities</p>
+                    <p>Automatically pull data from your existing systems to create a 360-degree Single Customer View
+                        with a comprehensive and unique profile for every customer.</p>
+                    <p>Create powerful marketing segments, gain insights and identify new revenue opportunities</p>
                 </div>
                 <div class="home-banner-actions">
-                    <button class="fuse-mat-button-large w-70 mt-2 bg-primary-200"
+                    <button class="fuse-mat-button-large w-70 mt-2 bg-primary-200 dark-text"
                             mat-flat-button type="button"
                             (click)="gotoRegister()">Get started now!
                     </button>
-                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-green-300"
+                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-green-300 dark-text"
                             mat-flat-button type="button"
                             (click)="gotoFeatures()">See what's included
                     </button>
-                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-red-300"
+                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-red-300 dark-text"
                             mat-flat-button type="button"
                             (click)="gotoFAQ()">Find out more
                     </button>
@@ -56,7 +60,7 @@
 
         <!-- Features -->
         <div #features id="features"
-             class="relative pt-2 pb-12 sm:pt-8 sm:pb-24 px-6 sm:px-16 overflow-hidden">
+             class="relative pt-2 pb-12 sm:pt-6 sm:pb-24 px-6 sm:px-16 overflow-hidden">
             <!-- Background - @formatter:off -->
             <svg class="-z-1 absolute inset-0"
                  viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
@@ -68,75 +72,86 @@
                 </g>
             </svg>
             <!-- @formatter:on -->
-            <div class="flex flex-col items-center px-4 py-2 sm:px-8 sm:pt-8 sm:pb-10 dark:bg-gray-800">
+            <div class="flex flex-col items-center px-4 py-2 sm:px-8 sm:pt-6 sm:pb-10 dark:bg-gray-800">
                 <div class="w-full max-w-7xl">
                     <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-tight">
-                            Features
-                        </div>
-                        <div class="max-w-4xl mt-2 text-xl text-secondary">
-                            Start with the package that meets your needs and add specific features or upgrade to a
-                            different
-                            package as you see results and your needs grow
+                        <div>
+                            <div class="div-block-inline">
+                                <div class="text-4xl font-extrabold tracking-tight leading-tight">
+                                    Features
+                                </div>
+                                <div class="max-w-2xl mt-2 text-xl text-secondary">
+                                    <p>Dymazoo works with the systems and services that you already use. Have data flowing into you Customer Data Platform in in under 5 minutes.</p>
+                                    <p>&nbsp;</p>
+                                    <p>Start with the package that meets your needs and add or upgrade as you see results and your needs grow</p>
+                                </div>
+                            </div>
+                            <div class="div-block-inline">
+                                <iframe class="embedded-video" [src]='cdpURL' title="Customer Data Platform"
+                                        frameborder="0"
+                                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen></iframe>
+                            </div>
                         </div>
                     </div>
                     <!-- Features grid -->
                     <div
                         class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 w-full mt-6 sm:mt-6">
-                        <div>
-                            <img style="width:60px;height:100px" src="assets/images/pages/home/rocket.png">
-                            <div class="mt-4 text-xl font-medium">Increase the number of customer profiles at any time
-                            </div>
-                            <div class="mt-2 leading-6 text-secondary">
-                                Dymazoo has no limit of the number of customer profiles you can have. Only pay for what
-                                you
-                                need and enjoy unlimited potential
-                            </div>
-                        </div>
 
                         <div>
                             <img style="width:100px;height:100px" src="assets/images/pages/home/email_integration.jpg">
-                            <div class="mt-4 text-xl font-medium">Email Service Providers</div>
+                            <div class="mt-4 text-xl font-medium">Works with your existing Email system</div>
                             <div class="mt-2 leading-6 text-secondary">
-                                In-depth integration with leading email service providers, such as Mailchimp and
-                                Sendinblue, with more coming soon.
-                                Full bi-directional list management, powerful segmentation and email activity imports to
-                                track Sends, Opens, Clicks & Bounces.
+                                <p>In-depth integration with leading email service providers, such as Mailchimp and
+                                Sendinblue, with more coming soon.</p>
+                                <p>Full bi-directional list management, powerful segmentation and email activity imports to
+                                track Sends, Opens, Clicks & Bounces.</p>
+                                <p>No need to change provider. Keep your complete email marketing history.</p>
                             </div>
                         </div>
                         <div>
                             <img style="width:100px;height:100px" src="assets/images/pages/home/svc_database.png">
                             <div class="mt-4 text-xl font-medium">Single Customer View database</div>
                             <div class="mt-2 leading-6 text-secondary">
-                                Match and merge data from unlimited sources into a unique, 360 degree view of every
-                                customer. Understand who
-                                your customers are, what they buy and what they're interested in and how they are
-                                responding to your marketing campaigns
+                                <p>Match and merge data from unlimited sources into a unique, 360 degree view of every
+                                    customer. </p>
+                                <p>Understand who your customers are, what they buy and what they're interested in and how they are
+                                    responding to your marketing campaigns</p>
+                            </div>
+                        </div>
+                        <div>
+                            <img style="width:60px;height:100px" src="assets/images/pages/home/rocket.png">
+                            <div class="mt-4 text-xl font-medium">Increase the number of customer profiles at any time
+                            </div>
+                            <div class="mt-2 leading-6 text-secondary">
+                                Dymazoo has no limit of the number of customer profiles you can have. Only pay for what
+                                you need and enjoy unlimited potential
                             </div>
                         </div>
                         <div>
                             <img style="width:100px;height:100px" src="assets/images/pages/home/ecommerce.png">
                             <div class="mt-4 text-xl font-medium">Ecommerce Solutions</div>
                             <div class="mt-2 leading-6 text-secondary">
-                                In-depth integration with leading ecommerce solutions, such as Shopify, with more coming
-                                soon. Automatically add customer and sales data to your SCV
+                                <p>In-depth integration with leading ecommerce solutions, such as Shopify, with more coming
+                                    soon.</p>
+                                <p>Automatically add customer and sales data to your CDP</p>
                             </div>
                         </div>
                         <div>
                             <img style="width:100px;height:100px" src="assets/images/pages/home/dashboard.png">
                             <div class="mt-4 text-xl font-medium">Powerful Dashboard</div>
                             <div class="mt-2 leading-6 text-secondary">
-                                Track trends over time and see how your data is growing and improving with every new
-                                customer interaction. Gain insights
-                                into your customers and discover opportunities to increase profitability
+                                <p>Track trends over time and see how your data is growing and improving with every new
+                                    customer interaction.</p>
+                                <p>Gain insights into your customers and discover opportunities to increase profitability</p>
                             </div>
                         </div>
                         <div>
                             <img style="width:100px;height:100px" src="assets/images/pages/home/event.png">
                             <div class="mt-4 text-xl font-medium">Event Management Solutions</div>
                             <div class="mt-2 leading-6 text-secondary">
-                                In-depth integration with leading event management solutions, such as Eventbrite.
-                                Automatically add customer, booking and attendance data to your SCV
+                                <p>In-depth integration with leading event management solutions, such as Eventbrite.</p>
+                                <p>Automatically add customer, booking and attendance data to your CDP</p>
                             </div>
                         </div>
                     </div>
