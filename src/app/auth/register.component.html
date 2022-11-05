@@ -32,7 +32,7 @@
                     </div>
                     <!-- Recurring selector -->
                     <div
-                        class="flex items-center mt-8 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                        class="flex items-center mt-4 sm:mt-8 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
                         <button
                             class="px-6"
                             [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
@@ -54,9 +54,34 @@
                             Monthly billing
                         </button>
                     </div>
+                    <div class="flex items-center justify-end" style="min-width: 95% !important;;">
+                        <div
+                            class="flex mt-1 sm:mt-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                            <button
+                                class="px-6"
+                                [ngClass]="{'bg-card pointer-events-none shadow': usdCurrency,
+                                    'bg-transparent': !usdCurrency}"
+                                class="dark-text"
+                                mat-flat-button
+                                (click)="usdCurrency = true"
+                                disableRipple>
+                                $ / US Dollars
+                            </button>
+                            <button
+                                class="px-6"
+                                [ngClass]="{'bg-card pointer-events-none shadow': !usdCurrency,
+                                    'bg-transparent': usdCurrency}"
+                                class="dark-text"
+                                mat-flat-button
+                                (click)="usdCurrency = false"
+                                disableRipple>
+                                £ /GB Pounds
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Cards -->
-                <div class="flex justify-center mt-10 sm:mt-20">
+                <div class="flex justify-center mt-3 sm:mt-6">
                     <div class="w-full max-w-sm md:max-w-7xl">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
                             <!-- Card 1 -->
@@ -66,22 +91,43 @@
                                     need to get started with smarter marketing
                                 </div>
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                                <!-- Price -->
-                                <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">from USD</div>
-                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">${{pricingData.analystYearly}}</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.analystMonthly}}</ng-container>
+                                <div *ngIf="usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from USD</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">${{pricingData.usd.analystYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">${{pricingData.usd.analystMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>${{pricingData.usd.analystMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>${{pricingData.usd.analystYearly}}</b> if billed yearly</div>
+                                        </ng-container>
                                     </div>
                                 </div>
-                                <!-- Price details -->
-                                <div class="flex flex-col mt-2 text-secondary">
-                                    <ng-container *ngIf="yearlyBilling">
-                                        <div><b>${{pricingData.analystMonthly}}</b> if billed monthly</div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">
-                                        <div><b>${{pricingData.analystYearly}}</b> if billed yearly</div>
-                                    </ng-container>
+                                <div *ngIf="!usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from GBP</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">£{{pricingData.gbp.analystYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">£{{pricingData.gbp.analystMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.analystMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.analystYearly}}</b> if billed yearly</div>
+                                        </ng-container>
+                                    </div>
                                 </div>
                                 <!-- CTA -->
                                 <button
@@ -153,22 +199,43 @@
                                     with rich data sources and an active marketing strategy
                                 </div>
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                                <!-- Price -->
-                                <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">from USD</div>
-                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">${{pricingData.specialistYearly}}</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.specialistMonthly}}</ng-container>
+                                <div *ngIf="usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from USD</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">${{pricingData.usd.specialistYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">${{pricingData.usd.specialistMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>${{pricingData.usd.specialistMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>${{pricingData.usd.specialistYearly}}</b> if billed yearly</div>
+                                        </ng-container>
                                     </div>
                                 </div>
-                                <!-- Price details -->
-                                <div class="flex flex-col mt-2 text-secondary">
-                                    <ng-container *ngIf="yearlyBilling">
-                                        <div><b>${{pricingData.specialistMonthly}}</b> if billed monthly</div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">
-                                        <div><b>${{pricingData.specialistYearly}}</b> if billed yearly</div>
-                                    </ng-container>
+                                <div *ngIf="!usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from GBP</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">£{{pricingData.gbp.specialistYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">£{{pricingData.gbp.specialistMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.specialistMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.specialistYearly}}</b> if billed yearly</div>
+                                        </ng-container>
+                                    </div>
                                 </div>
                                 <!-- CTA -->
                                 <button
@@ -219,22 +286,43 @@
                                     wanting advanced tools and absolute control
                                 </div>
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
-                                <!-- Price -->
-                                <div class="flex items-baseline whitespace-nowrap">
-                                    <div class="mr-2 text-2xl">from USD</div>
-                                    <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                        <ng-container *ngIf="yearlyBilling">${{pricingData.consultantYearly}}</ng-container>
-                                        <ng-container *ngIf="!yearlyBilling">${{pricingData.consultantMonthly}}</ng-container>
+                                <div *ngIf="usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from USD</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">${{pricingData.usd.consultantYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">${{pricingData.usd.consultantMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>${{pricingData.usd.consultantMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>${{pricingData.usd.consultantYearly}}</b> if billed yearly</div>
+                                        </ng-container>
                                     </div>
                                 </div>
-                                <!-- Price details -->
-                                <div class="flex flex-col mt-2 text-secondary">
-                                    <ng-container *ngIf="yearlyBilling">
-                                        <div><b>${{pricingData.consultantMonthly}}</b> if billed monthly</div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">
-                                        <div><b>${{pricingData.consultantYearly}}</b> if billed yearly</div>
-                                    </ng-container>
+                                <div *ngIf="!usdCurrency">
+                                    <!-- Price -->
+                                    <div class="flex items-baseline whitespace-nowrap">
+                                        <div class="mr-2 text-2xl">from GBP</div>
+                                        <div class="text-6xl font-semibold leading-tight tracking-tight">
+                                            <ng-container *ngIf="yearlyBilling">£{{pricingData.gbp.consultantYearly}}</ng-container>
+                                            <ng-container *ngIf="!yearlyBilling">£{{pricingData.gbp.consultantMonthly}}</ng-container>
+                                        </div>
+                                    </div>
+                                    <!-- Price details -->
+                                    <div class="flex flex-col mt-2 text-secondary">
+                                        <ng-container *ngIf="yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.consultantMonthly}}</b> if billed monthly</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="!yearlyBilling">
+                                            <div><b>£{{pricingData.gbp.consultantYearly}}</b> if billed yearly</div>
+                                        </ng-container>
+                                    </div>
                                 </div>
                                 <!-- CTA -->
                                 <button
@@ -688,6 +776,34 @@
                                 </div>
                             </div>
 
+                            <div class="flex justify-evenly gt-xs:flex-row">
+                                <div
+                                    class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': usdCurrency,
+                                'bg-transparent': !usdCurrency}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setCurrency($event, 'usd')"
+                                        disableRipple>
+                                        $ / US Dollars
+                                    </button>
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': !usdCurrency,
+                                'bg-transparent': usdCurrency}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setCurrency($event,'gbp')"
+                                        disableRipple>
+                                        £ / GB Pounds
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="flex flex-col gt-xs:flex-row">
                                 <mat-label>Maximum expected number of customer profiles</mat-label>
                                 <mat-label>(You can always adjust this later)</mat-label>
@@ -744,13 +860,13 @@
                                             If Billed Monthly
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{monthlyPlanPrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{monthlyPlanPrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{profilePrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{profilePrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{monthlyPrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{monthlyPrice | number:'0.2'}}</span>
                                         </div>
                                     </div>
                                     <div class="flex flex-col rounded"
@@ -762,13 +878,13 @@
                                             Billed Yearly
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{yearlyPlanPrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{yearlyPlanPrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{profilePrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{profilePrice | number:'0.2'}}</span>
                                         </div>
                                         <div class="flex items-baseline gt-xs:flex-row justify-end">
-                                            <span class="text-2xl"> $ {{yearlyPrice | number:'0.2'}}</span>
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{yearlyPrice | number:'0.2'}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -798,7 +914,7 @@
                                     </div>
 
                                     <div *ngIf="payableToday===1" class="flex items-start gt-xs:flex-row">
-                                        <span class="text-md">We will charge $1 to your card and refund it within 24 hours</span><span class="text-2xl">&nbsp;</span>
+                                        <span class="text-md">We will charge <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container>1 to your card and refund it within 24 hours</span><span class="text-2xl">&nbsp;</span>
                                     </div>
 
                                     <div class="flex items-start gt-xs:flex-row">
@@ -807,7 +923,7 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <div class="flex gt-xs:flex-row justify-end">
-                                        <span class="text-2xl font-bold">$ {{payableToday | number:'0.2'}}</span>
+                                        <span class="text-2xl font-bold"><ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{payableToday | number:'0.2'}}</span>
                                     </div>
 
                                     <div *ngIf="payableToday===1" class="flex items-start gt-xs:flex-row">

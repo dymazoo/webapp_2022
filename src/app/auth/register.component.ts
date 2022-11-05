@@ -21,7 +21,6 @@ import {loadStripe} from '@stripe/stripe-js';
 import {environment} from '../../environments/environment';
 import * as moment from 'moment';
 
-
 @Component({
     selector: 'register',
     templateUrl: './register.component.html'
@@ -41,6 +40,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public client: Client = new Client();
     public action: string = 'select';
     public yearlyBilling: boolean = true;
+    public usdCurrency: boolean = true;
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
     public profilePrice: number = 0;
@@ -114,6 +114,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
         } else {
             this.client.billing = 'monthly';
         }
+        if (this.usdCurrency) {
+            this.client.currency = 'usd';
+        } else {
+            this.client.currency = 'gbp';
+        }
         this.doCalculate();
 
         this.registerForm = this._formBuilder.group({
@@ -162,6 +167,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.doCalculate();
     }
 
+    setCurrency(event, currency): void {
+        event.stopPropagation();
+        this.client.currency = currency;
+        if (currency === 'gbp') {
+            this.usdCurrency = false;
+        } else {
+            this.usdCurrency = true;
+        }
+        this.doCalculate();
+    }
+
     onSliderChange(event): void {
         const profiles = this.registerForm.controls['clientProfiles'].value;
         this.client.profiles = profiles;
@@ -203,6 +219,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     doCalculate(): void {
         const plan = this.client.plan;
         const billing = this.client.billing;
+        const currency = this.client.currency;
         const profiles = this.client.profiles;
         let freeProfiles = this.pricingData.analystProfiles;
         let paidProfiles = 0;
@@ -213,22 +230,42 @@ export class RegisterComponent implements OnInit, OnDestroy {
         let yearlyPrice = 0;
         if (plan === 'analyst') {
             freeProfiles = this.pricingData.analystProfiles;
-            monthlyPlanPrice = this.pricingData.analystMonthly;
-            yearlyPlanPrice = this.pricingData.analystYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.analystMonthly;
+                yearlyPlanPrice = this.pricingData.usd.analystYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.analystMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.analystYearly;
+            }
         }
         if (plan === 'specialist') {
             freeProfiles = this.pricingData.specialistProfiles;
-            monthlyPlanPrice = this.pricingData.specialistMonthly;
-            yearlyPlanPrice = this.pricingData.specialistYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.specialistMonthly;
+                yearlyPlanPrice = this.pricingData.usd.specialistYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.specialistMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.specialistYearly;
+            }
         }
         if (plan === 'consultant') {
             freeProfiles = this.pricingData.consultantProfiles;
-            monthlyPlanPrice = this.pricingData.consultantMonthly;
-            yearlyPlanPrice = this.pricingData.consultantYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.consultantMonthly;
+                yearlyPlanPrice = this.pricingData.usd.consultantYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.consultantMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.consultantYearly;
+            }
         }
+        let profileAdditionCost = this.pricingData.usd.profileAdditionCost;
+        if (currency === 'gbp') {
+            profileAdditionCost = this.pricingData.gbp.profileAdditionCost;
+        }
+
         if (profiles > freeProfiles) {
             paidProfiles = profiles - freeProfiles;
-            profilePrice = paidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+            profilePrice = paidProfiles / this.pricingData.profileAddition * profileAdditionCost;
         }
 
         monthlyPrice = monthlyPlanPrice + profilePrice;

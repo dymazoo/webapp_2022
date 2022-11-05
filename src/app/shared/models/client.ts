@@ -18,6 +18,7 @@ export class Client {
     public leftDate: string = '';
     public offer: string = '';
     public payableToday = 0;
+    public currency: string = 'usd';
 
     public constructor(init?: Partial<Client>) {
         Object.assign(this, init);

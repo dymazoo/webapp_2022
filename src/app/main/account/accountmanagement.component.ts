@@ -51,6 +51,8 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
 
     public currentPlan: string = '';
     public currentProfiles: number = 0;
+    public usdCurrency: boolean = true;
+    public currentCurrency: string = '';
     public currentBilling: string = '';
     public currentNextBillingDate: string = '';
     public payableToday: number = 0;
@@ -95,6 +97,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
                 this.client = result;
                 this.currentPlan = this.client.plan;
                 this.currentProfiles = this.client.profiles;
+                this.currentCurrency = this.client.currency;
                 this.currentBilling = this.client.billing;
                 this.currentNextBillingDate = this.client.nextBillingDate;
                 this.clientId = this.client.clientId;
@@ -103,6 +106,11 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
                     this.yearlyBilling = false;
                 } else {
                     this.yearlyBilling = true;
+                }
+                if (this.client.currency === 'gbp') {
+                    this.usdCurrency = false;
+                } else {
+                    this.usdCurrency = true;
                 }
                 if (this.client.nextBillingDate === 'never') {
                     this.nextBillingDate = 'Never';
@@ -457,6 +465,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
     doCalculate(): void {
         const plan = this.client.plan;
         const billing = this.client.billing;
+        const currency = this.client.currency;
         const profiles = this.client.profiles;
 
         let currentFreeProfiles = this.pricingData.analystProfiles;
@@ -477,22 +486,41 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
 
         if (this.currentPlan === 'analyst') {
             currentFreeProfiles = this.pricingData.analystProfiles;
-            currentMonthlyPlanPrice = this.pricingData.analystMonthly;
-            currentYearlyPlanPrice = this.pricingData.analystYearly;
+            if (currency === 'usd') {
+                currentMonthlyPlanPrice = this.pricingData.usd.analystMonthly;
+                currentYearlyPlanPrice = this.pricingData.usd.analystYearly;
+            } else {
+                currentMonthlyPlanPrice = this.pricingData.gbp.analystMonthly;
+                currentYearlyPlanPrice = this.pricingData.gbp.analystYearly;
+            }
         }
         if (this.currentPlan === 'specialist') {
             currentFreeProfiles = this.pricingData.specialistProfiles;
-            currentMonthlyPlanPrice = this.pricingData.specialistMonthly;
-            currentYearlyPlanPrice = this.pricingData.specialistYearly;
+            if (currency === 'usd') {
+                currentMonthlyPlanPrice = this.pricingData.usd.specialistMonthly;
+                currentYearlyPlanPrice = this.pricingData.usd.specialistYearly;
+            } else {
+                currentMonthlyPlanPrice = this.pricingData.gbp.specialistMonthly;
+                currentYearlyPlanPrice = this.pricingData.gbp.specialistYearly;
+            }
         }
         if (this.currentPlan === 'consultant') {
             currentFreeProfiles = this.pricingData.consultantProfiles;
-            currentMonthlyPlanPrice = this.pricingData.consultantMonthly;
-            currentYearlyPlanPrice = this.pricingData.consultantYearly;
+            if (currency === 'usd') {
+                currentMonthlyPlanPrice = this.pricingData.usd.consultantMonthly;
+                currentYearlyPlanPrice = this.pricingData.usd.consultantYearly;
+            } else {
+                currentMonthlyPlanPrice = this.pricingData.gbp.consultantMonthly;
+                currentYearlyPlanPrice = this.pricingData.gbp.consultantYearly;
+            }
+        }
+        let profileAdditionCost = this.pricingData.usd.profileAdditionCost;
+        if (currency === 'gbp') {
+            profileAdditionCost = this.pricingData.gbp.profileAdditionCost;
         }
         if (this.currentProfiles > freeProfiles) {
             currentPaidProfiles = this.currentProfiles - currentFreeProfiles;
-            currentProfilePrice = currentPaidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+            currentProfilePrice = currentPaidProfiles / this.pricingData.profileAddition * profileAdditionCost;
         }
         if (this.currentBilling === 'yearly') {
             currentMonthlyPlanPrice = currentMonthlyPlanPrice * 12;
@@ -505,22 +533,37 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
 
         if (plan === 'analyst') {
             freeProfiles = this.pricingData.analystProfiles;
-            monthlyPlanPrice = this.pricingData.analystMonthly;
-            yearlyPlanPrice = this.pricingData.analystYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.analystMonthly;
+                yearlyPlanPrice = this.pricingData.usd.analystYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.analystMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.analystYearly;
+            }
         }
         if (plan === 'specialist') {
             freeProfiles = this.pricingData.specialistProfiles;
-            monthlyPlanPrice = this.pricingData.specialistMonthly;
-            yearlyPlanPrice = this.pricingData.specialistYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.specialistMonthly;
+                yearlyPlanPrice = this.pricingData.usd.specialistYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.specialistMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.specialistYearly;
+            }
         }
         if (plan === 'consultant') {
             freeProfiles = this.pricingData.consultantProfiles;
-            monthlyPlanPrice = this.pricingData.consultantMonthly;
-            yearlyPlanPrice = this.pricingData.consultantYearly;
+            if (currency === 'usd') {
+                monthlyPlanPrice = this.pricingData.usd.consultantMonthly;
+                yearlyPlanPrice = this.pricingData.usd.consultantYearly;
+            } else {
+                monthlyPlanPrice = this.pricingData.gbp.consultantMonthly;
+                yearlyPlanPrice = this.pricingData.gbp.consultantYearly;
+            }
         }
         if (profiles > freeProfiles) {
             paidProfiles = profiles - freeProfiles;
-            profilePrice = paidProfiles / this.pricingData.profileAddition * this.pricingData.profileAdditionCost;
+            profilePrice = paidProfiles / this.pricingData.profileAddition * profileAdditionCost;
         }
 
         monthlyPrice = monthlyPlanPrice + profilePrice;
