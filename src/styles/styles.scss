@@ -574,7 +574,9 @@ home {
                 }
             }
             .home-header-link {
-                padding-right: 30px;
+                padding-left: 15px;
+                padding-right: 15px;
+                text-decoration: none;
             }
         }
     }
@@ -596,7 +598,7 @@ home {
     .home-message {
         position: relative;
         top: 10%;
-        left: 12%;
+        left: 8%;
 
         .home-message-top {
             font-size: 20px;
@@ -626,9 +628,12 @@ home {
             max-width: 40%;
         }
 
-        .home-banner-actions {
+        .home-banner-actions1 {
             margin-top: 20px;
-
+        }
+        .home-banner-actions2 {
+            margin-top: 10px;
+            padding-bottom: 10px;
         }
     }
 
@@ -771,6 +776,8 @@ register {
         }
 
         .home-message {
+            left: 5%;
+
             .home-message-main {
                 font-size: 40px;
                 max-width: 85%;
@@ -1027,6 +1034,13 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 // -----------------------------------------------------------------------------------------------------
 // @Selection lanes
 // -----------------------------------------------------------------------------------------------------
+.entry-value {
+    border-color: #9dc7e7;
+    border-style: solid;
+    border-width: thin;
+    max-width: 180px;
+}
+
 .div-full-height-130 {
     min-height: calc(100vh - 130px) !important;
 }
@@ -1138,8 +1152,8 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 .select-card-title {
     padding: 1px;
-    max-width: calc(100% - 140px);
-    min-width: calc(100% - 140px);
+    max-width: calc(100% - 160px);
+    min-width: calc(100% - 160px);
     text-align: center;
     text-overflow: ellipsis;
     border-color: #d0e9c6;
@@ -1164,12 +1178,17 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 .select-tree-group {
     min-height: 28px !important;
     max-height: 28px !important;
+    font-weight: 600;
 }
 
 .select-tree-node {
     min-height: 24px !important;
     max-height: 48px !important;
     text-align: left !important;
+}
+
+.select-tree-value {
+    font-weight: normal !important;
 }
 
 .cdk-drag-placeholder {

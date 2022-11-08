@@ -2,13 +2,16 @@
     <div class="home-header">
         <a class="home-logo" href="https://www.dymazoo.com"></a>
         <div class="home-get-started">
+            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://medium.com/@dymazoo" target="_blank">
+                Articles
+            </a>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
                 Pricing
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
-                Sign Up
+                Get Started
             </span>
-            <span *ngIf="!isLoggedIn" class="cursor-pointer" (click)="toggleLogin($event)">
+            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="toggleLogin($event)">
                 Log In
             </span>
         </div>
@@ -29,18 +32,24 @@
                     <p>Easily create a 360-degree Single Customer View with a comprehensive, unique profile for every single customer</p>
                     <p>Increase the effectiveness and ROI of you email marketing</p>
                 </div>
-                <div class="home-banner-actions">
-                    <button class="fuse-mat-button-large w-70 mt-2 bg-primary-200 dark-text"
+                <div class="home-banner-actions1">
+                    <button class="fuse-mat-button-large w-70 min-w-44 mt-2 bg-primary-200 dark-text"
                             mat-flat-button type="button"
-                            (click)="gotoRegister()">Get started Today!
+                            (click)="gotoRegister()">Get Started!
                     </button>
-                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-green-300 dark-text"
+                    <button class="fuse-mat-button-large w-70 min-w-44 mt-2 ml-2 bg-green-300 dark-text"
                             mat-flat-button type="button"
                             (click)="gotoFeatures()">See what's included
                     </button>
-                    <button class="fuse-mat-button-large w-70 mt-2 ml-2 bg-red-300 dark-text"
+                </div>
+                <div class="home-banner-actions2">
+                    <a class="fuse-mat-button-large w-70 min-w-44 mt-2 bg-red-300 dark-text"
+                       mat-flat-button type="button" href="https://medium.com/@dymazoo" target="_blank">
+                        Find out more
+                    </a>
+                    <button class="fuse-mat-button-large w-70 min-w-44 mt-2 ml-2 bg-purple-300 dark-text"
                             mat-flat-button type="button"
-                            (click)="gotoFAQ()">Find out more
+                            (click)="gotoFAQ()">FAQ
                     </button>
                 </div>
             </div>

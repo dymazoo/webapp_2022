@@ -68,7 +68,7 @@
                                                         [cdkDragData]="{node:node}"
                                                         (dblclick)="nodeAddToCard($event, node)"
                                                         (contextmenu)="onSelectionContextMenu($event, node)">
-                                                        <span class="font-bold">{{node.value}}</span>
+                                                        <span class="select-tree-value">{{node.value}}</span>
                                                         <span *cdkDragPreview>
                                                             <ng-container
                                                                 *ngIf="node.select || node.list">{{node.title}}
@@ -199,11 +199,11 @@
                                                     </mat-icon>
                                                 </button>
                                                 <input class="select-card-title"
-                                                       placeholder="Enter name to save selection"
+                                                       placeholder="Name selection"
                                                        matTooltip="{{card.invert === 1 ? 'Excluded' : ''}}"
                                                        [ngClass]="card.id == currentCardId ? card.invert === 1 ? 'red-200' : 'blue-200' : card.invert === 1 ? 'red-100' : 'blue-100'"
                                                        value="{{card.title}}"
-                                                       (change)="cardTitle($event, card.id)"
+                                                       (keyup)="cardTitle($event, card.id)"
                                                        autocomplete="do-not-autofill"
                                                 >
                                                 [{{ card.count }}]
