@@ -35,13 +35,13 @@ import {SourceSetting} from '../../shared/models/sourceSetting';
 })
 
 export class MailchimpComponent implements OnInit, OnDestroy {
-    public displayedListColumns = ['description', 'count'];
+    public displayedListColumns = ['description', 'source', 'count'];
     public listsDataSource: EntityDatasource | null;
     public paginatedListsDataSource;
     public selectedListsRow: {};
     public selectedListsIndex: number = -1;
 
-    public displayedCampaignColumns = ['description', 'campaignDate', 'sent'];
+    public displayedCampaignColumns = ['description', 'source', 'campaignDate', 'sent'];
     public campaignDataSource: EntityDatasource | null;
     public paginatedCampaignsDataSource;
     public selectedCampaignsRow: {};

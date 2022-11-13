@@ -110,6 +110,21 @@ ul {
     }
 }
 
+.card-major-container {
+    display: flex !important;
+    flex-direction: column;
+    text-align: center;
+}
+
+.card-container {
+    display: flex !important;
+    flex-direction: row;
+    text-align: center;
+    ul {
+        list-style-type: none;
+    }
+}
+
 .card-major {
     display: flex !important;
     flex-direction: column;
@@ -703,92 +718,6 @@ register {
     text-align: justify;
 }
 
-@media screen and (max-width: 1366px) {
-    home {
-
-        .home-message {
-            .home-message-main {
-                font-size: 40px;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    home {
-        .home-banner {
-            background-image: url(/assets/images/backgrounds/static-home-medium.png);
-        }
-
-        .home-message {
-            .home-message-main {
-                max-width: 85%;
-                font-size: 40px;
-            }
-
-            .home-message-bottom {
-                max-width: 75%;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 800px) {
-    .embedded-video {
-        width: 336px;
-        height: 190px;
-        margin-left: 0px;
-    }
-
-    home {
-        .home-header {
-            height: 100px;
-
-            .home-logo {
-                height: 100px;
-                min-width: 110px;
-                padding: 20px;
-                display: inline-block;
-                background-image: url(/assets/images/logo/dymazoo-stacked.png);
-            }
-
-            .home-get-started {
-                display: inline-block;
-                float: right;
-                color: #81D742;
-                font-size: 20px;
-                padding-top: 15px;
-                padding-right: 10px;
-
-                .home-website {
-                    a {
-                        color: #81D742;
-                        text-decoration: none !important;
-                    }
-                }
-                .home-header-link {
-                    padding-right: 10px;
-                }
-            }
-        }
-        .home-banner {
-            background-image: url(/assets/images/backgrounds/static-home-small.png);
-        }
-
-        .home-message {
-            left: 5%;
-
-            .home-message-main {
-                font-size: 40px;
-                max-width: 85%;
-            }
-
-            .home-message-bottom {
-                max-width: 85%;
-            }
-        }
-    }
-}
 
 // -----------------------------------------------------------------------------------------------------
 // @Dashboard
@@ -1098,11 +1027,6 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     margin: 0px;
 }
 
-@media screen and (max-width: 1279px) {
-    .select-lanes {
-        width: calc(95vw - 280px);
-    }
-}
 
 .select-lane {
     min-width: 18rem;
@@ -1243,6 +1167,23 @@ a {
 // -----------------------------------------------------------------------------------------------------
 
 @media screen and (max-width: 1366px) {
+    home {
+        .home-message {
+            .home-message-main {
+                font-size: 40px;
+            }
+        }
+    }
+
+    .card-container {
+        display: flex !important;
+        flex-direction: column;
+        .card-form {
+            min-width: 95% !important;
+            margin-right: 0px;
+        }
+    }
+
     .card-major {
         min-width: 80% !important;
     }
@@ -1271,6 +1212,31 @@ a {
 }
 
 @media screen and (max-width: 1024px) {
+    home {
+        .home-banner {
+            background-image: url(/assets/images/backgrounds/static-home-medium.png);
+        }
+
+        .home-message {
+            .home-message-main {
+                max-width: 85%;
+                font-size: 40px;
+            }
+
+            .home-message-bottom {
+                max-width: 75%;
+            }
+        }
+    }
+
+    .card-container {
+        display: flex !important;
+        flex-direction: column;
+        .card-form {
+            min-width: 95% !important;
+            margin-right: 0px;
+        }
+    }
     .card-major {
         min-width: 80% !important;
     }
@@ -1296,5 +1262,105 @@ a {
         max-width: 100%;
         min-width: 450px !important;
     }
+
+    .select-lanes {
+        width: calc(95vw - 280px);
+    }
+
+}
+
+@media screen and (max-width: 800px) {
+    .embedded-video {
+        width: 336px;
+        height: 190px;
+        margin-left: 0px;
+    }
+
+    home {
+        .home-header {
+            height: 100px;
+
+            .home-logo {
+                height: 100px;
+                min-width: 110px;
+                padding: 20px;
+                display: inline-block;
+                background-image: url(/assets/images/logo/dymazoo-stacked.png);
+            }
+
+            .home-get-started {
+                display: inline-block;
+                float: right;
+                color: #81D742;
+                font-size: 20px;
+                padding-top: 15px;
+                padding-right: 10px;
+
+                .home-website {
+                    a {
+                        color: #81D742;
+                        text-decoration: none !important;
+                    }
+                }
+                .home-header-link {
+                    padding-right: 10px;
+                }
+            }
+        }
+        .home-banner {
+            background-image: url(/assets/images/backgrounds/static-home-small.png);
+        }
+
+        .home-message {
+            left: 5%;
+
+            .home-message-main {
+                font-size: 40px;
+                max-width: 85%;
+            }
+
+            .home-message-bottom {
+                max-width: 85%;
+            }
+        }
+    }
+    .card-container {
+        display: flex !important;
+        flex-direction: column;
+        .card-form {
+            min-width: 95% !important;
+            margin-right: 0px;
+        }
+    }
+    .card-major {
+        min-width: 80% !important;
+    }
+    .card-medium {
+        min-width: 80% !important;
+    }
+    .card-minor {
+        min-width: 80% !important;
+    }
+    .card-major-form {
+        min-width: 80% !important;
+        margin-right: 0px;
+    }
+    .wide-card-form {
+        min-width: 95% !important;
+        margin-right: 0px;
+    }
+    .card-form {
+        min-width: 80% !important;
+        margin-right: 0px;
+    }
+    .form-item {
+        max-width: 100%;
+        min-width: 450px !important;
+    }
+
+    .select-lanes {
+        width: calc(95vw - 280px);
+    }
+
 }
 

@@ -49,6 +49,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public payableToday: number = 0;
     public nextBillingDate: string = '';
     public offer: string = '';
+    public couponPlan: string = '';
     public paymentReady: boolean = false;
     private stripe: any;
     private elements: any;
@@ -153,6 +154,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.client.profiles = this.pricingData.consultantProfiles;
         }
         this.registerForm.controls['clientProfiles'].setValue(this.client.profiles);
+        this.offer = '';
+        this.client.offer = '';
+        this.client.coupon = '';
+        this.registerForm.controls['clientCoupon'].setValue(this.client.coupon);
         this.doCalculate();
     }
 
@@ -201,11 +206,36 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if (coupon.length > 0) {
             this.httpService.getEntity('coupon', coupon).subscribe(result => {
                 this.offer = result;
+                this.couponPlan = '';
                 if (result.length === 0) {
                     this.errors = ['Coupon is not valid, or no longer active'];
                 }
-                this.client.offer = this.offer;
-                this.client.coupon = coupon;
+                if (this.offer.substring(0, 4) === 'plan') {
+                    this.couponPlan = this.offer.substring(4, 5);
+                    this.offer = this.offer.substring(6);
+                }
+                let applyCoupon = true;
+                if (this.couponPlan === 'A' && this.client.plan !== 'analyst') {
+                    this.errors = ['Coupon is not valid for this plan'];
+                    applyCoupon = false;
+                }
+                if (this.couponPlan === 'S' && this.client.plan !== 'specialist') {
+                    this.errors = ['Coupon is not valid for this plan'];
+                    applyCoupon = false;
+                }
+                if (this.couponPlan === 'C' && this.client.plan !== 'consultant') {
+                    this.errors = ['Coupon is not valid for this plan'];
+                    applyCoupon = false;
+                }
+                if (applyCoupon) {
+                    this.client.offer = this.offer;
+                    this.client.coupon = coupon;
+                } else {
+                    this.offer = '';
+                    this.client.offer = '';
+                    this.client.coupon = '';
+                    this.registerForm.controls['clientCoupon'].setValue(this.client.coupon);
+                }
                 this.doCalculate();
             }, (error) => {
                 this.errors = ['Coupon is not valid, or no longer active'];
