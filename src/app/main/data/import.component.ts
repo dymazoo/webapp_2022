@@ -392,7 +392,18 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
         const id = this.importForm.controls['id'].value;
         let hasIgnore = false;
         let hasOrigin = false;
+        let hasErrors = false;
         if (id === null || id.length === 0) {
+            let hasSales = false;
+            let hasSaleDescription = false;
+            let hasSaleTime = false;
+            let hasSaleValue = false;
+            let hasActivity = false;
+            let hasActivityAction = false;
+            let hasActivityTime = false;
+            let hasEvents = false;
+            let hasEventAction = false;
+            let hasEventTime = false;
             this.layoutFields.forEach(field => {
                 if (field.fieldId === 'blank') {
                     hasIgnore = true;
@@ -400,37 +411,79 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                 if (field.fieldName === 'Origin') {
                     hasOrigin = true;
                 }
+                if (field.fieldName === 'Sale Description') {
+                    hasSales = true;
+                    hasSaleDescription = true;
+                }
+                if (field.fieldName === 'Sale Time') {
+                    hasSales = true;
+                    hasSaleTime = true;
+                }
+                if (field.fieldName === 'Total Sale Value') {
+                    hasSales = true;
+                    hasSaleValue = true;
+                }
+                if (field.fieldName === 'Action') {
+                    hasActivity = true;
+                    hasActivityAction = true;
+                }
+                if (field.fieldName === 'Action Time') {
+                    hasActivity = true;
+                    hasActivityTime = true;
+                }
+                if (field.fieldName === 'Event Action') {
+                    hasEvents = true;
+                    hasEventAction = true;
+                }
+                if (field.fieldName === 'Event Action Time') {
+                    hasEvents = true;
+                    hasEventTime = true;
+                }
             });
+            if (hasSales && (!hasSaleDescription || !hasSaleTime || !hasSaleValue)) {
+                hasErrors = true;
+                this.errors.push('Sales must have  at least description, time and value');
+            }
+            if (hasActivity && (!hasActivityAction || !hasActivityTime)) {
+                hasErrors = true;
+                this.errors.push('Activity must have  at least action and time');
+            }
+            if (hasEvents && (!hasEventAction || !hasEventTime)) {
+                hasErrors = true;
+                this.errors.push('Events must have  at least action and time');
+            }
         } else {
             hasOrigin = true;
         }
-        const dialogRef = this.dialog.open(ImportConfirmDialogComponent, {
-            minWidth: '50%',
-            data: {'hasIgnore': hasIgnore, 'hasOrigin': hasOrigin}
-        });
+        if (!hasErrors) {
+            const dialogRef = this.dialog.open(ImportConfirmDialogComponent, {
+                minWidth: '50%',
+                data: {'hasIgnore': hasIgnore, 'hasOrigin': hasOrigin}
+            });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const header = this.importForm.controls['header'];
-                const formData = new FormData();
-                formData.append('inputFile', this.file, this.file.name);
-                formData.append('header', JSON.stringify(header.value));
-                formData.append('layoutFields', JSON.stringify(this.layoutFields));
-                formData.append('sample', this.fileSample);
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    const header = this.importForm.controls['header'];
+                    const formData = new FormData();
+                    formData.append('inputFile', this.file, this.file.name);
+                    formData.append('header', JSON.stringify(header.value));
+                    formData.append('layoutFields', JSON.stringify(this.layoutFields));
+                    formData.append('sample', this.fileSample);
 
-                this.httpService.saveEntityFormData('import-file', formData)
-                    .subscribe((data: Response) => {
-                        this.onCancel();
-                        this._snackBar.open('Import successfully scheduled', 'Dismiss', {
-                            duration: 5000,
-                            panelClass: ['snackbar-teal']
+                    this.httpService.saveEntityFormData('import-file', formData)
+                        .subscribe((data: Response) => {
+                            this.onCancel();
+                            this._snackBar.open('Import successfully scheduled', 'Dismiss', {
+                                duration: 5000,
+                                panelClass: ['snackbar-teal']
+                            });
+                        }, (errors) => {
+                            this.errors = errors;
                         });
-                    }, (errors) => {
-                        this.errors = errors;
-                    });
 
-            }
-        });
+                }
+            });
+        }
     }
 
     doOpenLayout(): void {
