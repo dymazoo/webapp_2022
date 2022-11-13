@@ -15,21 +15,23 @@
                         </div>
                     </div>
 
-                    <div *ngIf="emptyDashboard" class="p-3">
-                        <p class="label-bold">Your dashboard doesn't have any data yet. You can see a sample below of what your dashboard could look like</p>
-                        <p class="">Load customer data from integrations (such as Mailchimp, Sendinblue, Shopify or EventBrite)
-                            or import data from files. Your dashboard will be populated as soon as you load some data and new dashboards are built daily, weekly or on-demand, depending on your plan</p>
-                        <p>For help on getting started visit our <a
-                            href="https://dymazoo.freshdesk.com/support/home" target="_blank">Support</a> site or
-                            check out our <a href="https://www.youtube.com/@dymazoo" target="_blank">YouTube channel</a></p>
-                        <div class="proxy_dashboard"></div>
-                    </div>
                     <div *ngIf="emptyDashboard || dataReady" class="flex flex-col gt-xs:flex-row">
                         <div class='div-block'>
                             <mat-icon class="cursor-pointer" (click)="forceRefreshDashboard()">
                                 refresh
                             </mat-icon>
                         </div>
+                    </div>
+
+                    <div *ngIf="emptyDashboard" class="p-3">
+                        <h2 class="text-2xl font-semibold">Your dashboard doesn't have any data yet. Check out a sample below of what it could look like</h2>
+                        <h2>Load customer data from integrations (such as Mailchimp, Sendinblue, Shopify or EventBrite)
+                            or import data from files.</h2>
+                        <h2>New dashboards are built weekly or monthly, depending on your plan.
+                            For help on getting started, please visit <a
+                            href="https://dymazoo.freshdesk.com/support/home" target="_blank">support</a> or
+                            <a href="https://www.youtube.com/@dymazoo" target="_blank">our videos tutorials</a></h2>
+                        <div class="proxy_dashboard"></div>
                     </div>
                 </div>
 
@@ -69,6 +71,76 @@
                                 [tooltip]="chartPeople.tooltip"
                                 [xaxis]="chartPeople.xaxis"
                                 [yaxis]="chartPeople.yaxis"></apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Sales -->
+                    <div *ngIf="showSales"
+                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Sales</div>
+                        </div>
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div
+                                class="text-7xl font-bold tracking-tighter leading-tight">{{salesData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="salesData.trend < 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="salesData.trend >= 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div
+                                    class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ salesData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart
+                                class="flex-auto w-full h-full"
+                                [chart]="chartSales.chart"
+                                [colors]="chartSales.colors"
+                                [series]="chartSales.series"
+                                [stroke]="chartSales.stroke"
+                                [tooltip]="chartSales.tooltip"
+                                [xaxis]="chartSales.xaxis"
+                                [yaxis]="chartSales.yaxis"></apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Events -->
+                    <div *ngIf="showEvents"
+                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-start justify-between m-6 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Event Actions</div>
+                        </div>
+                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+                            <div
+                                class="text-7xl font-bold tracking-tighter leading-tight">{{eventsData.amount | number:'1.0-0'}}</div>
+                            <div class="flex lg:flex-col lg:ml-3">
+                                <mat-icon *ngIf="eventsData.trend < 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
+                                <mat-icon *ngIf="eventsData.trend >= 0"
+                                          class="icon-size-5 text-red-500"
+                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
+                                <div
+                                    class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                                    <span class="font-medium text-red-500">{{ eventsData.trend }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto h-20">
+                            <apx-chart
+                                class="flex-auto w-full h-full"
+                                [chart]="chartEvents.chart"
+                                [colors]="chartEvents.colors"
+                                [series]="chartEvents.series"
+                                [stroke]="chartEvents.stroke"
+                                [tooltip]="chartEvents.tooltip"
+                                [xaxis]="chartEvents.xaxis"
+                                [yaxis]="chartEvents.yaxis"></apx-chart>
                         </div>
                     </div>
 
@@ -244,76 +316,6 @@
                                 [tooltip]="chartBounce.tooltip"
                                 [xaxis]="chartBounce.xaxis"
                                 [yaxis]="chartBounce.yaxis"></apx-chart>
-                        </div>
-                    </div>
-
-                    <!-- Sales -->
-                    <div *ngIf="showSales"
-                        class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                        <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Sales</div>
-                        </div>
-                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
-                            <div
-                                class="text-7xl font-bold tracking-tighter leading-tight">{{salesData.amount | number:'1.0-0'}}</div>
-                            <div class="flex lg:flex-col lg:ml-3">
-                                <mat-icon *ngIf="salesData.trend < 0"
-                                          class="icon-size-5 text-red-500"
-                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
-                                <mat-icon *ngIf="salesData.trend >= 0"
-                                          class="icon-size-5 text-red-500"
-                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
-                                <div
-                                    class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
-                                    <span class="font-medium text-red-500">{{ salesData.trend }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col flex-auto h-20">
-                            <apx-chart
-                                class="flex-auto w-full h-full"
-                                [chart]="chartSales.chart"
-                                [colors]="chartSales.colors"
-                                [series]="chartSales.series"
-                                [stroke]="chartSales.stroke"
-                                [tooltip]="chartSales.tooltip"
-                                [xaxis]="chartSales.xaxis"
-                                [yaxis]="chartSales.yaxis"></apx-chart>
-                        </div>
-                    </div>
-
-                    <!-- Events -->
-                    <div *ngIf="showEvents"
-                        class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                        <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Event Actions</div>
-                        </div>
-                        <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
-                            <div
-                                class="text-7xl font-bold tracking-tighter leading-tight">{{eventsData.amount | number:'1.0-0'}}</div>
-                            <div class="flex lg:flex-col lg:ml-3">
-                                <mat-icon *ngIf="eventsData.trend < 0"
-                                          class="icon-size-5 text-red-500"
-                                          [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
-                                <mat-icon *ngIf="eventsData.trend >= 0"
-                                          class="icon-size-5 text-red-500"
-                                          [svgIcon]="'heroicons_solid:trending-up'"></mat-icon>
-                                <div
-                                    class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
-                                    <span class="font-medium text-red-500">{{ eventsData.trend }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col flex-auto h-20">
-                            <apx-chart
-                                class="flex-auto w-full h-full"
-                                [chart]="chartEvents.chart"
-                                [colors]="chartEvents.colors"
-                                [series]="chartEvents.series"
-                                [stroke]="chartEvents.stroke"
-                                [tooltip]="chartEvents.tooltip"
-                                [xaxis]="chartEvents.xaxis"
-                                [yaxis]="chartEvents.yaxis"></apx-chart>
                         </div>
                     </div>
                 </div>
