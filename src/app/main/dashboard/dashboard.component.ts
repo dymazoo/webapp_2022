@@ -5,6 +5,7 @@ import {TranslocoService} from '@ngneat/transloco';
 import {formatDate} from '@angular/common';
 import { ApexOptions } from 'ng-apexcharts';
 import {Subject, Subscription} from 'rxjs';
+import {clone} from 'lodash-es';
 
 @Component({
     selector: 'dashboard',
@@ -370,7 +371,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                this.dateItem = this.dashboardDates[0];
+                this.dateItem = clone(this.dashboardDates[0]);
                 if (this.dateItem) {
                     this.currentDate = this.dateItem.value;
                     this.httpService.getEntity('settings', '')
