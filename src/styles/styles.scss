@@ -1269,7 +1269,7 @@ a {
 
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 835px) {
     .embedded-video {
         width: 336px;
         height: 190px;
@@ -1293,8 +1293,12 @@ a {
                 float: right;
                 color: #81D742;
                 font-size: 20px;
-                padding-top: 15px;
-                padding-right: 10px;
+                padding-top: 7px;
+                max-width: calc(95vw - 115px);
+
+                .home-header-optional {
+                    display: none;
+                }
 
                 .home-website {
                     a {

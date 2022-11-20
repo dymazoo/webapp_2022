@@ -119,6 +119,33 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'group',
         icon    : 'heroicons_outline:view-grid-add',
         children: []
+    },
+    {
+        id      : 'resource',
+        title   : 'Resources',
+        subtitle: 'Get help and support',
+        type    : 'group',
+        icon    : 'heroicons_outline:academic-cap',
+        children: [
+            {
+                id   : 'channel',
+                title: 'Our Channel',
+                type : 'basic',
+                icon : 'heroicons_outline:video-camera',
+                externalLink : true,
+                link : 'https://youtube.com/@dymazoo',
+                target : '_blank'
+            },
+            {
+                id   : 'support',
+                title: 'Support',
+                type : 'basic',
+                icon : 'heroicons_outline:support',
+                externalLink : true,
+                link : 'https://dymazoo-support.freshdesk.com/',
+                target : '_blank'
+            }
+        ]
     }
 ];
 
@@ -154,6 +181,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type    : 'aside',
         icon    : 'heroicons_outline:view-grid-add',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
+    },
+    {
+        id: 'resource',
+        title: 'Resources',
+        type: 'aside',
+        icon: 'heroicons_outline:academic-cap',
+        children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -179,6 +213,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         title   : 'INTEGRATIONS',
         type    : 'group',
         icon    : 'heroicons_outline:view-grid-add',
+        children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
+    },
+    {
+        id: 'resource',
+        title: 'RESOURCES',
+        type: 'group',
+        icon: 'heroicons_outline:academic-cap',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     }
 ];
@@ -211,4 +252,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:view-grid-add',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
+    {
+        id: 'resource',
+        title: 'Resources',
+        type: 'group',
+        icon: 'heroicons_outline:academic-cap',
+        children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
+    }
 ];

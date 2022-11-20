@@ -2,17 +2,20 @@
     <div class="home-header">
         <a class="home-logo" href="https://www.dymazoo.com"></a>
         <div class="home-get-started">
-            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://medium.com/@dymazoo" target="_blank">
-                Articles
+            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://youtube.com/@dymazoo" target="_blank">
+                Our&nbsp;Channel
             </a>
-            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
+            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://medium.com/@dymazoo" target="_blank">
+                Blog
+            </a>
+            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link home-header-optional" (click)="gotoRegister()">
                 Pricing
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
-                Get Started
+                Get&nbsp;Started
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="toggleLogin($event)">
-                Log In
+                Log&nbsp;In
             </span>
         </div>
 
@@ -44,8 +47,8 @@
                 </div>
                 <div class="home-banner-actions2">
                     <a class="fuse-mat-button-large w-70 min-w-44 mt-2 bg-red-300 dark-text"
-                       mat-flat-button type="button" href="https://medium.com/@dymazoo" target="_blank">
-                        Find out more
+                       mat-flat-button type="button" href="https://youtu.be/rxsRODXlpG4" target="_blank">
+                        Watch a Demo
                     </a>
                     <button class="fuse-mat-button-large w-70 min-w-44 mt-2 ml-2 bg-purple-300 dark-text"
                             mat-flat-button type="button"
