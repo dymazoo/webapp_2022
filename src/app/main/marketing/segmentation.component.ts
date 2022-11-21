@@ -87,6 +87,8 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
     private espSubscription: Subscription;
+    private gettingCount = false;
+    private pendingCount = false;
 
     @ViewChild('selectionTrigger') selectionContextMenu: MatMenuTrigger;
     @ViewChild('cardTrigger') cardContextMenu: MatMenuTrigger;
@@ -536,11 +538,17 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             this.lanes.push(lane2);
 
             // Add a card to lane 1
-            const card = new SelectionCard({id: this.newCardId, title: '', lane: lane1.id, sequence: 1});
-            lane1.selections.push(card);
-            this.selectionCards.push(card);
+            const card1 = new SelectionCard({id: this.newCardId, title: '', lane: lane1.id, sequence: 1});
+            lane1.selections.push(card1);
+            this.selectionCards.push(card1);
             this.currentCardId = this.newCardId;
             this.currentLaneId = 1;
+            this.newCardId += 1;
+
+            // Add a card to lane 2
+            const card2 = new SelectionCard({id: this.newCardId, title: '', lane: lane2.id, sequence: 1});
+            lane2.selections.push(card2);
+            this.selectionCards.push(card2);
             this.newCardId += 1;
         }
         this.finalLane = this.lanes.length;
@@ -554,7 +562,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     doOpenSelection(): void {
         const dialogRef = this.dialog.open(SegmentationOpenSegmentDialogComponent, {
             minWidth: '70%',
-            data: {}
+            data: {'dialog': this.dialog}
         });
 
         dialogRef.afterClosed().subscribe(openResult => {
@@ -589,6 +597,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                         this.lanes.forEach(lane => {
                             this.reSequenceCards(lane);
                         });
+                        this.getCount();
                     }, (errors) => {
                         this.errors = errors;
                     });
@@ -642,7 +651,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                         }
                     });
                 });
-
+                this.selectionForm.markAsPristine();
             }, (errors) => {
                 this.errors = errors;
             });
@@ -1422,6 +1431,16 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     }
 
     getCount(): void {
+        if (this.gettingCount) {
+            this.pendingCount = true;
+        } else {
+            this.pendingCount = false;
+            this.doCount();
+        }
+    }
+
+    doCount(): void {
+        this.gettingCount = true;
         const selections = [];
         let selectionCard;
         this.selectionCards.forEach((card, index) => {
@@ -1458,11 +1477,15 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                         }
                     });
                 });
-
+                this.gettingCount = false;
+                if (this.pendingCount) {
+                    this.pendingCount = false;
+                    this.doCount();
+                }
             }, (errors) => {
                 this.errors = errors;
+                this.gettingCount = false;
             });
-
     }
 
     getErrorMessage(control, name): string {
@@ -1486,10 +1509,12 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 export class SegmentationOpenSegmentDialogComponent implements OnInit, OnDestroy {
 
     public openSelectionForm: FormGroup;
-    displayedColumns = ['name', 'description'];
+    displayedColumns = ['name', 'description', 'action'];
     selectionDataSource: EntityDatasource | null;
+    public errors = [];
     public paginatedDataSource;
     selections: any;
+    dialog: MatDialog;
     selectedSelection: Selection;
     selectedRow: {};
     selectedIndex: number = -1;
@@ -1507,6 +1532,7 @@ export class SegmentationOpenSegmentDialogComponent implements OnInit, OnDestroy
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._unsubscribeAll = new Subject();
+        this.dialog = data.dialog;
     }
 
     ngOnDestroy(): void {
@@ -1535,6 +1561,8 @@ export class SegmentationOpenSegmentDialogComponent implements OnInit, OnDestroy
                         this.paginatedDataSource.filterPredicate =
                             (data: Selection, filter: string) => this.selectionsFilterPredicate(data, filter);
                         this.filterElement.nativeElement.focus();
+                    } else {
+                        this.paginatedDataSource = undefined;
                     }
                 }
 
@@ -1595,8 +1623,34 @@ export class SegmentationOpenSegmentDialogComponent implements OnInit, OnDestroy
         }
     }
 
+    public deleteSegment(segment): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            minWidth: '33%',
+            width: '300px',
+            data: {
+                confirmMessage: 'Are you sure you want to delete the segment: ' + segment.name + ' ?',
+                informationMessage: 'Note: This cannot be undone'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.httpService.deleteEntity('selection', segment.id)
+                    .subscribe((deleteResult) => {
+                        this.selectionDataSource.refresh();
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
+            }
+        });
+
+    }
+
     public filterLayouts = (value: string) => {
         this.paginatedDataSource.filter = value.trim().toLocaleLowerCase();
+    }
+
+    clearErrors(): void {
+        this.errors = [];
     }
 
     getErrorMessage(control, name): string {

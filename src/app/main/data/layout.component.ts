@@ -379,6 +379,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
                 this.layoutForm.controls['id'].setValue(this.currentLayout.id);
                 this.layoutForm.controls['name'].setValue(this.currentLayout.name);
                 this.openedLayout = true;
+                this.layoutForm.markAsPristine();
             }, (errors) => {
                 this.errors = errors;
             });
@@ -456,6 +457,8 @@ export class LayoutOpenLayoutDialogComponent implements OnInit, OnDestroy {
                         this.paginatedDataSource.filterPredicate =
                             (data: Layout, filter: string) => this.layoutsFilterPredicate(data, filter);
                         this.filterElement.nativeElement.focus();
+                    } else {
+                        this.paginatedDataSource = undefined;
                     }
                 }
             });
