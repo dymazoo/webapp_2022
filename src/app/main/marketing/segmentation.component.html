@@ -407,9 +407,9 @@
                             <div *ngIf="getSelectionName" class="basis-9/12">
                                 <div class="flex gt-xs:flex-row">
                                     <mat-form-field class="basis-10/12">
-                                        <input matInput placeholder="Selection name" id="selectionName"
+                                        <input matInput placeholder="Segment name" id="selectionName"
                                                formControlName="name" autocomplete="do-not-autofill">
-                                        <mat-error>{{ getErrorMessage(selectionForm.controls.name, 'Selection Name')}}</mat-error>
+                                        <mat-error>{{ getErrorMessage(selectionForm.controls.name, 'Segment Name')}}</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="flex gt-xs:flex-row">
@@ -444,7 +444,7 @@
                                     <button class="fuse-mat-button-large w-20 mt-2"
                                             mat-stroked-button
                                             type="button" (click)="onCancel()">
-                                        Cancel
+                                        Reset
                                     </button>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@
                                 <button class="fuse-mat-button-large w-20 mt-2"
                                         mat-stroked-button
                                         type="button" (click)="onCancel()">
-                                    Cancel
+                                    Reset
                                 </button>
                             </div>
                         </div>
@@ -501,7 +501,7 @@
 </div>
 <mat-menu #cardContextMenu="matMenu">
     <ng-template matMenuContent let-card="card">
-        <button mat-menu-item (click)="cardAddToLane(null, card)">Add to Current Lane</button>
+        <button mat-menu-item (click)="cardAddToLane(null, card)">Add to Current Group</button>
         <button mat-menu-item (click)="onContextMenuRemoveSavedCard(card)">Delete Saved Selection</button>
     </ng-template>
 </mat-menu>

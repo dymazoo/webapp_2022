@@ -89,6 +89,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     private espSubscription: Subscription;
     private gettingCount = false;
     private pendingCount = false;
+    private isDirty = false;
 
     @ViewChild('selectionTrigger') selectionContextMenu: MatMenuTrigger;
     @ViewChild('cardTrigger') cardContextMenu: MatMenuTrigger;
@@ -483,6 +484,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     onCancel(): void {
         this.selectionForm.reset();
         this.selectionForm.markAsPristine();
+        this.isDirty = false;
         this.resetSelections();
     }
 
@@ -491,7 +493,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.selectionForm.dirty) {
+        if (this.selectionForm.dirty || this.isDirty) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;
@@ -552,7 +554,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             this.newCardId += 1;
         }
         this.finalLane = this.lanes.length;
-        this.getCount();
+        this.getCount(false);
     }
 
     doGetSelectionName(): void {
@@ -592,12 +594,16 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                             }
                             openLane.selections.push(selectionCard);
                         });
-                        // add a final empty lane and re-sequence everything
-                        this.addNewLane(null);
+                        if (this.lanes.length == 0) {
+                            // add a final empty lane and re-sequence everything
+                            this.addNewLane(null);
+                        } else {
+                            this.reSequenceLanes();
+                        }
                         this.lanes.forEach(lane => {
                             this.reSequenceCards(lane);
                         });
-                        this.getCount();
+                        this.getCount(false);
                     }, (errors) => {
                         this.errors = errors;
                     });
@@ -652,6 +658,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                     });
                 });
                 this.selectionForm.markAsPristine();
+                this.isDirty = false;
             }, (errors) => {
                 this.errors = errors;
             });
@@ -785,7 +792,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             this.openSelectionCards = true;
             this.updateSavedSelectionTree();
         }
-        this.getCount();
+        this.getCount(true);
     }
 
     addCard($event, laneId): void {
@@ -803,7 +810,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             this.reSequenceCards(currentLane);
             this.selectionCards.push(card);
             this.newCardId += 1;
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -834,7 +841,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                 }
             });
             this.updateSavedSelectionTree();
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -889,7 +896,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         const currentCard = this.selectionCards.find(x => x.id === cardId);
         if (currentCard) {
             currentCard.invert = currentCard.invert === 1 ? 0 : 1;
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -943,7 +950,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                 currentCard.selections.push(selection);
                 currentCard.selections.sort((a, b) => a.id.localeCompare(b.id));
             }
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -967,7 +974,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             this.newCardId += 1;
             this.openSelectionCards = true;
             this.updateSavedSelectionTree();
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -1010,7 +1017,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                         }
                     }
                 });
-                this.getCount();
+                this.getCount(true);
             }
         }
 
@@ -1148,7 +1155,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                     }
                 });
             }
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -1170,7 +1177,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                     }
                 }
             });
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -1185,7 +1192,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
                     cardSelection.value = event.target.value;
                 }
             });
-            this.getCount();
+            this.getCount(true);
         }
     }
 
@@ -1230,7 +1237,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
     public listSelect(item): void {
         this.selectionForm.controls['listId'].setValue(item.value);
-        this.getCount();
+        this.getCount(true);
         this.checkCanSegment();
         this.canUpdate = true;
     }
@@ -1290,7 +1297,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
     public layoutDeselect(item): void {
         this.selectionForm.controls['layoutId'].reset('');
-        this.getCount();
+        this.getCount(true);
         this.checkCanCreate();
     }
 
@@ -1430,7 +1437,10 @@ export class SegmentationComponent implements OnInit, OnDestroy {
             });
     }
 
-    getCount(): void {
+    getCount(makeDirty): void {
+        if (makeDirty) {
+            this.isDirty = true;
+        }
         if (this.gettingCount) {
             this.pendingCount = true;
         } else {
