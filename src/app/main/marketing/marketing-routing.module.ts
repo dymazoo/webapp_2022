@@ -7,6 +7,7 @@ import {AuthGuard} from '../../_guards/index';
 // Module Components
 import {SegmentationComponent} from './segmentation.component';
 import {EntityDataService} from '../../shared/services/entity-data.service';
+import {ExtractComponent} from './extract.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,15 @@ const routes: Routes = [
         canDeactivate: [AuthGuard],
         data: {
             title: 'Segmentation'
+        }
+    },
+    {
+        path: 'extract',
+        component: ExtractComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard],
+        data: {
+            title: 'Extract Marketing Universe'
         }
     },
 ];

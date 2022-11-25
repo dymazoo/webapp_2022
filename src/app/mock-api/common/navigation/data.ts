@@ -24,6 +24,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 disabled : true,
                 icon : 'heroicons_outline:chart-pie',
                 link : '/marketing/segmentation'
+            },
+            {
+                id   : 'marketing.extract',
+                title: 'Extract New Marketing Universe',
+                type : 'basic',
+                disabled : true,
+                icon : 'heroicons_outline:cube',
+                link : '/marketing/extract'
             }
 //            {
 //                id   : 'marketing.campaigns',

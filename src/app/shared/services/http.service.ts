@@ -338,7 +338,8 @@ export class HttpService {
                     localStorage.setItem('dymazooUser', JSON.stringify({
                         emailAddress: this.userData.email,
                         token: token,
-                        crc: crc
+                        crc: crc,
+                        plan: this.userData.plan
                     }));
 
                     // return true to indicate successful login
@@ -582,7 +583,8 @@ export class HttpService {
                     localStorage.setItem('dymazooUser', JSON.stringify({
                         emailAddress: this.userData.email,
                         token: token,
-                        crc: this.impersonateCrc
+                        crc: this.impersonateCrc,
+                        plan: this.userData.plan
                     }));
                     this.userSubject.next(this.userData);
 
@@ -645,7 +647,8 @@ export class HttpService {
             // store email, oauth token and crc in local storage to keep user logged in between page refreshes
             localStorage.setItem('dymazooUser', JSON.stringify({
                 token: this.token,
-                crc: this.crc
+                crc: this.crc,
+                plan: this.userData.plan
             }));
 
             const headers = this.createAuthorizationHeader();

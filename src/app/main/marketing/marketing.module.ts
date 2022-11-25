@@ -4,11 +4,13 @@ import {MarketingRoutingModule} from './marketing-routing.module';
 import {SharedModule} from '../../shared/shared.module';
 
 import {SegmentationComponent, SegmentationOpenSegmentDialogComponent} from './segmentation.component';
+import {ExtractComponent} from './extract.component';
 
 @NgModule({
     declarations: [
         SegmentationComponent,
         SegmentationOpenSegmentDialogComponent,
+        ExtractComponent,
     ],
     imports: [
         MarketingRoutingModule,
@@ -17,6 +19,7 @@ import {SegmentationComponent, SegmentationOpenSegmentDialogComponent} from './s
     exports: [
         SegmentationComponent,
         SegmentationOpenSegmentDialogComponent,
+        ExtractComponent,
     ]
 })
 

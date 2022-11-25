@@ -204,11 +204,18 @@ export class DataSources {
     public setIntegrations(navigation): void {
         // turn on/off menu items as appropriate for permissions
         if (this.httpService.loggedIn) {
+            const userData = this.httpService.userData;
+            const plan = userData.plan;
             navigation.forEach((navItem) => {
                 if (navItem.children) {
                     navItem.children.forEach((childItem) => {
                         if (childItem.id === 'marketing.segmentation') {
                             childItem.disabled = !this.httpService.hasPermission('selections');
+                        }
+                        if (childItem.id === 'marketing.extract') {
+                            if (plan === 'consultant') {
+                                childItem.disabled = !this.httpService.hasPermission('client_admin');
+                            }
                         }
                         if (childItem.id === 'marketing.campaigns') {
                             childItem.disabled = !this.httpService.hasPermission('esp_integration');

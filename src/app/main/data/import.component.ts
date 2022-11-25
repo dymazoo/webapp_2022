@@ -50,6 +50,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
     public sample1 = 1;
     public sample2 = 2;
     public sample3 = 3;
+    public sample4 = 4;
 
     private _unsubscribeAll: Subject<any>;
 
@@ -415,7 +416,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     hasSales = true;
                     hasSaleDescription = true;
                 }
-                if (field.fieldName === 'Sale Time') {
+                if (field.fieldName === 'Sale Date/Time') {
                     hasSales = true;
                     hasSaleTime = true;
                 }
@@ -423,11 +424,11 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     hasSales = true;
                     hasSaleValue = true;
                 }
-                if (field.fieldName === 'Action') {
+                if (field.fieldName === 'Actvity') {
                     hasActivity = true;
                     hasActivityAction = true;
                 }
-                if (field.fieldName === 'Action Time') {
+                if (field.fieldName === 'Activity Date/Time') {
                     hasActivity = true;
                     hasActivityTime = true;
                 }
@@ -435,7 +436,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     hasEvents = true;
                     hasEventAction = true;
                 }
-                if (field.fieldName === 'Event Action Time') {
+                if (field.fieldName === 'Event Action Date/Time') {
                     hasEvents = true;
                     hasEventTime = true;
                 }
@@ -500,11 +501,13 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     this.sample1 = 2;
                     this.sample2 = 3;
                     this.sample3 = 4;
+                    this.sample4 = 5;
                 } else {
                     this.hasHeader = false;
                     this.sample1 = 1;
                     this.sample2 = 2;
                     this.sample3 = 3;
+                    this.sample4 = 4;
                 }
                 this.openedLayout = true;
                 this.getLayoutName = true;
