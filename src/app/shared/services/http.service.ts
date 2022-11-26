@@ -548,13 +548,14 @@ export class HttpService {
         }).pipe(
             timeout(this.timeout),
             map(data => {
+                const response = data['response'];
                 let token = null;
-                if (data['token']) {
-                    token = data['token'];
+                if (response['token']) {
+                    token = response['token'];
                 }
                 let impersonateKey = null;
-                if (data['impersonateKey']) {
-                    impersonateKey = data['impersonateKey'];
+                if (response['impersonateKey']) {
+                    impersonateKey = response['impersonateKey'];
                 }
                 if (token && impersonateKey) {
                     localStorage.setItem('dymazooImpersonate', JSON.stringify({
@@ -571,13 +572,13 @@ export class HttpService {
 
                     this.token = token;
                     this.crc = this.impersonateCrc;
-                    this.userData.userName = data['userName'];
-                    this.userData.email = data['email'];
-                    this.userData.permissions = data['permissions'];
-                    this.userData.layout = data['layout'];
-                    this.userData.scheme = data['scheme'];
-                    this.userData.theme = data['theme'];
-                    this.userData.plan = data['plan'];
+                    this.userData.userName = response['userName'];
+                    this.userData.email = response['email'];
+                    this.userData.permissions = response['permissions'];
+                    this.userData.layout = response['layout'];
+                    this.userData.scheme = response['scheme'];
+                    this.userData.theme = response['theme'];
+                    this.userData.plan = response['plan'];
                     this.userData.impersonateUserName = this.impersonateUserData.userName;
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
