@@ -86,7 +86,7 @@
                                     >
                                         <div *ngFor="let field of fields; let i=index">
                                             <button *ngIf="!field.inLayout" cdkDrag mat-stroked-button
-                                                    class="bg-cyan-300"
+                                                    class="bg-teal-400"
                                                     [matTooltip]="field.description"
                                                     [cdkDragData]="{id:field.id, index:i}">
                                                 {{ field.name }}

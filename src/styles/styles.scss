@@ -1101,14 +1101,16 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 .select-tree-group {
     min-height: 28px !important;
-    max-height: 28px !important;
+    max-height: 35px !important;
     font-weight: 600;
+    font-size: 13px;
 }
 
 .select-tree-node {
     min-height: 24px !important;
-    max-height: 48px !important;
+    max-height: 35px !important;
     text-align: left !important;
+    font-size: 13px;
 }
 
 .select-tree-value {

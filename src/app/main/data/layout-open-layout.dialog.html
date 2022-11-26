@@ -37,6 +37,11 @@
                                     <td mat-cell *matCellDef="let row" md> {{row.description}}</td>
                                 </ng-container>
 
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                                    <td mat-cell *matCellDef="let row" md> {{row.type}}</td>
+                                </ng-container>
+
                                 <ng-container matColumnDef="action">
                                     <th mat-header-cell *matHeaderCellDef>Remove Layout</th>
                                     <td mat-cell *matCellDef="let row" md>

@@ -406,7 +406,7 @@ export class LayoutOpenLayoutDialogComponent implements OnInit, OnDestroy {
 
     public openLayoutForm: FormGroup;
     public errors = [];
-    displayedColumns = ['name', 'description', 'action'];
+    displayedColumns = ['name', 'description', 'type', 'action'];
     layoutDataSource: EntityDatasource | null;
     public paginatedDataSource;
     layouts: any;

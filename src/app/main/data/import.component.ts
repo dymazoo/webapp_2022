@@ -424,7 +424,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     hasSales = true;
                     hasSaleValue = true;
                 }
-                if (field.fieldName === 'Actvity') {
+                if (field.fieldName === 'Activity') {
                     hasActivity = true;
                     hasActivityAction = true;
                 }
@@ -690,7 +690,7 @@ export class ImportOpenLayoutDialogComponent implements OnInit, OnDestroy {
         this.layoutDataSource = new EntityDatasource(
             this.httpService,
             'layouts',
-            ''
+            'import'
         );
 
         this.layoutDataSource.onItemsChanged
@@ -708,6 +708,8 @@ export class ImportOpenLayoutDialogComponent implements OnInit, OnDestroy {
                             (data: Layout, filter: string) => this.layoutsFilterPredicate(data, filter);
                         this.filterElement.nativeElement.focus();
                     }
+                } else {
+                    this.paginatedDataSource = undefined;
                 }
             });
 
