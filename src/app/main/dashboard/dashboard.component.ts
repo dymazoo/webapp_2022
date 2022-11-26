@@ -751,7 +751,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                                 if (!dataSeries[dataLabel]) {
                                     dataSeries[dataLabel] = {'name': dataLabel, 'data': []};
                                 }
-                                dataSeries[dataLabel].data.push(dataElement.value);
+                                dataSeries[dataLabel].data.unshift(dataElement.value);
                             }
                         });
                     }
@@ -917,7 +917,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 });
                 if (chartType === 'line') {
                     Object.keys(lineLabels).forEach(lineKey => {
-                        this.allChartData[key].labels.push(lineLabels[lineKey]);
+                        this.allChartData[key].labels.unshift(lineLabels[lineKey]);
                     });
                     Object.keys(dataSeries).forEach(dataKey => {
                         this.allChartData[key].series.push(dataSeries[dataKey]);
@@ -950,7 +950,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         },
                         xaxis  : {
                             type      : 'category',
-                            categories:  this.allChartData[key].labels
+                            categories:  this.allChartData[key].labels,
+                            labels: {
+                                style: {
+                                    colors: 'var(--fuse-text-secondary)'
+                                }
+                            }
                         },
                         yaxis  : {
                             labels: {
