@@ -570,11 +570,15 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         yearlyPrice = yearlyPlanPrice + profilePrice;
 
         this.payableToday = 0 ;
-        this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').format('LL');;
+        if (this.currentNextBillingDate === 'never') {
+            this.nextBillingDate = 'Never';
+        } else {
+            this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').format('LL');
+        }
         this.client.nextBillingDate = this.currentNextBillingDate;
 
         if (billing === 'monthly') {
-            if (this.currentBilling === 'monthly') {
+            if (this.currentBilling === 'monthly' && this.currentNextBillingDate !== 'never') {
                 if (currentMonthlyPrice < monthlyPrice) {
                     const daysToPay = moment(this.currentNextBillingDate, 'YYYY-MM-DD').diff(moment(), 'days');
                     if (daysToPay > 0) {
@@ -590,19 +594,21 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
             monthlyPrice = monthlyPlanPrice + profilePrice;
             yearlyPrice = yearlyPlanPrice + profilePrice;
 
-            if (this.currentBilling === 'yearly') {
-                if (currentYearlyPrice < yearlyPrice) {
-                    this.payableToday = yearlyPrice - currentYearlyPrice;
+            if (this.currentNextBillingDate !== 'never') {
+                if (this.currentBilling === 'yearly') {
+                    if (currentYearlyPrice < yearlyPrice) {
+                        this.payableToday = yearlyPrice - currentYearlyPrice;
+                    }
+                } else {
+                    const daysToDiscount = moment(this.client.nextBillingDate, 'YYYY-MM-DD').diff(moment(), 'days');
+                    let amountToDiscount = 0;
+                    if (daysToDiscount > 0) {
+                        amountToDiscount = currentMonthlyPrice / 30 * daysToDiscount;
+                    }
+                    this.payableToday = yearlyPrice - amountToDiscount;
+                    this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('LL');
+                    this.client.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('YYYY-MM-DD');
                 }
-            } else {
-                const daysToDiscount = moment(this.client.nextBillingDate, 'YYYY-MM-DD').diff(moment(), 'days');
-                let amountToDiscount = 0;
-                if (daysToDiscount > 0) {
-                    amountToDiscount = currentMonthlyPrice / 30 * daysToDiscount;
-                }
-                this.payableToday = yearlyPrice - amountToDiscount;
-                this.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('LL');
-                this.client.nextBillingDate = moment(this.currentNextBillingDate, 'YYYY-MM-DD').add(1, 'year').format('YYYY-MM-DD');
             }
         }
         this.monthlyPlanPrice = monthlyPlanPrice;

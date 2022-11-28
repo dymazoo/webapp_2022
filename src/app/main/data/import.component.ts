@@ -443,15 +443,15 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             });
             if (hasSales && (!hasSaleDescription || !hasSaleTime || !hasSaleValue)) {
                 hasErrors = true;
-                this.errors.push('Sales must have  at least description, time and value');
+                this.errors.push('Sales must have at least description, time and value');
             }
             if (hasActivity && (!hasActivityAction || !hasActivityTime)) {
                 hasErrors = true;
-                this.errors.push('Activity must have  at least action and time');
+                this.errors.push('Activity must have at least action and time');
             }
             if (hasEvents && (!hasEventAction || !hasEventTime)) {
                 hasErrors = true;
-                this.errors.push('Events must have  at least action and time');
+                this.errors.push('Events must have at least action and time');
             }
         } else {
             hasOrigin = true;
@@ -480,6 +480,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                             });
                         }, (errors) => {
                             this.errors = errors;
+                            this.errors.push('Does the file has a header row, and does that match the layout?');
                         });
 
                 }

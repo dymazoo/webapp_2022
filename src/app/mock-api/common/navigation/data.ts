@@ -63,12 +63,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/import'
             },
             {
-                id   : 'data.layout',
-                title: 'Layouts',
+                id   : 'data.compliance',
+                title: 'Compliance',
                 type : 'basic',
                 disabled : true,
-                icon : 'heroicons_outline:table',
-                link : '/data/layouts'
+                icon : 'heroicons_outline:check-circle',
+                link : '/data/compliance'
+            },
+            {
+                id   : 'data.events',
+                title: 'Events',
+                type : 'basic',
+                disabled : true,
+                icon : 'heroicons_outline:calendar',
+                link : '/data/events'
             },
             {
                 id   : 'data.sales-categories',
@@ -87,14 +95,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/event-categories'
             },
             {
-                id   : 'data.events',
-                title: 'Events',
-                type : 'basic',
-                disabled : true,
-                icon : 'heroicons_outline:calendar',
-                link : '/data/events'
-            },
-            {
                 id   : 'data.custom-fields',
                 title: 'Custom Fields',
                 type : 'basic',
@@ -103,20 +103,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data/custom-fields'
             },
             {
+                id   : 'data.layout',
+                title: 'Manage Layouts',
+                type : 'basic',
+                disabled : true,
+                icon : 'heroicons_outline:table',
+                link : '/data/layouts'
+            },
+            {
                 id   : 'data.preferences',
                 title: 'Dashboard Preferences',
                 type : 'basic',
                 disabled : true,
                 icon : 'heroicons_outline:cog',
                 link : '/data/preferences'
-            },
-            {
-                id   : 'data.compliance',
-                title: 'Compliance',
-                type : 'basic',
-                disabled : true,
-                icon : 'heroicons_outline:check-circle',
-                link : '/data/compliance'
             }
         ]
     },
