@@ -406,7 +406,8 @@ export class HttpService {
         const registrationUser = {
             name: user.name, email: user.email, password: user.password,
             password_confirmation: user.confirmPassword, client_name: client.name, client_plan: client.plan,
-            client_currency: client.currency, client_billing: client.billing, client_profiles: client.profiles,  client_coupon: client.coupon,
+            client_currency: client.currency, client_billing: client.billing, client_profiles: client.profiles,
+            client_options: client.options, client_coupon: client.coupon,
             client_billing_start_date: client.nextBillingDate,
             token: user.token, layout: user.layout, scheme: user.scheme, theme: user.theme
         };
@@ -967,7 +968,8 @@ export class HttpService {
                 'specialistYearly': 27.95,
                 'consultantMonthly': 50,
                 'consultantYearly': 39.95,
-                'profileAdditionCost': 2.5
+                'profileAdditionCost': 2.5,
+                'optionsPrivate': 7.5
             },
             'gbp': {
                 'analystMonthly': 20,
@@ -976,7 +978,8 @@ export class HttpService {
                 'specialistYearly': 21.95,
                 'consultantMonthly': 40,
                 'consultantYearly': 30.95,
-                'profileAdditionCost': 2.0
+                'profileAdditionCost': 2.0,
+                'optionsPrivate': 5
             },
         };
     }

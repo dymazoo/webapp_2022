@@ -13,6 +13,7 @@ export class Client {
     public signUpDate: string = '';
     public plan: string = '';
     public profiles: number = 2500;
+    public options: string = '';
     public coupon: string = '';
     public nextBillingDate: string = '';
     public leftDate: string = '';

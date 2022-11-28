@@ -41,9 +41,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public action: string = 'select';
     public yearlyBilling: boolean = true;
     public usdCurrency: boolean = true;
+    public separateDB: boolean = false;
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
     public profilePrice: number = 0;
+    public optionsPrice: number = 0;
     public monthlyPrice: number = 0;
     public yearlyPrice: number = 0;
     public payableToday: number = 0;
@@ -120,6 +122,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
         } else {
             this.client.currency = 'gbp';
         }
+        if (this.separateDB) {
+            this.client.options = 'PRIVATE';
+        } else {
+            this.client.options = '';
+        }
         this.doCalculate();
 
         this.registerForm = this._formBuilder.group({
@@ -144,11 +151,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     setPlan(event): void {
         const plan = this.registerForm.controls['clientPlan'].value;
         this.client.plan = plan;
+        this.plan = plan;
         if (plan === 'analyst') {
             this.client.profiles = this.pricingData.analystProfiles;
+            this.client.options = '';
+            this.separateDB = false;
         }
         if (plan === 'specialist') {
             this.client.profiles = this.pricingData.specialistProfiles;
+            this.client.options = '';
+            this.separateDB = false;
         }
         if (plan === 'consultant') {
             this.client.profiles = this.pricingData.consultantProfiles;
@@ -179,6 +191,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.usdCurrency = false;
         } else {
             this.usdCurrency = true;
+        }
+        this.doCalculate();
+    }
+
+    setSeparateDB(event, separate): void {
+        event.stopPropagation();
+        if (separate === 'no') {
+            this.client.options = '';
+            this.separateDB = false;
+        } else {
+            this.client.options = 'PRIVATE';
+            this.separateDB = true;
         }
         this.doCalculate();
     }
@@ -251,6 +275,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const billing = this.client.billing;
         const currency = this.client.currency;
         const profiles = this.client.profiles;
+        const options = this.client.options;
         let freeProfiles = this.pricingData.analystProfiles;
         let paidProfiles = 0;
         let profilePrice = 0;
@@ -258,6 +283,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         let yearlyPlanPrice = 0;
         let monthlyPrice = 0;
         let yearlyPrice = 0;
+        let optionsPrice = 0;
         if (plan === 'analyst') {
             freeProfiles = this.pricingData.analystProfiles;
             if (currency === 'usd') {
@@ -283,9 +309,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
             if (currency === 'usd') {
                 monthlyPlanPrice = this.pricingData.usd.consultantMonthly;
                 yearlyPlanPrice = this.pricingData.usd.consultantYearly;
+                if (options === 'PRIVATE') {
+                    optionsPrice = this.pricingData.usd.optionsPrivate;
+                }
             } else {
                 monthlyPlanPrice = this.pricingData.gbp.consultantMonthly;
                 yearlyPlanPrice = this.pricingData.gbp.consultantYearly;
+                if (options === 'PRIVATE') {
+                    optionsPrice = this.pricingData.gbp.optionsPrivate;
+                }
             }
         }
         let profileAdditionCost = this.pricingData.usd.profileAdditionCost;
@@ -298,8 +330,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
             profilePrice = paidProfiles / this.pricingData.profileAddition * profileAdditionCost;
         }
 
-        monthlyPrice = monthlyPlanPrice + profilePrice;
-        yearlyPrice = yearlyPlanPrice + profilePrice;
+        monthlyPrice = monthlyPlanPrice + profilePrice + optionsPrice;
+        yearlyPrice = yearlyPlanPrice + profilePrice + optionsPrice;
 
         let freeMonths = 0;
         let discount = 0;
@@ -343,6 +375,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             monthlyPlanPrice = monthlyPlanPrice * 12;
             yearlyPlanPrice = yearlyPlanPrice * 12;
             profilePrice = profilePrice * 12;
+            optionsPrice = optionsPrice * 12;
 
             monthlyPrice = monthlyPlanPrice + profilePrice;
             yearlyPrice = yearlyPlanPrice + profilePrice;
@@ -353,6 +386,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.profilePrice = profilePrice;
         this.monthlyPrice = monthlyPrice;
         this.yearlyPrice = yearlyPrice;
+        this.optionsPrice = optionsPrice;
     }
 
     register(): void {
