@@ -424,7 +424,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                     hasSales = true;
                     hasSaleValue = true;
                 }
-                if (field.fieldName === 'Activity') {
+                if (field.fieldName === 'Activity Action') {
                     hasActivity = true;
                     hasActivityAction = true;
                 }
