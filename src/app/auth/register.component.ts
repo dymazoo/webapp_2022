@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public yearlyBilling: boolean = true;
     public usdCurrency: boolean = true;
     public separateDB: boolean = false;
+    public fullHistory: boolean = false;
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
     public profilePrice: number = 0;
@@ -124,6 +125,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
         if (this.separateDB) {
             this.client.options = 'PRIVATE';
+            if (this.fullHistory) {
+                this.client.options = 'PRIVATE:FULL';
+            }
         } else {
             this.client.options = '';
         }
@@ -200,9 +204,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if (separate === 'no') {
             this.client.options = '';
             this.separateDB = false;
+            this.fullHistory = false;
         } else {
             this.client.options = 'PRIVATE';
             this.separateDB = true;
+            this.fullHistory = false;
+        }
+        this.doCalculate();
+    }
+
+    setFullHistory(event, history): void {
+        event.stopPropagation();
+        if (history === 'no') {
+            if (!this.separateDB) {
+                this.client.options = '';
+            } else {
+                this.client.options = 'PRIVATE';
+            }
+            this.fullHistory = false;
+        } else {
+            this.client.options = 'PRIVATE:FULL';
+            this.fullHistory = true;
         }
         this.doCalculate();
     }
@@ -309,12 +331,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
             if (currency === 'usd') {
                 monthlyPlanPrice = this.pricingData.usd.consultantMonthly;
                 yearlyPlanPrice = this.pricingData.usd.consultantYearly;
+                if (options === 'PRIVATE:FULL') {
+                    optionsPrice = this.pricingData.usd.optionsPrivateFull;
+                }
                 if (options === 'PRIVATE') {
                     optionsPrice = this.pricingData.usd.optionsPrivate;
                 }
             } else {
                 monthlyPlanPrice = this.pricingData.gbp.consultantMonthly;
                 yearlyPlanPrice = this.pricingData.gbp.consultantYearly;
+                if (options === 'PRIVATE:FULL') {
+                    optionsPrice = this.pricingData.gbp.optionsPrivateFull;
+                }
                 if (options === 'PRIVATE') {
                     optionsPrice = this.pricingData.gbp.optionsPrivate;
                 }
@@ -360,7 +388,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 }
                 this.nextBillingDate = moment().add(1 + freeMonths, 'month').format('LL');
                 this.client.nextBillingDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');
-                ;
             }
         } else {
             if (freeMonths === -1) {
@@ -377,8 +404,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
             profilePrice = profilePrice * 12;
             optionsPrice = optionsPrice * 12;
 
-            monthlyPrice = monthlyPlanPrice + profilePrice;
-            yearlyPrice = yearlyPlanPrice + profilePrice;
+            monthlyPrice = monthlyPlanPrice + profilePrice + optionsPrice;
+            yearlyPrice = yearlyPlanPrice + profilePrice + optionsPrice;
 
         }
         this.monthlyPlanPrice = monthlyPlanPrice;

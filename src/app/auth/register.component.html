@@ -345,12 +345,6 @@
                                             <mat-icon
                                                 class="icon-size-5 text-green-600"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                            <div class="ml-2 leading-5">Complete <b>Data history</b></div>
-                                        </div>
-                                        <div class="flex">
-                                            <mat-icon
-                                                class="icon-size-5 text-green-600"
-                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
                                             <div class="ml-2 leading-5"><b>All</b> comprehensive integrations</div>
                                         </div>
                                         <div class="flex">
@@ -375,9 +369,14 @@
                                             <mat-icon
                                                 class="icon-size-5 text-green-600"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                            <div class="ml-2 leading-5">Optional <b>Fully Separated Database</b></div>
+                                            <div class="ml-2 leading-5">Optional <b>Fully Separated Database</b> for Maximum Performance</div>
                                         </div>
-
+                                        <div class="flex">
+                                            <mat-icon
+                                                class="icon-size-5 text-green-600"
+                                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            <div class="ml-2 leading-5">Optional <b>Complete Data History</b></div>
+                                        </div>
                                     </div>
                                 </div>
                             </fuse-card>
@@ -842,7 +841,9 @@
                             </div>
 
                             <div *ngIf="plan === 'consultant'" class="flex justify-evenly gt-xs:flex-row mt-8">
-                                <mat-label>Store your data in a Fully Separated Database for Maximum Performance?</mat-label>
+                                <div class="consultant-options">
+                                    <mat-label>Store your data in a <b>Fully Separated Database</b> for Maximum Performance?</mat-label>
+                                </div>
                                 <div
                                     class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
                                     <button
@@ -864,6 +865,37 @@
                                         mat-flat-button
                                         type="button"
                                         (click)="setSeparateDB($event,'yes')"
+                                        disableRipple>
+                                        Yes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="separateDB" class="flex justify-evenly gt-xs:flex-row">
+                                <div class="consultant-options">
+                                    <mat-label>Create a <b>Complete Data History</b> for every customer profile?</mat-label>
+                                </div>
+                                <div
+                                    class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': !fullHistory,
+                                'bg-transparent': fullHistory}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setFullHistory($event, 'no')"
+                                        disableRipple>
+                                        No
+                                    </button>
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': fullHistory,
+                                'bg-transparent': !fullHistory}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setFullHistory($event,'yes')"
                                         disableRipple>
                                         Yes
                                     </button>
@@ -908,7 +940,7 @@
                                         <div *ngIf="optionsPrice > 0" class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{optionsPrice | number:'0.2'}}</span>
                                         </div>
-                                        <div *ngIf="optionsPrice > 0" class="flex items-baseline gt-xs:flex-row justify-end">
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
                                             <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{monthlyPrice | number:'0.2'}}</span>
                                         </div>
                                     </div>

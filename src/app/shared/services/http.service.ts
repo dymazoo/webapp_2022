@@ -969,7 +969,8 @@ export class HttpService {
                 'consultantMonthly': 50,
                 'consultantYearly': 39.95,
                 'profileAdditionCost': 2.5,
-                'optionsPrivate': 7.5
+                'optionsPrivate': 7.5,
+                'optionsPrivateFull': 15
             },
             'gbp': {
                 'analystMonthly': 20,
@@ -979,7 +980,8 @@ export class HttpService {
                 'consultantMonthly': 40,
                 'consultantYearly': 30.95,
                 'profileAdditionCost': 2.0,
-                'optionsPrivate': 5
+                'optionsPrivate': 5,
+                'optionsPrivateFull': 10
             },
         };
     }
