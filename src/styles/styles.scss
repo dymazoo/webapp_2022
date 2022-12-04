@@ -209,20 +209,20 @@ ul {
 .major-item {
     position: relative;
     flex: 1;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 160px) !important;
     min-height: 10em;
 }
 
 .filled-major-item {
     position: relative;
     flex: 1 1 auto!important;
-    max-height: calc(100vh - 150px) !important;
+    max-height: calc(100vh - 160px) !important;
 }
 
 .form-item {
     position: relative;
     flex: 1;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 160px) !important;
     min-height: 10em;
     max-width: 50%;
     min-width: 500px !important;
@@ -824,12 +824,19 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 // -----------------------------------------------------------------------------------------------------
 // @Import drag and drop and scrolling fields
 // -----------------------------------------------------------------------------------------------------
+.file-small-padding {
+    width: 100% !important;
+    .mat-form-field-wrapper {
+        padding-bottom: 0.1rem !important;
+    }
+}
+
 .fields-drag-list {
     display: flex;
     flex-wrap: wrap;
     max-width: fit-content;
     overflow-y: auto;
-    height: 150px;
+    height: 14rem;
     border: groove;
     border-radius: 6px;
 }
@@ -846,16 +853,16 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .scroll-fields-container-import {
-    height: 18.5rem;
-    border: groove;
+    height: 16rem;
+    border: none;
     border-radius: 6px;
     display: block;
     text-align: left;
 }
 
 .scroll-fields-container-layout {
-    height: 10.5rem;
-    border: groove;
+    height: 8.5rem;
+    border: none;
     border-radius: 6px;
     display: block;
     text-align: left;
@@ -866,10 +873,11 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .scroll-labels {
-    padding-top: 1rem;
+    padding-top: 0.25rem;
     float: left;
-    width: 20rem;
+    width: 10rem;
 }
+
 
 .scroll-labels-label {
     line-height: 1.5;
@@ -878,11 +886,17 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     display: block;
 }
 
+.scroll-labels-label-header {
+    line-height: 1.2;
+    padding-top: 0.5rem;
+    display: block;
+}
+
 .scroll-fields {
-    padding-top: 1rem;
+    padding-top: 0.25rem;
     white-space: nowrap;
     overflow-x: auto;
-    width: calc(95vw - 510px);
+    width: calc(95vw - 270px);
 }
 
 .scroll-field-items {
@@ -901,8 +915,21 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     text-align: center;
 }
 
+.scroll-field-sample-header {
+    line-height: 1.5;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    display: block;
+    text-align: center;
+}
+
 .scroll-field-input {
     border-bottom: 1px solid lightgray !important;
+    max-width: 95% !important;
+}
+
+.scroll-transform {
+    max-width: 95% !important;
 }
 
 .scroll-compliance-container {
@@ -929,6 +956,11 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     height: 36px;
 }
 
+.div-field-header-label {
+    width: 18rem;
+    height: 36px;
+}
+
 .div-field-footer {
     width: 6rem;
 }
@@ -940,7 +972,7 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 .div-label-container-import {
     display: block;
-    height: 13rem;
+    height: 11.5rem;
 }
 
 .div-label-container-layout {
@@ -955,7 +987,7 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 
 .div-field-container-import {
     display: block;
-    height: 13rem;
+    height: 11.5rem;
 }
 
 .div-field-container-layout {

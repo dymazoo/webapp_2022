@@ -25,10 +25,10 @@
     "auth-confirm-reset": "Password Reset Confirmed",
     "auth-oauth": "Dymazoo Api Authorisation",
 
-    "data-import-heading": "File import",
+    "data-import-heading": "File Import",
     "data-confirm-import": "Confirm Import",
     "data-open-layout": "Open Layout",
-    "data-layout-heading": "File layouts",
+    "data-layout-heading": "File Layouts",
     "data-sales-category-heading": "Sales Categories",
     "data-sales-sub-category-heading": "Sub Categories",
     "data-current-sales-category-heading": "Sales Category",

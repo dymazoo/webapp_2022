@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="basis-3/12">
                                         <mat-checkbox #header name="header" [formControl]="layoutForm.get('header')"
-                                                      value="1" (change)="headerChange(header)">Has header
+                                                      value="1" (change)="headerChange(header)">Has header row
                                         </mat-checkbox>
                                     </div>
                                 </div>
@@ -71,11 +71,8 @@
                                 </div>
                             </div>
 
-                            <div class="basis-1/12">
-                            </div>
-
-                            <div class="basis-4/12">
-                                <div style="margin-bottom: 0.25rem !important;">
+                            <div class="basis-5/12">
+                                <div style="margin-left: 0.25rem !important; margin-bottom: 0.25rem !important;">
                                     <div class="card-header">
                                         <strong>Available fields</strong>
                                     </div>
@@ -87,6 +84,7 @@
                                         <div *ngFor="let field of fields; let i=index">
                                             <button *ngIf="!field.inLayout" cdkDrag mat-stroked-button
                                                     class="bg-teal-400"
+                                                    type="button"
                                                     [matTooltip]="field.description"
                                                     [cdkDragData]="{id:field.id, index:i}">
                                                 {{ field.name }}
@@ -114,7 +112,7 @@
 
                             <div class="scroll-labels-column scroll-labels div-block-inline">
                                 <div class="card">
-                                    <div class="div-field-header">
+                                    <div class="div-field-header-label">
                                         <strong>Field name</strong>
                                     </div>
                                     <div class="card-block div-label-container-layout">
@@ -144,6 +142,7 @@
                                                         remove_circle_outline
                                                     </mat-icon>
                                                     <button cdkDrag mat-flat-button class="bg-cyan-500"
+                                                            type="button"
                                                             [matTooltip]="layoutFields[i].fieldDescription"
                                                             [cdkDragData]="{id:layoutFields[i].fieldId, index:i}">
                                                         {{ layoutFields[i].fieldName }}
@@ -159,7 +158,7 @@
                                             <div class="card-block div-field-container-layout" [formGroupName]="i">
                                                 <div class="scroll-field-items">
                                                     <mat-select formControlName="transformId"
-                                                            size="1" class="basis-11/12">
+                                                            size="1" class="basis-11/12 scroll-transform">
                                                         <mat-option value="">None</mat-option>
                                                         <mat-option *ngFor="let transform of transforms"
                                                                 value="{{ transform.id }}">{{ transform.name }}</mat-option>

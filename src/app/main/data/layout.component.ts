@@ -101,7 +101,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     ngAfterViewChecked(): void {
         setTimeout(() => {
-            const scrollContainer = document.querySelector('.scroll-fields-container-import');
+            const scrollContainer = document.querySelector('.scroll-fields-container-layout');
             const scrollFields = document.querySelector('.scroll-fields');
             if (scrollContainer && scrollFields) {
                 this.scrollMore = (scrollContainer.clientWidth - 180) < scrollFields.scrollWidth && scrollFields.scrollLeft < (scrollFields.scrollWidth - scrollFields.clientWidth);

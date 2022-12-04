@@ -172,7 +172,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
         };
 
         if (this.file) {
-            const blob = this.file.slice(0, 4096);
+            const blob = this.file.slice(0, 8092);
             reader.readAsText(blob);
         } else {
             this.layoutFields = [];
@@ -260,11 +260,28 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                 this.layoutFields[targetIndex].fieldName = 'Ignore';
                 this.layoutFields[targetIndex].fieldDescription = 'Ignore Column';
             }
-            this.layoutFields[targetIndex].transformName = '';
-            this.layoutFields[targetIndex].transformDescription = '';
-            this.layoutFields[targetIndex].transformId = '';
-            this.layoutFields[targetIndex].default = '';
-            this.showFields = true;
+            if (this.layoutFields[targetIndex].fieldName === 'DOB' ||
+                this.layoutFields[targetIndex].fieldName === 'Initial Date' ||
+                this.layoutFields[targetIndex].fieldName === 'Latest Date' ||
+                this.layoutFields[targetIndex].fieldName === 'Event Action Date/Time' ||
+                this.layoutFields[targetIndex].fieldName === 'Event Date' ||
+                this.layoutFields[targetIndex].fieldName === 'Sale Date/Time' ||
+                this.layoutFields[targetIndex].fieldName === 'Activity Date/Time' ||
+                this.layoutFields[targetIndex].fieldName === 'Campaign Date'
+            ) {
+                if (this.layoutFields[targetIndex].transformId.substring(0,4) !== 'DATE') {
+                    this.layoutFields[targetIndex].transformName = '';
+                    this.layoutFields[targetIndex].transformDescription = '';
+                    this.layoutFields[targetIndex].transformId = '';
+                    this.layoutFields[targetIndex].default = '';
+                }
+            } else {
+                this.layoutFields[targetIndex].transformName = '';
+                this.layoutFields[targetIndex].transformDescription = '';
+                this.layoutFields[targetIndex].transformId = '';
+                this.layoutFields[targetIndex].default = '';
+                this.showFields = true;
+            }
         }
 
         if (sourceContainer.id === 'layout-container' && targetContainer.id === 'available-field-container') {
@@ -328,11 +345,13 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.sample1 = 2;
             this.sample2 = 3;
             this.sample3 = 4;
+            this.sample4 = 5;
         } else {
             this.hasHeader = false;
             this.sample1 = 1;
             this.sample2 = 2;
             this.sample3 = 3;
+            this.sample4 = 4;
         }
 
     }

@@ -32,18 +32,20 @@
                         <div class="flex gt-xs:flex-row">
                             <div class="basis-7/12">
                                 <div class="flex gt-xs:flex-row ">
-                                    <mat-form-field class="basis-6/12" appearance="outline">
-                                        <mat-label>Select file to import</mat-label>
-                                        <ngx-mat-file-input #fileInput placeholder="Select file to import (csv,txt)"
-                                                            formControlName="file-input" [accept]="'.csv,.txt'"
-                                                            (change)="fileChange()">
-                                        </ngx-mat-file-input>
-                                        <mat-icon matSuffix>folder</mat-icon>
-                                        <mat-error>{{ getErrorMessage(importForm.get('file-input'), 'File to import')}}</mat-error>
-                                    </mat-form-field>
+                                    <div class="basis-8/12">
+                                        <mat-form-field appearance="outline" class="file-small-padding">
+                                            <mat-label>Select file to import</mat-label>
+                                            <ngx-mat-file-input #fileInput placeholder="Select file to import (csv,txt)"
+                                                                formControlName="file-input" [accept]="'.csv,.txt'"
+                                                                (change)="fileChange()">
+                                            </ngx-mat-file-input>
+                                            <mat-icon matSuffix>folder</mat-icon>
+                                            <mat-error>{{ getErrorMessage(importForm.get('file-input'), 'File to import')}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
                                     <div class="basis-4/12">
-                                        <mat-checkbox #header name="header" [formControl]="importForm.get('header')"
-                                                      value="1" (change)="headerChange(header)">Has header
+                                        <mat-checkbox *ngIf="showFields" #header name="header" [formControl]="importForm.get('header')"
+                                                      value="1" (change)="headerChange(header)">Has header row
                                         </mat-checkbox>
                                     </div>
                                 </div>
@@ -64,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div *ngIf="hasLayout" class="flex gt-xs:flex-row">
-                                    <div class="basis-8/12" *ngIf="getLayoutName">
+                                    <div class="basis-8/12 pt-1" *ngIf="getLayoutName">
                                         <div class="flex flex-col gt-xs:flex-row">
                                             <mat-form-field
                                                 class="flex-auto gt-xs:pr-3">
@@ -105,12 +107,9 @@
                                 </div>
                             </div>
 
-                            <div class="basis-1/12">
-                            </div>
-
-                            <div class="basis-4/12">
-                                <div style="margin-bottom: 0.25rem !important;">
-                                    <div class="card-header">
+                            <div class="basis-5/12">
+                                <div style="margin-left: 0.25rem !important; margin-bottom: 0.25rem !important;">
+                                    <div *ngIf="showFields" class="card-header">
                                         <strong>Available fields</strong>
                                     </div>
                                     <div id="available-field-container"
@@ -121,6 +120,7 @@
                                     >
                                         <div *ngFor="let field of fields; let i=index">
                                             <button *ngIf="!field.inLayout" cdkDrag mat-stroked-button
+                                                    type="button"
                                                     class="bg-teal-400"
                                                     [matTooltip]="field.description"
                                                     [cdkDragData]="{id:field.id, index:i}">
@@ -140,19 +140,20 @@
                                     <span *ngIf="scrollMore">more <mat-icon
                                         inline="true">arrow_forward</mat-icon></span>
                             </div>
-                            <div class="div-inline float-center">
+                            <div *ngIf="showFields" class="div-inline float-center">
                                 <strong>Fields in layout</strong>
                             </div>
                         </div>
 
                         <div class="scroll-fields-container-import" #scrollContainer>
 
-                            <div class="scroll-labels-column scroll-labels div-block-inline">
+                            <div *ngIf="showFields" class="scroll-labels-column scroll-labels div-block-inline">
                                 <div class="card">
-                                    <div class="div-field-header">
+                                    <div class="div-field-header-label">
                                         <strong>Field name</strong>
                                     </div>
                                     <div class="card-block div-label-container-import">
+                                        <label *ngIf="hasHeader" class="scroll-labels-label-header">Text in Header</label>
                                         <label class="scroll-labels-label">Transformation</label>
                                         <label class="scroll-labels-label">Default value</label>
                                         <label class="scroll-labels-label">Sample data</label>
@@ -174,6 +175,7 @@
                                             <div class="card-header card-primary">
                                                 <div class="div-field-header">
                                                     <button cdkDrag mat-flat-button class="bg-cyan-500"
+                                                            type="button"
                                                             [matTooltip]="layoutFields[i].fieldDescription"
                                                             [cdkDragData]="{id:layoutFields[i].fieldId, index:i}">
                                                         {{ layoutFields[i].fieldName }}
@@ -187,9 +189,12 @@
                                                 </div>
                                             </div>
                                             <div class="card-block div-field-container-import" [formGroupName]="i">
+                                                <div *ngIf="hasHeader" class="scroll-field-sample-header">
+                                                    <label class="label-bold">{{ layoutFields[i].sample[1] }}</label>
+                                                </div>
                                                 <div class="scroll-field-items">
                                                     <mat-select formControlName="transformId"
-                                                            size="1" class="basis-11/12">
+                                                            size="1" class="basis-11/12  scroll-transform">
                                                         <mat-option value="">None</mat-option>
                                                         <mat-option *ngFor="let transform of transforms"
                                                                 value="{{ transform.id }}">{{ transform.name }}</mat-option>
