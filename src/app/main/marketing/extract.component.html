@@ -1,5 +1,5 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
-    <fuse-card class="card-major">
+    <fuse-card class="card-minor">
         <div class="p-4">
             <div class="h1 text-white bg-primary">{{t('extract-heading')}}</div>
         </div>
@@ -7,8 +7,8 @@
         <div class="major-item" fuseScrollbar>
 
             <div id="forms" class="simple fullwidth">
-
                 <div class="content p-3">
+
                     <div *ngIf="errors.length > 0">
                         <div class="content p-3 alert alert-danger" (click)="clearErrors()">
                             <div class="card-header">
@@ -22,12 +22,48 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
-                                mat-button
-                                type="button" (click)="onBack()">
-                            Back
-                        </button>
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="text-xl">
+                            Your marketing universe is the key to identifying your target audiences for future
+                            marketing activities and for gaining insights into the behaviours and preferences of different groups of customers.
+                        </span>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="text-lg">
+                            Each complete customer profile in the SCV Database is analysed and augmented with
+                            <b>Added Value</b> information, such as <b>Recency</b>,
+                            <b>Frequency</b> and <b>Value</b> related to that customer's <b>Behavioural</b> and
+                            <b>Transactional</b> activity.
+                            How many purchases have they made in the last 30, 60, 90 or more days? How often
+                            have they opened an email from a marketing campaign?
+                            What has the total value of the customer been, broken down by lifetime and by
+                            purchasing period.
+                            Further analysis makes use of the customer's <b>Demographic</b> data add information
+                            about the <b>Quality</b> of their record
+                            to allocate them to pre-built categories, such "age is 18-25, 26-30, etc" or "gender is male,
+                            female or unknown".
+                        </span>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="text-lg">
+                            A marketing universe is ever changing. As new data is added to the SCV Database, and as time
+                            passes, the <b>Added Value</b> information  in each customer profile also changes.
+                        </span>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="text-lg">
+                            This is why it's vital to rebuild the entire marketing universe regularly.
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <div class="flex items-center justify-end">
+                            <button class="fuse-mat-button-large w-20 mt-2"
+                                    mat-button
+                                    type="button" (click)="onBack()">
+                                Back
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
