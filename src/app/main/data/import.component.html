@@ -51,14 +51,14 @@
                                 </div>
                                 <div class="flex gt-xs:flex-row">
                                     <div align="left" class="basis-6/12" *ngIf="!openedLayout">
-                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-400"
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
                                                 mat-flat-button type="button"
                                                 (click)="doOpenLayout()">Use saved layout
                                         </button>
                                     </div>
                                     <div *ngIf="hasLayout">
                                         <div align="right" class="basis-6/12" *ngIf="!getLayoutName">
-                                            <button class="fuse-mat-button-large w-70 mt-2 bg-primary-400"
+                                            <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
                                                     mat-flat-button type="button"
                                                     (click)="doGetLayoutName()">Save layout
                                             </button>
@@ -87,13 +87,13 @@
                                         </div>
                                     </div>
                                     <div class="basis-4/12" fxLayoutAlign="right" *ngIf="getLayoutName">
-                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-400"
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
                                                 mat-flat-button type="button"
                                                 [disabled]="!importForm.controls.name.value"
                                                 (click)="doSaveLayout(false)">
                                             Save layout
                                         </button>
-                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-400"
+                                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
                                                 mat-flat-button type="button"
                                                 [disabled]="!importForm.controls.name.value"
                                                 (click)="doSaveLayout(true)" *ngIf="importForm.controls.id.value">

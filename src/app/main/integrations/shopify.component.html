@@ -31,13 +31,13 @@
                     <div class="content p-3">
                         <div class="flex items-center justify-end">
                             <div *ngIf="canClientAdmin" class="pull-right" align="right">
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
                                         mat-flat-button type="button"
                                         [disabled]="busy"
                                         (click)="syncCustomers()">
                                     {{ syncCustomersTitle }}
                                 </button>
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-400"
+                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
                                         mat-flat-button type="button"
                                         [disabled]="busy"
                                         (click)="syncOrders()">

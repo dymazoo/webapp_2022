@@ -156,19 +156,20 @@
                                          (click)="selectLane($event, lane.id)">
                                         <div class="select-lane-header-text">
                                             <mat-icon
-                                                matTooltip="Add new selection to group"
+                                                matTooltip="Add new selection to filter group"
                                                 class="float-left cursor-pointer"
                                                 (click)="addCard($event, lane.id)">
                                                 playlist_add
                                             </mat-icon>
-                                            <span class="font-bold">Group {{lane.sequence}}</span> [{{ lane.count }}]
+                                            <ng-container *ngIf="lane.sequence == 1"><span class="font-bold">Filter SCV to match ...</span> [{{ lane.count }}]</ng-container>
+                                            <ng-container *ngIf="lane.sequence !== 1"><span class="font-bold">Now Filter to match ...</span> [{{ lane.count }}]</ng-container>
                                             <mat-icon
-                                                matTooltip="Insert group after" class="float-right cursor-pointer"
+                                                matTooltip="Insert filter group after" class="float-right cursor-pointer"
                                                 (click)="addLane($event, lane.id)">
                                                 add_circle_outline
                                             </mat-icon>
                                             <mat-icon
-                                                matTooltip="Remove group" class="float-right cursor-pointer"
+                                                matTooltip="Remove filter group" class="float-right cursor-pointer"
                                                 *ngIf="lane.selections.length === 0"
                                                 (click)="removeLane($event, lane.id)">
                                                 remove_circle_outline
@@ -422,12 +423,12 @@
                             </div>
                             <div *ngIf="getSelectionName" class="basis-3/12">
                                 <div class="flex gt-xs:flex-row">
-                                    <button class="fuse-mat-button-large w-40 mt-2 bg-primary-500"
+                                    <button class="fuse-mat-button-large w-40 mt-2 bg-primary-600"
                                             mat-flat-button type="button"
                                             [disabled]="!selectionForm.controls.name.value"
                                             (click)="doSaveSelection(false)">Save
                                     </button>
-                                    <button class="fuse-mat-button-large w-40 mt-2 bg-primary-400"
+                                    <button class="fuse-mat-button-large w-40 mt-2 bg-primary-500"
                                             mat-flat-button type="button"
                                             [disabled]="!selectionForm.controls.name.value"
                                             (click)="doSaveSelection(true)"
@@ -453,12 +454,12 @@
                             </div>
 
                             <div *ngIf="!getSelectionName" class="basis-6/12 flex items-center justify-end">
-                                <button class="fuse-mat-button-large w-40 mt-2 bg-primary-500"
+                                <button class="fuse-mat-button-large w-40 mt-2 bg-primary-600"
                                         mat-flat-button type="button"
                                         (click)="doGetSelectionName()">
                                     Save Segment
                                 </button>
-                                <button class="fuse-mat-button-large w-40 mt-2 bg-primary-400"
+                                <button class="fuse-mat-button-large w-40 mt-2 bg-primary-500"
                                         mat-flat-button type="button"
                                         *ngIf="!openedSelection"
                                         (click)="doOpenSelection()">
@@ -501,7 +502,7 @@
 </div>
 <mat-menu #cardContextMenu="matMenu">
     <ng-template matMenuContent let-card="card">
-        <button mat-menu-item (click)="cardAddToLane(null, card)">Add to Current Group</button>
+        <button mat-menu-item (click)="cardAddToLane(null, card)">Add to current filter group</button>
         <button mat-menu-item (click)="onContextMenuRemoveSavedCard(card)">Delete Saved Selection</button>
     </ng-template>
 </mat-menu>
