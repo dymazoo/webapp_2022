@@ -161,8 +161,8 @@
                                                 (click)="addCard($event, lane.id)">
                                                 playlist_add
                                             </mat-icon>
-                                            <ng-container *ngIf="lane.sequence == 1"><span class="font-bold">Filter SCV to match ...</span> [{{ lane.count }}]</ng-container>
-                                            <ng-container *ngIf="lane.sequence !== 1"><span class="font-bold">Now Filter to match ...</span> [{{ lane.count }}]</ng-container>
+                                            <ng-container *ngIf="lane.sequence == 1"><span class="font-bold">Filter everyone to match ...</span> [{{ lane.count }}]</ng-container>
+                                            <ng-container *ngIf="lane.sequence !== 1"><span class="font-bold">Then filter to match ...</span> [{{ lane.count }}]</ng-container>
                                             <mat-icon
                                                 matTooltip="Insert filter group after" class="float-right cursor-pointer"
                                                 (click)="addLane($event, lane.id)">
