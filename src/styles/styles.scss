@@ -273,6 +273,7 @@ ul {
     text-align: left;
 }
 
+
 // -----------------------------------------------------------------------------------------------------
 // @Material snackbar
 // -----------------------------------------------------------------------------------------------------
@@ -1136,17 +1137,22 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
 }
 
 .select-tree-group {
-    min-height: 28px !important;
-    max-height: 35px !important;
+    min-height: 26px !important;
+    max-height: 32px !important;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
+    text-align: left;
+
+    .mat-icon-button {
+        width: 24px !important;
+    }
 }
 
 .select-tree-node {
     min-height: 24px !important;
-    max-height: 35px !important;
+    max-height: 32px !important;
     text-align: left !important;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .select-tree-value {
