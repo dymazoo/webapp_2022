@@ -204,7 +204,7 @@ const theming = plugin.withOptions((options) => ({
                                 'text-default'  : colors.slate[800],
                                 'text-secondary': colors.slate[500],
                                 'text-hint'     : colors.slate[400],
-                                'text-disabled' : colors.slate[400],
+                                'text-disabled' : colors.slate[300],
                                 'border'        : colors.slate[200],
                                 'divider'       : colors.slate[200],
                                 'icon'          : colors.slate[500],
