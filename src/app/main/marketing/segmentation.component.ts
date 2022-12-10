@@ -78,6 +78,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     public theme;
     public layout;
     public esp;
+    public formalesp = 'Email Provider';
 
     nodeTreeControl = new NestedTreeControl<SelectionNode>(node => node.children);
     nodeDataSource = new MatTreeNestedDataSource<SelectionNode>();
@@ -113,6 +114,12 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
         this.espSubscription = this.dataSources.getEsp().subscribe(esp => {
             this.esp = esp;
+            if (esp === 'sendinblue') {
+                this.formalesp = 'Sendinblue';
+            }
+            if (esp === 'mailchimp') {
+                this.formalesp = 'Mailchimp';
+            }
         });
         this.dataSources.getCurrentDescriptions();
     }
@@ -1261,7 +1268,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
 
     public needsList(): boolean {
         if (this.esp !== 'sendinblue') {
-            return true
+            return true;
         } else {
             return false;
         }

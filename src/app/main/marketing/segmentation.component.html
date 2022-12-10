@@ -264,16 +264,16 @@
                                                         <mat-select (selectionChange)="segmentActionChange($event)"
                                                                     formControlName="action" required>
                                                             <mat-option *ngIf="needsList()" value="segment">
-                                                                Segment existing Email Provider list
+                                                                Segment existing {{ formalesp }} list
                                                             </mat-option>
                                                             <mat-option *ngIf="!needsList()" value="segment">
-                                                                Segment contacts in Email Provider
+                                                                Segment contacts in {{ formalesp }}
                                                             </mat-option>
                                                             <mat-option value="update">
-                                                                Update existing Email Provider list
+                                                                Update existing {{ formalesp }} list
                                                             </mat-option>
                                                             <mat-option value="create">
-                                                                Create new Email Provider list
+                                                                Create new {{ formalesp }} list
                                                             </mat-option>
                                                             <mat-option value="export">
                                                                 Export to encrypted file

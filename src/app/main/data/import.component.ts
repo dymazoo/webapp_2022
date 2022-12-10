@@ -98,6 +98,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             'name': [''],
             'description': [''],
             'header': [''],
+            'password': [''],
             'layoutFields': this._formBuilder.array([]),
         });
         this.currentLayout = new Layout();
@@ -484,9 +485,11 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
                     const header = this.importForm.controls['header'];
+                    const password = this.importForm.controls['password'];
                     const formData = new FormData();
                     formData.append('inputFile', this.file, this.file.name);
                     formData.append('header', JSON.stringify(header.value));
+                    formData.append('password', password.value);
                     formData.append('layoutFields', JSON.stringify(this.layoutFields));
                     formData.append('sample', this.fileSample);
 
