@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="flex flex-col gt-xs:flex-row mt-2">
                                             <mat-form-field *ngIf="showFields" class="flex-auto gt-xs:pr-3 ml-2 mr-2">
-                                                <mat-label>Password for returning failed rows</mat-label>
+                                                <mat-label>Password for returning any failed rows</mat-label>
                                                 <input matInput formControlName="password" type="password" required autocomplete="do-not-autofill">
                                                 <mat-error>{{ getErrorMessage(importForm.controls.password, 'Password')}}</mat-error>
                                             </mat-form-field>
