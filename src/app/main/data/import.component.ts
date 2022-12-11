@@ -392,6 +392,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.setLayoutFields();
         this.importForm.reset();
         this.importForm.markAsPristine();
+        this.importForm.markAsUntouched();
     }
 
     onBack(): void {
