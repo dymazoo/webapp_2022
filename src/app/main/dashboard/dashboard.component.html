@@ -15,12 +15,15 @@
                         </div>
                     </div>
 
-                    <div *ngIf="emptyDashboard || dataReady" class="flex flex-col gt-xs:flex-row">
-                        <div class='div-block'>
-                            <mat-icon class="cursor-pointer" (click)="forceRefreshDashboard()">
-                                refresh
-                            </mat-icon>
+                    <div *ngIf="!emptyDashboard && dataReady" class="flex items-center justify-center">
+                        <div>
+                            <h3 >Transactional & Behavioural charts shows activity for each dashboard interval</h3>
+                            <h3 >Profile/Demographic charts shows the total as at the dashboard date</h3>
                         </div>
+                        <mat-icon class="ml-5 cursor-pointer" (click)="forceRefreshDashboard()">
+                            refresh
+                        </mat-icon>
+
                     </div>
 
                     <div *ngIf="emptyDashboard" class="p-3">
@@ -31,6 +34,11 @@
                             For help on getting started, please visit <a
                             href="https://dymazoo.freshdesk.com/support/home" target="_blank">support</a> or
                             <a href="https://www.youtube.com/@dymazoo" target="_blank">our videos tutorials</a></h2>
+                        <div class='div-block'>
+                            <mat-icon class="cursor-pointer" (click)="forceRefreshDashboard()">
+                                refresh
+                            </mat-icon>
+                        </div>
                         <div class="proxy_dashboard"></div>
                     </div>
                 </div>
@@ -43,7 +51,7 @@
                     <div
                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Total Profiles</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Total Profiles</div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -78,7 +86,7 @@
                     <div
                          class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Sales by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Sales </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -113,7 +121,7 @@
                     <div
                          class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Event Transactions by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Event Activity </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -147,8 +155,8 @@
                     <!-- Sent -->
                     <div
                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                        <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Sent by dashboard date</div>
+                        <div class="flex items-start justify-between m-2 mb-0">
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Emails Sent </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -183,7 +191,7 @@
                     <div
                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Opened by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Emails Opened </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -218,7 +226,7 @@
                     <div
                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Clicked by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Emails Clicked </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -253,7 +261,7 @@
                     <div
                          class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Bounced by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Bounced Emails </div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -288,7 +296,7 @@
                     <div
                         class="sm:col-span-1 lg:col-span-1 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                         <div class="flex items-start justify-between m-6 mb-0">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Unsubscribed by dashboard date</div>
+                            <div class="text-lg font-medium tracking-tight leading-6 dashboard-title">Unsubscribes</div>
                         </div>
                         <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
                             <div
@@ -324,7 +332,7 @@
                 <div class="flex flex-col gt-xs:flex-row">
                     <mat-form-field *ngIf="dateItem && !emptyDashboard && dataReady"
                                     class="fuse-mat-dense fuse-mat-no-subscript w-60">
-                        <mat-label>Dashboard as at</mat-label>
+                        <mat-label>Show dashboard as at</mat-label>
                         <mat-select [(ngModel)]="dateItem.value" (selectionChange)="onDateSelect($event.value)">
                             <mat-option *ngFor="let dashboardDate of dashboardDates"
                                         [value]="dashboardDate.value">
@@ -345,7 +353,7 @@
                                  class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
                                     <div
-                                        class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
+                                        class="text-lg font-medium tracking-tight leading-6 dashboard-title">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-44">
                                     <apx-chart
@@ -383,7 +391,7 @@
                                  class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
                                     <div
-                                        class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
+                                        class="text-lg font-medium tracking-tight leading-6 dashboard-title">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-60">
                                     <apx-chart
@@ -407,7 +415,7 @@
                                  class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
                                 <div class="flex items-start justify-between">
                                     <div
-                                        class="text-lg font-medium tracking-tight leading-6 truncate">{{ allChartData[showCharts[chartIndex]].title }}</div>
+                                        class="text-lg font-medium tracking-tight leading-6 dashboard-title">{{ allChartData[showCharts[chartIndex]].title }}</div>
                                 </div>
                                 <div class="flex flex-col flex-auto mt-6 h-60">
                                     <apx-chart
