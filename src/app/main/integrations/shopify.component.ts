@@ -147,6 +147,7 @@ export class ShopifyComponent implements OnInit, OnDestroy {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
+                this.syncCustomersTitle = 'Full Customer Sync';
             }, (errors) => {
                 this.errors = errors;
             });
@@ -161,6 +162,7 @@ export class ShopifyComponent implements OnInit, OnDestroy {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
+                this.syncOrdersTitle = 'Full Order Sync';
             }, (errors) => {
                 this.errors = errors;
             });

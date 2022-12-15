@@ -29,20 +29,31 @@
                 <div id="customerforms" class="simple fullwidth">
 
                     <div class="content p-3">
-                        <div class="flex items-center justify-end">
-                            <div *ngIf="canClientAdmin" class="pull-right" align="right">
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
-                                        mat-flat-button type="button"
-                                        [disabled]="busy"
-                                        (click)="syncCustomers()">
-                                    {{ syncCustomersTitle }}
-                                </button>
-                                <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
-                                        mat-flat-button type="button"
-                                        [disabled]="busy"
-                                        (click)="syncOrders()">
-                                    {{ syncOrdersTitle }}
-                                </button>
+                        <div *ngIf="busy" class="flex flex-col gt-xs:flex-row p-2">
+                            <span class="text-xl">
+                            Your Shopify request is being processed.
+                            </span>
+                            <span class="text-lg">
+                            Shopify only supports one Bulk operation at any one time. Please wait until the  current operation
+                                is complete before trying to start another.
+                            </span>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row p-2">
+                            <div class="flex items-center justify-end">
+                                <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                    <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                            mat-flat-button type="button"
+                                            [disabled]="busy"
+                                            (click)="syncCustomers()">
+                                        {{ syncCustomersTitle }}
+                                    </button>
+                                    <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                            mat-flat-button type="button"
+                                            [disabled]="busy"
+                                            (click)="syncOrders()">
+                                        {{ syncOrdersTitle }}
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
