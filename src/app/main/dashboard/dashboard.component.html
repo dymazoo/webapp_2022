@@ -17,8 +17,8 @@
 
                     <div *ngIf="!emptyDashboard && dataReady" class="flex items-center justify-center">
                         <div>
-                            <h3 >Transactional & Behavioural charts shows activity for each dashboard interval</h3>
-                            <h3 >Profile/Demographic charts shows the total as at the dashboard date</h3>
+                            <h3 >Transactional & Behavioural charts show activity for each dashboard interval</h3>
+                            <h3 >Profile/Demographic charts show the total as at the dashboard date</h3>
                         </div>
                         <mat-icon class="ml-5 cursor-pointer" (click)="forceRefreshDashboard()">
                             refresh
@@ -27,13 +27,14 @@
                     </div>
 
                     <div *ngIf="emptyDashboard" class="p-3">
-                        <h2 class="text-2xl font-semibold">Your dashboard doesn't have any data yet. Check out a sample below of what it could look like</h2>
-                        <h2>Load customer data from integrations (such as Mailchimp, Sendinblue, Shopify or EventBrite)
-                            or import data from files.</h2>
-                        <h2>New dashboards are built weekly or monthly, depending on your plan.
+                        <h2 class="text-2xl font-semibold">Your dashboard doesn't have any data yet but you can see a sample below!</h2>
+                        <h2>Load data from integrated platforms (e.g. Mailchimp, Sendinblue, Shopify & EventBrite)
+                            or import data from files</h2>
+                        <h2>New dashboards are built periodically, depending on your plan.
                             For help on getting started, please visit <a
-                            href="https://dymazoo.freshdesk.com/support/home" target="_blank">support</a> or
-                            <a href="https://www.youtube.com/@dymazoo" target="_blank">our videos tutorials</a></h2>
+                            href="https://dymazoo.freshdesk.com/support/home" target="_blank">support</a> or our
+                            <a href="https://www.youtube.com/@dymazoo" target="_blank">video guides</a></h2>
+                        <h2 class="text-2xl font-semibold">Once you have loaded some data, you can refresh, to see your initial dashboard by clicking the refesh icon, below</h2>
                         <div class='div-block'>
                             <mat-icon class="cursor-pointer" (click)="forceRefreshDashboard()">
                                 refresh
