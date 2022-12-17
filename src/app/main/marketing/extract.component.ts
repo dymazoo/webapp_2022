@@ -49,7 +49,9 @@ export class ExtractComponent implements OnInit, OnDestroy, AfterViewChecked {
     public errors = [];
 
     private _unsubscribeAll: Subject<any>;
-    private confirmDisplayed = false;
+    public canClientAdmin: boolean = false;
+    public plan: string = '';
+    public canExtract: boolean = false;
 
     constructor(
         private httpService: HttpService,
@@ -61,7 +63,15 @@ export class ExtractComponent implements OnInit, OnDestroy, AfterViewChecked {
     ) {
         this._translocoService.setActiveLang('en');
         this._unsubscribeAll = new Subject();
-
+        // Check permissions
+        this.canClientAdmin = this.httpService.hasPermission('client_admin');
+        if (localStorage.getItem('dymazooUser')) {
+            const dymazooUser = JSON.parse(localStorage.getItem('dymazooUser'));
+            this.plan = dymazooUser.plan;
+        }
+        if (this.canClientAdmin && this.plan === 'consultant'){
+            this.canExtract = true;
+        }
     }
 
     ngOnInit(): void {
@@ -73,8 +83,24 @@ export class ExtractComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     ngAfterViewChecked(): void {
-        if (!this.confirmDisplayed) {
-            this.confirmDisplayed = true;
+    }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
+
+
+    onBack(): void {
+        this.location.back();
+    }
+
+    canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+        return true;
+    }
+
+    doExtract(): void
+    {
+        if (this.canExtract) {
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
                 minWidth: '75%',
                 width: '300px',
@@ -99,19 +125,10 @@ export class ExtractComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
     }
 
-    clearErrors(): void {
-        this.errors = [];
+    public accountManagement(event): void {
+        event.preventDefault();
+        this.router.navigate(['/account/management']);
     }
-
-
-    onBack(): void {
-        this.location.back();
-    }
-
-    canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        return true;
-    }
-
 
     getErrorMessage(control, name): string {
         let returnVal = '';

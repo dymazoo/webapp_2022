@@ -37,7 +37,7 @@ export class ForgotComponent {
     }
 
     reset(): void {
-        this.email = this.forgotForm.controls['email'].value;
+        this.email = this.forgotForm.controls['email'].value.trim();
         this.errors = [];
 
         this.httpService.forgotPassword({email: this.email})

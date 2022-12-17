@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     login(): void {
-        this.user.email = this.loginForm.controls['email'].value;
-        this.user.password = this.loginForm.controls['password'].value;
+        this.user.email = this.loginForm.controls['email'].value.trim();
+        this.user.password = this.loginForm.controls['password'].value.trim();
         this.errors = [];
 
         this.httpService.login(this.user)
@@ -79,7 +79,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             }, (errors) => {
                 this.errors = errors;
             });
-
     }
 
 

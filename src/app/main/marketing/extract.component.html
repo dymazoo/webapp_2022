@@ -23,41 +23,56 @@
                     </div>
 
                     <div class="flex flex-col gt-xs:flex-row p-2">
-                        <span class="text-xl">
-                            Your marketing universe is the key to identifying your target audiences for future
-                            marketing activities and for gaining insights into the behaviours and preferences of different groups of customers.
+                        <span class="h2 text-primary">
+                            Your Marketing Universe is the key to identifying your target audiences for future
+                            marketing activities and for gaining insights into the behaviours and preferences of different groups of customers
                         </span>
                     </div>
                     <div class="flex flex-col gt-xs:flex-row p-2">
                         <span class="text-lg">
-                            Each complete customer profile in the SCV Database is analysed and augmented with
-                            <b>Added Value</b> information, such as <b>Recency</b>,
-                            <b>Frequency</b> and <b>Value</b> related to that customer's <b>Behavioural</b> and
-                            <b>Transactional</b> activity.
-                            How many purchases have they made in the last 30, 60, 90 or more days? How often
-                            have they opened an email from a marketing campaign?
-                            What has the total value of the customer been, broken down by lifetime and by
-                            purchasing period.
-                            Further analysis makes use of the customer's <b>Demographic</b> data add information
-                            about the <b>Quality</b> of their record
-                            to allocate them to pre-built categories, such "age is 18-25, 26-30, etc" or "gender is male,
-                            female or unknown".
+                            When a new Marketing Universe is extracted, every <b>complete customer profile</b> in the SCV Database is fully analysed.
+                        </span>
+                        <span class="text-lg">
+                            The new Marketing Universe then has up to date information for every customer's <b>Demographic</b> information,
+                            such as the appropriate age band they fall into and the overall <b>quality</b> and <b>completeness</b> of the customer profile.
+                        </span>
+                        <span class="text-lg">
+                            Each profile is then enhanced, adding critical <b>Business Intelligence</b> that provides the <b>recency</b>,
+                            <b>frequency</b> and <b>value</b> information related to that customer's <b>Behavioural</b> and
+                            <b>Transactional</b> activity
+                        </span>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="h2 text-primary">
+                            A Marketing Universe is ever changing!
                         </span>
                     </div>
                     <div class="flex flex-col gt-xs:flex-row p-2">
                         <span class="text-lg">
-                            A marketing universe is ever changing. As new data is added to the SCV Database, and as time
-                            passes, the <b>Added Value</b> information  in each customer profile also changes.
+                            As time passes and as new <b>data</b> and <b>transactions</b> are added to the SCV Database,
+                            so the <b>Demograhpic</b> and <b>Business Intelligence</b> information for each customer profile becomes out of date
                         </span>
                     </div>
                     <div class="flex flex-col gt-xs:flex-row p-2">
-                        <span class="text-lg">
-                            This is why it's vital to rebuild the entire marketing universe regularly.
+                        <span class="h2 text-primary">
+                            This is why it's vital to rebuild your Marketing Universe regularly
                         </span>
                     </div>
-
+                    <div *ngIf="plan !== 'consultant'" class="flex flex-col gt-xs:flex-row p-2">
+                        <span class="text-xl font-bold">
+                            <a class="cursor-pointer" (click)="accountManagement($event)">Upgrade</a> to the Consultant plan now, for on-demand Universe Extracts!
+                        </span>
+                    </div>
                     <div class="flex flex-col gt-xs:flex-row p-2">
                         <div class="flex items-center justify-end">
+                            <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
+                                    mat-flat-button type="button"
+                                    [disabled]="!canExtract"
+                                    (click)="doExtract()"
+                            >
+                                New Marketing Universe
+                            </button>
+
                             <button class="fuse-mat-button-large w-20 mt-2"
                                     mat-button
                                     type="button" (click)="onBack()">

@@ -54,9 +54,9 @@ export class ResetComponent implements OnInit, OnDestroy {
     }
 
     reset(): void {
-        this.email = this.resetForm.controls['email'].value;
-        this.password = this.resetForm.controls['password'].value;
-        this.confirmPassword = this.resetForm.controls['confirmPassword'].value;
+        this.email = this.resetForm.controls['email'].value.trim();
+        this.password = this.resetForm.controls['password'].value.trim();
+        this.confirmPassword = this.resetForm.controls['confirmPassword'].value.trim();
         this.errors = [];
 
         this.httpService.resetPassword(

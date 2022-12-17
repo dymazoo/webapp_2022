@@ -28,7 +28,7 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
     constructor(private router: Router,
                 private httpService: HttpService) {
         this.loginSubscription = this.httpService.getLoggedInState().subscribe(status => {
-            if(status) {
+            if(status.state) {
                 this.httpService.getEntity('permissions', '').subscribe(result => {
                     this.permissions = result;
                 }, (error) => {
@@ -127,13 +127,6 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
                     break;
                 case '/data/compliance':
                     result = this.httpService.hasRoutePermission('compliance', url);
-                    break;
-                case '/marketing/extract':
-                    if (plan === 'consultant') {
-                        result = this.httpService.hasRoutePermission('client_admin', url);
-                    } else {
-                        result = false;
-                    }
                     break;
             }
             if (!result) {

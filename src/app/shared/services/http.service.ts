@@ -51,6 +51,7 @@ export class HttpService {
     private loggedinSubject = new Subject<any>();
     private userSubject = new Subject<any>();
     private dashboardSubject = new Subject<any>();
+    public forcedLogout = false;
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -267,9 +268,10 @@ export class HttpService {
     /**
      * set the logged out status
      */
-    public setLoggedInState(state: boolean): void {
+    public setLoggedInState(state: boolean, forced: boolean = false): void {
         this.loggedinSubject.next({state: state});
         if (state) {
+            this.forcedLogout = false;
             this.loggedIn = true;
             this.dashboardLoggedInConfirmed = true;
             this.userSubject.next(this.userData);
@@ -294,6 +296,10 @@ export class HttpService {
             localStorage.removeItem('dymazooImpersonate');
             const elem = document.querySelector('body');
             elem.className = 'app header-fixed navbar-fixed sidebar-hidden';
+            if (forced && !this.forcedLogout) {
+                this.forcedLogout = true;
+                alert('Your session has expired or your credentials have been used in another session.\nFor your safety, all sessions have been invalidated');
+            }
             this.router.navigate(['']);
             setTimeout(() => {
                 this._fuseSplashScreenService.hide();
@@ -783,7 +789,7 @@ export class HttpService {
             }),
             catchError((error: any) => {
                 if (error.status === 401) {
-                    this.setLoggedInState(false);
+                    this.setLoggedInState(false, true);
                 }
                 if (error.name === 'TimeoutError') {
                     return observableThrowError(['Server timeout']);
@@ -809,7 +815,7 @@ export class HttpService {
             }),
             catchError((error: any) => {
                 if (error.status === 401) {
-                    this.setLoggedInState(false);
+                    this.setLoggedInState(false, true);
                 }
                 if (error.status === 403) {
                     return observableThrowError(['Not Authorised']);
@@ -842,7 +848,7 @@ export class HttpService {
             }),
             catchError((error: any) => {
                 if (error.status === 401) {
-                    this.setLoggedInState(false);
+                    this.setLoggedInState(false, true);
                 }
                 if (error.status === 403) {
                     return observableThrowError(['Not Authorised']);
@@ -875,7 +881,7 @@ export class HttpService {
             }),
             catchError((error: any) => {
                 if (error.status === 401) {
-                    this.setLoggedInState(false);
+                    this.setLoggedInState(false, true);
                 }
                 if (error.status === 403) {
                     return observableThrowError(['Not Authorised']);
