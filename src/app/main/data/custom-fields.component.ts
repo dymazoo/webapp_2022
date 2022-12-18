@@ -295,8 +295,8 @@ export class CustomFieldDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.customFieldForm = this._formBuilder.group({
-            'name': [{value: '', disabled: false}, Validators.required],
-            'description': [{value: '', disabled: false}, Validators.required],
+            'name': [{value: ''}, Validators.required],
+            'description': [{value: ''}, Validators.required],
             'type': [{value: '', disabled: false}, Validators.required],
             'action': [{value: '', disabled: false}, Validators.required],
             'dataType': [{value: '', disabled: false}, Validators.required],
@@ -316,8 +316,6 @@ export class CustomFieldDialogComponent implements OnInit {
         this.customFieldForm.controls['dataType'].setValue(this.currentCustomField.dataType);
         this.customFieldForm.controls['fieldId'].setValue(this.currentCustomField.fieldId);
         if (this.currentCustomField.sourceId.length > 0) {
-            this.customFieldForm.controls['name'].disable();
-            this.customFieldForm.controls['description'].disable();
             this.customFieldForm.controls['type'].disable();
             this.customFieldForm.controls['action'].disable();
             this.customFieldForm.controls['dataType'].disable();

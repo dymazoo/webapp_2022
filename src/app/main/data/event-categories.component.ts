@@ -276,19 +276,15 @@ export class EventCategoryDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.eventCategoryForm = this._formBuilder.group({
-            'description': [{value: '', disabled: true}, Validators.required],
+            'description': ['', Validators.required],
             'default': [{value: 0}],
         }, {});
         this.populateForm();
-        if (this.newEventCategory) {
-            this.eventCategoryForm.controls['description'].enable();
-        }
     }
 
     populateForm(): void {
         this.eventCategoryForm.controls['description'].setValue(this.currentEventCategory.description);
         this.eventCategoryForm.controls['default'].setValue(this.currentEventCategory.default);
-        this.eventCategoryForm.controls['description'].disable();
     }
 
     onSave(): void {

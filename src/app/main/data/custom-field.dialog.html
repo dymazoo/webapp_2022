@@ -14,7 +14,7 @@
                             <mat-label>Name</mat-label>
                             <input matInput formControlName="name"
                                    autocomplete="do-not-autofill"
-                                   required>
+                                   required [readonly]="currentCustomField.sourceId.length > 0">
                             <mat-error>{{ getErrorMessage(customFieldForm.controls.name, 'Name')}}</mat-error>
                         </mat-form-field>
                     </div>
@@ -25,7 +25,7 @@
                             <mat-label>Description</mat-label>
                             <input matInput formControlName="description"
                                    autocomplete="do-not-autofill"
-                                   required>
+                                   required [readonly]="currentCustomField.sourceId.length > 0">
                             <mat-error>{{ getErrorMessage(customFieldForm.controls.description, 'Description')}}</mat-error>
                         </mat-form-field>
                     </div>
@@ -79,11 +79,6 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
-                                mat-stroked-button
-                                type="button" (click)="onCancel()">
-                            Close
-                        </button>
                         <button *ngIf="!newCustomField" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
                                 mat-stroked-button
                                 type="button" (click)="onRemove()">
@@ -93,6 +88,11 @@
                                 mat-flat-button [disabled]="!customFieldForm.valid"
                                 type="submit">
                             Save custom fields
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Close
                         </button>
                     </div>
                 </form>
