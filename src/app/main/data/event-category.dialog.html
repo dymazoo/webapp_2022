@@ -26,11 +26,6 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
-                                mat-stroked-button
-                                type="button" (click)="onCancel()">
-                            Reset
-                        </button>
                         <button *ngIf="!newEventCategory" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
                                 mat-stroked-button
                                 type="button" (click)="onRemove()">
@@ -40,6 +35,11 @@
                                 mat-flat-button [disabled]="!eventCategoryForm.valid"
                                 type="submit">
                             Save event category
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Close
                         </button>
                     </div>
                 </form>

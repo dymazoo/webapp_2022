@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.profileForm = this._formBuilder.group({
             name: ['', [Validators.required]],
-            email: [{value: '', disabled: true}, [Validators.required, Validators.email]],
+            email: [{value: ''}, [Validators.required, Validators.email]],
             telephone: ['',  [Validators.compose([GlobalValidator.telephoneFormat])]],
         }, {});
     }
@@ -222,9 +222,9 @@ export class ProfilePasswordDialogComponent implements OnInit {
     }
 
     savePassword(): void {
-        this.data.current_password = this.passwordForm.controls['oldPassword'].value;
-        this.data.password = this.passwordForm.controls['password'].value;
-        this.data.password_confirmation = this.passwordForm.controls['confirmPassword'].value;
+        this.data.current_password = this.passwordForm.controls['oldPassword'].value.trim();
+        this.data.password = this.passwordForm.controls['password'].value.trim();
+        this.data.password_confirmation = this.passwordForm.controls['confirmPassword'].value.trim();
         this.dialogRef.close(this.data);
     }
 

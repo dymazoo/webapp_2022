@@ -13,7 +13,7 @@
                             class="flex-auto gt-xs:pr-3">
                             <mat-label>Name</mat-label>
                             <input matInput #userName formControlName="name" autocomplete="do-not-autofill"
-                                   required>
+                                   required [readonly]="!newUser">
                             <mat-error>{{ getErrorMessage(usermanagementForm.controls.name, 'Name')}}</mat-error>
                         </mat-form-field>
                     </div>
@@ -23,7 +23,7 @@
                             class="flex-auto gt-xs:pr-3">
                             <mat-label>Email</mat-label>
                             <input matInput formControlName="email" autocomplete="do-not-autofill"
-                                   required>
+                                   required [readonly]="!newUser">
                             <mat-error>{{ getErrorMessage(usermanagementForm.controls.email, 'Email')}}</mat-error>
                         </mat-form-field>
                     </div>
@@ -43,11 +43,6 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
-                                mat-stroked-button
-                                type="button" (click)="onCancel()">
-                            Reset
-                        </button>
                         <button *ngIf="currentUser.clientAdmin !==1 && !newUser" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
                                 mat-stroked-button
                                 type="button" (click)="onRemove()">
@@ -57,6 +52,11 @@
                                 mat-flat-button [disabled]="!usermanagementForm.valid"
                                 type="submit">
                             Save
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Close
                         </button>
                     </div>
 

@@ -14,7 +14,7 @@
                             <mat-label>Description</mat-label>
                             <input matInput #salesCategoryDescription formControlName="description"
                                    autocomplete="do-not-autofill"
-                                   required>
+                                   required [readonly]="!newSalesCategory">
                             <mat-error>{{ getErrorMessage(salescategoryForm.controls.description, 'Description')}}</mat-error>
                         </mat-form-field>
                     </div>
@@ -55,9 +55,9 @@
 
                                                 <mat-form-field
                                                     class="flex-auto gt-xs:pr-3">
-                                                    <input matInput formControlName="description"
-                                                           autocomplete="do-not-autofill" required>
-                                                    <mat-error>{{ getErrorMessage(subcategory.get('description'), 'Description')}}</mat-error>
+                                                    <input matInput formControlName="subdescription"
+                                                           autocomplete="do-not-autofill" required [readonly]="subcategory.get('id').value!==''">
+                                                    <mat-error>{{ getErrorMessage(subcategory.get('subdescription'), 'Description')}}</mat-error>
                                                 </mat-form-field>
                                             </div>
                                         </td>
@@ -83,25 +83,25 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button class="fuse-mat-button-large w-20 mt-2"
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
                                 mat-stroked-button
-                                type="button" (click)="onCancel()">
-                            Close
+                                type="button" (click)="addSubCategory()">
+                            Add sub category
                         </button>
                         <button *ngIf="!newSalesCategory" class="fuse-mat-button-large w-70 mt-2 bg-warn-300"
                                 mat-stroked-button
                                 type="button" (click)="onRemove()">
                             Remove sales category
                         </button>
-                        <button class="fuse-mat-button-large w-70 mt-2 bg-primary-500"
-                                mat-stroked-button
-                                type="button" (click)="addSubCategory()">
-                            Add sub category
-                        </button>
                         <button class="fuse-mat-button-large w-70 mt-2 bg-primary"
                                 mat-flat-button [disabled]="!salescategoryForm.valid"
                                 type="submit">
                             Save sales category
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2"
+                                mat-stroked-button
+                                type="button" (click)="onCancel()">
+                            Close
                         </button>
                     </div>
                 </form>

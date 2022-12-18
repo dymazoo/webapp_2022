@@ -6,14 +6,23 @@
             <div class="content p-3">
                 <div *ngIf="errors.length > 0">
                     <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                        <div class="card-header">
-                            <strong>Errors</strong>
+                        <div class="flex">
+                            <div class="items-center justify-center basis-11/12">
+                                <strong>Errors</strong>
+                            </div>
+                            <div class="justify-end flex basis-1/12">
+                                <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                            </div>
                         </div>
-                        <ul>
-                            <li *ngFor="let message of errors">
-                                {{ message }}
-                            </li>
-                        </ul>
+                        <div class="flex">
+                            <div class="items-center justify-center basis-11/12">
+                                <ul>
+                                    <li *ngFor="let message of errors">
+                                        {{ message }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

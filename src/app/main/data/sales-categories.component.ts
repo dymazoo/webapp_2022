@@ -277,21 +277,17 @@ export class SalesCategoryDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.salescategoryForm = this._formBuilder.group({
-            'description': [{value: '', disabled: true}, Validators.required],
+            'description': [{value: ''}, Validators.required],
             'default': [{value: 0}],
             'subCategories': this._formBuilder.array([]),
 
         }, {});
         this.populateForm();
-        if (this.newSalesCategory) {
-            this.salescategoryForm.controls['description'].enable();
-        }
     }
 
     populateForm(): void {
         this.salescategoryForm.controls['description'].setValue(this.currentSalesCategory.description);
         this.salescategoryForm.controls['default'].setValue(this.currentSalesCategory.default);
-        this.salescategoryForm.controls['description'].disable();
 
         const subCategoryLength = (this.salescategoryForm.controls['subCategories'] as FormArray).length;
         let i = 0;
@@ -304,7 +300,7 @@ export class SalesCategoryDialogComponent implements OnInit {
         this.currentSalesCategory.subCategories.forEach(subCategory => {
             (this.salescategoryForm.controls['subCategories'] as FormArray).push(this._formBuilder.group({
                 id: [subCategory.id],
-                description: [{value: subCategory.description, disabled: true}, Validators.required],
+                subdescription: [subCategory.description, Validators.required],
                 default: [subCategory.default],
             }));
         });
@@ -318,7 +314,7 @@ export class SalesCategoryDialogComponent implements OnInit {
         const subCategoryList = [];
         subCategoryGroups.forEach((subCategoryGroup: FormGroup, index) => {
             const idControl = subCategoryGroup.controls['id'];
-            const descriptionControl = subCategoryGroup.controls['description'];
+            const descriptionControl = subCategoryGroup.controls['subdescription'];
             const defaultControl = subCategoryGroup.controls['default'];
             let actualSubDefault = 0;
             if (defaultControl.value){
@@ -356,7 +352,7 @@ export class SalesCategoryDialogComponent implements OnInit {
         this.currentSalesCategory.subCategories.push(new SalesSubCategory({description: '', default: 0}));
         (this.salescategoryForm.controls['subCategories'] as FormArray).push(this._formBuilder.group({
             id: [''],
-            description: ['', Validators.required],
+            subdescription: ['', Validators.required],
             default: [''],
         }));
     }

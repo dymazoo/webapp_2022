@@ -503,7 +503,9 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
                             });
                         }, (errors) => {
                             this.errors = errors;
-                            this.errors.push('Does the file has a header row, and does that match the layout?');
+                            if (!this.hasHeader) {
+                                this.errors.push('Please check if your file has a header row, and if so, set the "Has header row" checkbox');
+                            }
                         });
 
                 }

@@ -260,7 +260,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
                 this._snackBar.open('Admin Use change in progress', 'Dismiss', {
                     duration: 3000,
                 });
-                const setAdmin = {password: result.password, userId: userId};
+                const setAdmin = {password: result.password.trim(), userId: userId};
                 this.httpService.saveEntity('set-admin', setAdmin)
                     .subscribe((data: Response) => {
                         this.httpService.logout();
@@ -299,7 +299,7 @@ export class UserManagementAdminDialogComponent implements OnInit {
     }
 
     setAdmin(): void {
-        this.data.password = this.usermanagementForm.controls['password'].value;
+        this.data.password = this.usermanagementForm.controls['password'].value.trim();
         this.dialogRef.close(this.data);
     }
 
@@ -341,8 +341,8 @@ export class UserManagementDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.usermanagementForm = this._formBuilder.group({
-            'name': [{value: '', disabled: true}, Validators.required],
-            'email': [{value: '', disabled: true}, Validators.compose([Validators.required, GlobalValidator.mailFormat])],
+            'name': [{value: ''}, Validators.required],
+            'email': [{value: ''}, Validators.compose([Validators.required, GlobalValidator.mailFormat])],
             'roles': this._formBuilder.array([]),
 
         }, {});
@@ -361,8 +361,6 @@ export class UserManagementDialogComponent implements OnInit {
     populateForm(): void {
         this.usermanagementForm.controls['name'].setValue(this.currentUser.name);
         this.usermanagementForm.controls['email'].setValue(this.currentUser.email);
-        this.usermanagementForm.controls['name'].disable();
-        this.usermanagementForm.controls['email'].disable();
 
         (this.usermanagementForm.controls['roles'] as FormArray).controls.forEach((roleControl, index) => {
             roleControl.enable();

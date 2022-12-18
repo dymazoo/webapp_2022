@@ -11,14 +11,23 @@
 
                     <div *ngIf="errors.length > 0">
                         <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                            <div class="card-header">
-                                <strong>Errors</strong>
+                            <div class="flex">
+                                <div class="items-center justify-center basis-11/12">
+                                    <strong>Errors</strong>
+                                </div>
+                                <div class="justify-end flex basis-1/12">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                </div>
                             </div>
-                            <ul>
-                                <li *ngFor="let message of errors">
-                                    {{ message }}
-                                </li>
-                            </ul>
+                            <div class="flex">
+                                <div class="items-center justify-center basis-11/12">
+                                    <ul>
+                                        <li *ngFor="let message of errors">
+                                            {{ message }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -50,7 +59,7 @@
                     <div class="flex flex-col gt-xs:flex-row p-2">
                         <span class="text-lg">
                             As time passes and as new <b>data</b> and <b>transactions</b> are added to the SCV Database,
-                            so the <b>Demograhpic</b> and <b>Business Intelligence</b> information for each customer profile becomes out of date
+                            so the <b>Demographic</b> and <b>Business Intelligence</b> information for each customer profile becomes out of date
                         </span>
                     </div>
                     <div class="flex flex-col gt-xs:flex-row p-2">

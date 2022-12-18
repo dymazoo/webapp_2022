@@ -436,5 +436,10 @@ export class SourceSettingsValuesDialogComponent implements OnInit, OnDestroy {
         }
         return returnVal;
     }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
+
 }
 

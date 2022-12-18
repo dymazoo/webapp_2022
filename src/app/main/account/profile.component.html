@@ -1,19 +1,22 @@
 <div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
     <div class="card-major">
         <fuse-card class="card-error" *ngIf="errors.length > 0">
-            <div id="errorforms" class="simple fullwidth">
-                <div class="content p-3">
-                    <div>
-                        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
-                            <div class="card-header">
-                                <strong>Errors</strong>
-                            </div>
-                            <ul>
-                                <li *ngFor="let message of errors">
-                                    {{ message }}
-                                </li>
-                            </ul>
-                        </div>
+            <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                <div class="flex">
+                    <div class="items-center justify-center basis-11/12">
+                        <strong>Errors</strong>
+                    </div>
+                    <div class="justify-end flex basis-1/12">
+                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="items-center justify-center basis-11/12">
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -54,7 +57,7 @@
                                 <mat-form-field
                                     class="basis-7/12 flex-auto gt-xs:pr-3">
                                     <mat-label>Email address</mat-label>
-                                    <input matInput formControlName="email" autocomplete="do-not-autofill" required>
+                                    <input matInput formControlName="email" autocomplete="do-not-autofill"  readonly required>
                                     <mat-error>{{ getErrorMessage(profileForm.controls.email, 'Email address')}}</mat-error>
                                 </mat-form-field>
                                 <div class="basis-5/12 flex-auto gt-xs:pr-3">
@@ -75,21 +78,21 @@
                             </div>
 
                             <div class="flex items-center justify-end">
-                                <button class="fuse-mat-button-large w-20 mt-2"
-                                        mat-button
-                                        type="button" (click)="onBack()">
-                                    Back
+                                <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                        mat-flat-button
+                                        [disabled]="!profileForm.valid"
+                                        type="submit">
+                                    Save
                                 </button>
                                 <button class="fuse-mat-button-large w-20 mt-2"
                                         mat-stroked-button
                                         type="button" (click)="onCancel()">
                                     Reset
                                 </button>
-                                <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
-                                        mat-flat-button
-                                        [disabled]="!profileForm.valid"
-                                        type="submit">
-                                    Save
+                                <button class="fuse-mat-button-large w-20 mt-2"
+                                        mat-button
+                                        type="button" (click)="onBack()">
+                                    Back
                                 </button>
                             </div>
 
