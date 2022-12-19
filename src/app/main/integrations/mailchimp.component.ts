@@ -251,12 +251,12 @@ export class MailchimpComponent implements OnInit, OnDestroy {
     syncMembers(): void {
         this.httpService.getEntity('sync-list-members', 'mailchimp')
             .subscribe(result => {
-                this._snackBar.open('Member Synchronisation Scheduled', 'Dismiss', {
+                this._snackBar.open('Profile Synchronisation Scheduled', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-teal']
                 });
             }, (errors) => {
-                this._snackBar.open('Unable to Schedule Member Synchronisation', 'Dismiss', {
+                this._snackBar.open('Unable to Schedule Profile Synchronisation', 'Dismiss', {
                     duration: 5000,
                     panelClass: ['snackbar-red']
                 });

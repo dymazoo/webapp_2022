@@ -177,10 +177,10 @@ export class DataSources {
                         }
                     );
                     if (sourceName === 'sendinblue' && value === 'date_format') {
-                        sourceSettingValue.value = 'MM-DD-YYYY';
+                        sourceSettingValue.value = 'mm-dd-yyyy';
                     }
                     if (sourceName === 'mailchimp' && value === 'permission_reminder') {
-                        sourceSettingValue.value = 'You have subscribed';
+                        sourceSettingValue.value = 'You subscribed';
                     }
 
                     sourceSetting.values.push(sourceSettingValue);
