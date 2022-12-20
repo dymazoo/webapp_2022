@@ -272,16 +272,25 @@
                                                         <mat-label>Action</mat-label>
                                                         <mat-select (selectionChange)="segmentActionChange($event)"
                                                                     formControlName="action" required>
-                                                            <mat-option *ngIf="needsList()" value="segment">
+                                                            <mat-option *ngIf="needsList() && esp === 'mailchimp'" value="segment">
+                                                                Segment existing {{ formalesp }} audience
+                                                            </mat-option>
+                                                            <mat-option *ngIf="needsList() && esp !== 'mailchimp'" value="segment">
                                                                 Segment existing {{ formalesp }} list
                                                             </mat-option>
                                                             <mat-option *ngIf="!needsList()" value="segment">
                                                                 Segment contacts in {{ formalesp }}
                                                             </mat-option>
-                                                            <mat-option value="update">
+                                                            <mat-option *ngIf="esp === 'mailchimp'" value="update">
+                                                                Update existing {{ formalesp }} audience
+                                                            </mat-option>
+                                                            <mat-option *ngIf="esp !== 'mailchimp'" value="update">
                                                                 Update existing {{ formalesp }} list
                                                             </mat-option>
-                                                            <mat-option value="create">
+                                                            <mat-option *ngIf="esp === 'mailchimp'" value="create">
+                                                                Create new {{ formalesp }} audience
+                                                            </mat-option>
+                                                            <mat-option *ngIf="esp !== 'mailchimp'" value="create">
                                                                 Create new {{ formalesp }} list
                                                             </mat-option>
                                                             <mat-option value="export">
@@ -293,7 +302,8 @@
                                                 <div *ngIf="finalAction === 'segment'" class="flex flex-col">
                                                     <div *ngIf="needsList()" class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <mat-label>List to segment</mat-label>
+                                                            <mat-label *ngIf="esp === 'mailchimp'">Audience to segment</mat-label>
+                                                            <mat-label *ngIf="esp !== 'mailchimp'">List to segment</mat-label>
                                                             <mat-select formControlName="listId"
                                                                         required
                                                                         (selectionChange)="listSelect($event)">
@@ -332,7 +342,8 @@
                                                 <div *ngIf="finalAction === 'update'" class="flex flex-col">
                                                     <div class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <mat-label>List to update</mat-label>
+                                                            <mat-label *ngIf="esp === 'mailchimp'">Audience to update</mat-label>
+                                                            <mat-label *ngIf="esp !== 'mailchimp'">List to update</mat-label>
                                                             <mat-select formControlName="listId" required
                                                                         (selectionChange)="listSelect($event)">
                                                                 <mat-option *ngFor="let list of lists"
@@ -364,7 +375,8 @@
                                                     </div>
                                                     <div class="flex flex-col gt-xs:flex-row">
                                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                            <mat-label>New list name</mat-label>
+                                                            <mat-label *ngIf="esp === 'mailchimp'">New audience name</mat-label>
+                                                            <mat-label *ngIf="esp !== 'mailchimp'">New list name</mat-label>
                                                             <input matInput id="listname" type="text"
                                                                    value="{{selectionListName}}"
                                                                    autocomplete="do-not-autofill"

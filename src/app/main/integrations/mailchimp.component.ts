@@ -51,7 +51,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
     public lists: any[];
     canClientAdmin = false;
     userSubscription: Subscription;
-    syncListsTitle = 'Sync Lists';
+    syncListsTitle = 'Sync Audiences';
     syncCampaignsTitle = 'Sync Campaigns';
 
     public errors = [];
@@ -81,6 +81,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
 
         // Check permissions
         this.canClientAdmin = this.httpService.hasPermission('client_admin');
+
     }
 
     ngOnInit(): void {
@@ -242,7 +243,7 @@ export class MailchimpComponent implements OnInit, OnDestroy {
         this.httpService.getEntity('sync-lists', 'mailchimp')
             .subscribe(result => {
                 this.listsDataSource.refresh();
-                this.syncListsTitle = 'Sync Lists';
+                this.syncListsTitle = 'Sync Audiences';
             }, (errors) => {
                 this.errors = errors;
             });
