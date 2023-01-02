@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.router.navigate(['/register']);
     }
 
-    public gotoFeatures(): void {
+    public gotoEbook(): void {
         this.fuseBar.scrollToElement('#features', 0, false, 1000);
     }
 
