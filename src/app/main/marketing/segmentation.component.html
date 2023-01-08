@@ -296,6 +296,9 @@
                                                             <mat-option value="export">
                                                                 Export to encrypted file
                                                             </mat-option>
+                                                            <mat-option value="tag">
+                                                                Manage tags
+                                                            </mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
@@ -415,6 +418,36 @@
                                                         <button mat-raised-button type="button"
                                                                 [disabled]="!canExport" class="teal mr-4 float-right"
                                                                 (click)="listExport()">Export
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                                <div *ngIf="finalAction === 'tag'" class="flex flex-col">
+                                                    <div class="flex flex-col gt-xs:flex-row">
+                                                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Tag</mat-label>
+                                                            <mat-select  required
+                                                                        (selectionChange)="tagSelect($event)">
+                                                                <mat-option *ngFor="let tag of tags"
+                                                                            [value]="tag.value">
+                                                                    {{ tag.label }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="flex flex-col gt-xs:flex-row">
+                                                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>Action</mat-label>
+                                                            <mat-select [(value)]="selectionTagAction" required
+                                                                        (selectionChange)="tagActionSelect($event)">
+                                                                <mat-option value="set">Set</mat-option>
+                                                                <mat-option value="clear">Clear</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <p>
+                                                        <button mat-raised-button type="button"
+                                                                [disabled]="!canTag" class="teal mr-4 float-right"
+                                                                (click)="tagApply()">Apply
                                                         </button>
                                                     </p>
                                                 </div>

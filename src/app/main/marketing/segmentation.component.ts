@@ -65,14 +65,18 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     public finalAction = 'segment';
     public lists = [];
     public layouts = [];
+    public tags = [];
     public selectionSegment = '';
     public selectionLimit = '';
     public selectionListName = '';
+    public selectionTagName = '';
+    public selectionTagAction = 'set';
     public exportPassword = '';
     public canSegment = false;
     public canCreate = false;
     public canUpdate = false;
     public canExport = false;
+    public canTag = false;
     public contextMenuPosition = {x: '0px', y: '0px'};
     public scheme;
     public theme;
@@ -142,6 +146,13 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         this.httpService.getEntity('selection-lists', '')
             .subscribe(result => {
                 this.lists = result;
+            }, (errors) => {
+                this.errors = errors;
+            });
+
+        this.httpService.getEntity('selection-tags', '')
+            .subscribe(result => {
+                this.tags = result;
             }, (errors) => {
                 this.errors = errors;
             });
@@ -1306,6 +1317,48 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         this.selectionForm.controls['layoutId'].reset('');
         this.getCount(true);
         this.checkCanCreate();
+    }
+
+    public tagSelect(event): void {
+        this.selectionTagName = event.value;
+        this.checkCanTag();
+    }
+
+    public tagActionSelect(event): void {
+        this.selectionTagAction = event.value;
+        this.checkCanTag();
+    }
+
+    protected checkCanTag(): void {
+        this.canTag = false;
+        if (this.selectionTagName && this.selectionTagAction && this.finalCount > 0) {
+            this.canTag = true;
+        }
+    }
+
+    tagApply(): void {
+        let cards = [];
+        let selectionCard;
+        this.selectionCards.forEach((card) => {
+            selectionCard = {
+                cardId: card.id, selectionCardId: card.selectionCardId, title: card.title,
+                selections: card.selections, invert: card.invert, lane: card.lane, sequence: card.sequence
+            };
+            cards.push(selectionCard);
+        });
+
+        this.errors = [];
+        this.httpService.saveEntity('selection-tag-apply', {
+            cards: cards, tagName: this.selectionTagName, tagAction: this.selectionTagAction,
+        })
+            .subscribe((saveResult) => {
+                this._snackBar.open('Tag application scheduled', 'Dismiss', {
+                    duration: 5000,
+                    panelClass: ['snackbar-teal']
+                });
+            }, (errors) => {
+                this.errors = errors;
+            });
     }
 
     public listNameChange(event): void {
