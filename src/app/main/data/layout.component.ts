@@ -301,7 +301,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.layoutForm.dirty) {
+        if (this.httpService.syncCheckLoggedIn() && this.layoutForm.dirty) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;

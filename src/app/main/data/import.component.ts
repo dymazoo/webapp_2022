@@ -400,7 +400,7 @@ export class ImportComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.importForm.dirty) {
+        if (this.httpService.syncCheckLoggedIn() && this.importForm.dirty) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;

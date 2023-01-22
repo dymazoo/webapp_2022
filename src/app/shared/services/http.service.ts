@@ -263,6 +263,9 @@ export class HttpService {
         return resultHeaders;
     }
 
+    public syncCheckLoggedIn(): boolean {
+        return this.loggedIn;
+    }
 
     // Authorisation
     /**

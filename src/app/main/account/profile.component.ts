@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.profileForm.dirty) {
+        if (this.httpService.syncCheckLoggedIn() && this.profileForm.dirty) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;

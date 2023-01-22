@@ -380,7 +380,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.accountForm.dirty) {
+        if (this.httpService.syncCheckLoggedIn() && this.accountForm.dirty) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;

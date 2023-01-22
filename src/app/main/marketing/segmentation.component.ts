@@ -511,7 +511,7 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.selectionForm.dirty || this.isDirty) {
+        if (this.httpService.syncCheckLoggedIn() && (this.selectionForm.dirty || this.isDirty)) {
             return this.abandonDialogService.showDialog();
         } else {
             return true;
