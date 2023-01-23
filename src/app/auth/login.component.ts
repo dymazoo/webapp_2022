@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             'page_title': 'Login',
             'page_location': 'login',
             'page_path': 'login',
-            'send_to': 'G-0PP76HTMT0'
+            'send_to': 'G-X6HYNEHYZX'
         });
 
         this.loginForm = this._formBuilder.group({

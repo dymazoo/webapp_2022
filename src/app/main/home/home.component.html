@@ -8,11 +8,11 @@
             <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://medium.com/@dymazoo" target="_blank">
                 Blog
             </a>
-            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link home-header-optional" (click)="gotoRegister()">
+            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link home-header-optional" (click)="gotoPricing()">
                 Pricing
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">
-                Get&nbsp;Started
+                Sign Up
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="toggleLogin($event)">
                 Log&nbsp;In
@@ -38,7 +38,7 @@
                 <div class="home-banner-actions1">
                     <button class="fuse-mat-button-large w-70 min-w-44 mt-2 bg-primary-200 dark-text"
                             mat-flat-button type="button"
-                            (click)="gotoRegister()">Get Started!
+                            (click)="gotoRegister()">Sign Up!
                     </button>
                     <a class="fuse-mat-button-large w-80 min-w-44 mt-2 ml-2 bg-green-300 dark-text"
                             mat-flat-button type="button" href="https://mailchi.mp/da95efa2c88f/m1dhdx2jij" target="_blank">

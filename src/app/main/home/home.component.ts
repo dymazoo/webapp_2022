@@ -73,8 +73,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
     }
 
+    public gotoPricing(event): void {
+        this.router.navigate(['/pricing']);
+    }
+
     public gotoRegister(event): void {
-        this.router.navigate(['/register']);
+        this.router.navigate(['/signup']);
     }
 
     public gotoEbook(): void {
@@ -99,7 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             'page_title': 'Privacy',
             'page_location': 'privacy',
             'page_path': 'privacy',
-            'send_to': 'G-0PP76HTMT0'
+            'send_to': 'G-X6HYNEHYZX'
         });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
@@ -243,7 +247,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             'page_title': 'Terms',
             'page_location': 'terms',
             'page_path': 'terms',
-            'send_to': 'G-0PP76HTMT0'
+            'send_to': 'G-X6HYNEHYZX'
         });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
@@ -450,7 +454,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             'page_title': 'Cookies',
             'page_location': 'cookies',
             'page_path': 'cookies',
-            'send_to': 'G-0PP76HTMT0'
+            'send_to': 'G-X6HYNEHYZX'
         });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',

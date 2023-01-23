@@ -10,6 +10,7 @@ import {RegisterPaymentComponent} from 'app/auth/register_payment.component';
 import {NoAuthGuard} from '../../core/auth/guards/noAuth.guard';
 import {LayoutComponent} from '../../layout/layout.component';
 import {RegisterComponent} from 'app/auth/register.component';
+import {PricingComponent} from 'app/auth/pricing.component';
 
 const routes = [
     // Redirect empty path to '/home'
@@ -28,11 +29,15 @@ const routes = [
                 component: HomeComponent
             },
             {
-                path: 'register',
+                path: 'pricing',
+                component: PricingComponent
+            },
+            {
+                path: 'signup',
                 component: RegisterComponent
             },
             {
-                path: 'register-payment/:clientId',
+                path: 'payment/:clientId',
                 component: RegisterPaymentComponent
             },
             {
@@ -49,6 +54,7 @@ const routes = [
         RegisterCompleteComponent,
         RegisterPaymentComponent,
         RegisterComponent,
+        PricingComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

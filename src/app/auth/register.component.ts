@@ -22,7 +22,7 @@ import {environment} from '../../environments/environment';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'register',
+    selector: 'signup',
     templateUrl: './register.component.html'
 })
 
@@ -34,13 +34,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     public registerForm: FormGroup;
     public formErrors: string[] = [];
-    public plan: string = 'analyst';
+    public plan: string = 'consultant';
     public errors = [];
     public user: User = new User();
     public client: Client = new Client();
-    public action: string = 'select';
-    public yearlyBilling: boolean = true;
-    public usdCurrency: boolean = true;
+    public action: string = 'details';
+    public yearlyBilling: boolean = false;
+    public usdCurrency: boolean = false;
     public separateDB: boolean = false;
     public fullHistory: boolean = false;
     public monthlyPlanPrice: number = 0;
@@ -79,16 +79,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
             if (param['plan'] !== undefined) {
                 this.plan = param['plan'];
             }
+            if (param['currency'] !== undefined) {
+                if (param['currency'] === 'usd') {
+                    this.usdCurrency = true;
+                }
+            }
+            if (param['billing'] !== undefined) {
+                if (param['billing'] === 'yearly') {
+                    this.yearlyBilling = true;
+                }
+            }
         });
 
         this.client.plan = this.plan;
+        this.getDetails(this.plan);
     }
 
     ngOnDestroy(): void {
     }
 
-    onSelect(): void {
-        this.action = 'select';
+    onBack(): void {
+        this.router.navigate(['/pricing']);
     }
 
     formatSliderLabel(value: number): string {
@@ -495,7 +506,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             //`Elements` instance that was used to create the Payment Element
             elements: this.elements,
             confirmParams: {
-                return_url: 'https://www.dymazoo.com/register-payment/' + this.clientId,
+                return_url: 'https://www.dymazoo.com/payment/' + this.clientId,
             },
         });
 

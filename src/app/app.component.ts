@@ -31,7 +31,7 @@ export class AppComponent {
                         'page_title': title,
                         'page_location': url,
                         'page_path': url,
-                        'send_to': 'G-0PP76HTMT0'
+                        'send_to': 'G-X6HYNEHYZX'
                     });
                 }
 
