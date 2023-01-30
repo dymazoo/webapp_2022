@@ -26,15 +26,6 @@ export class AppComponent {
                 let title = url.substring(1);
                 const first = title.substring(0,1).toUpperCase();
                 title = first + title.substring(1);
-                if (title !== 'Dashboard' && title !== 'Home') {
-                    gtag('event', 'page_view', {
-                        'page_title': title,
-                        'page_location': url,
-                        'page_path': url,
-                        'send_to': 'G-X6HYNEHYZX'
-                    });
-                }
-
             }
         })
         this.dataSources.registerNavigationService(this._fuseNavigationService);

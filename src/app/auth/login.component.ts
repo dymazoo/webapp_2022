@@ -42,13 +42,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        gtag('event', 'page_view', {
-            'page_title': 'Login',
-            'page_location': 'login',
-            'page_path': 'login',
-            'send_to': 'G-X6HYNEHYZX'
-        });
-
         this.loginForm = this._formBuilder.group({
             email: [this.user.email, [Validators.required, Validators.email]],
             password: [this.user.password, Validators.required]

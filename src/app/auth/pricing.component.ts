@@ -61,13 +61,6 @@ export class PricingComponent implements OnInit, OnDestroy {
             }
         });
 
-        gtag('event', 'page_view', {
-            'page_title': 'Pricing',
-            'page_location': 'pricing',
-            'page_path': 'pricing',
-            'send_to': 'AW-11075928554'
-        });
-
         this.client.plan = this.plan;
     }
 

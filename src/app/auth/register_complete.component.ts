@@ -22,13 +22,6 @@ export class RegisterCompleteComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        gtag('event', 'page_view', {
-            'page_title': 'Sign up Complete',
-            'page_location': 'register-complete',
-            'page_path': 'register-complete',
-            'send_to': 'AW-11075928554'
-        });
-
     }
 
     ngOnDestroy(): void {

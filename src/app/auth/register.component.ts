@@ -93,13 +93,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             }
         });
 
-        gtag('event', 'page_view', {
-            'page_title': 'Sign Up',
-            'page_location': 'signup',
-            'page_path': 'signup',
-            'send_to': 'AW-11075928554'
-        });
-
         this.client.plan = this.plan;
         this.getDetails(this.plan);
     }

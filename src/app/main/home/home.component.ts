@@ -99,12 +99,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public privacy(): void {
-        gtag('event', 'page_view', {
-            'page_title': 'Privacy',
-            'page_location': 'privacy',
-            'page_path': 'privacy',
-            'send_to': 'G-X6HYNEHYZX'
-        });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
             width: '300px',
@@ -243,12 +237,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public terms(): void {
-        gtag('event', 'page_view', {
-            'page_title': 'Terms',
-            'page_location': 'terms',
-            'page_path': 'terms',
-            'send_to': 'G-X6HYNEHYZX'
-        });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
             width: '300px',
@@ -450,12 +438,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public cookies(): void {
-        gtag('event', 'page_view', {
-            'page_title': 'Cookies',
-            'page_location': 'cookies',
-            'page_path': 'cookies',
-            'send_to': 'G-X6HYNEHYZX'
-        });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
             width: '300px',
