@@ -644,9 +644,26 @@ home {
             max-width: 40%;
         }
 
+        .home-special {
+            border-radius: 25px;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            color: #000000;
+            background-color: #ffffff;
+            margin-top: 20px;
+            letter-spacing: 1px;
+            max-width: 40%;
+
+            .coupon {
+                color: red;
+            }
+        }
+
         .home-banner-actions1 {
             margin-top: 20px;
         }
+
         .home-banner-actions2 {
             margin-top: 10px;
             padding-bottom: 10px;
@@ -657,7 +674,6 @@ home {
         min-width: 100%;
         min-height: calc(100vh - 80px);
     }
-
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -669,10 +685,43 @@ home {
     margin-left: 40px;
 }
 
+
 // -----------------------------------------------------------------------------------------------------
-// @Register page
+// @Pricing page
 // -----------------------------------------------------------------------------------------------------
-register {
+pricing {
+    .register-header {
+        height: 80px;
+        width: 100%;
+        background-color: #414f8c;
+
+        .home-logo {
+            min-width: 240px;
+            min-height: 79px;
+            padding: 20px;
+            display: inline-block;
+            background-image: url(/assets/images/logo/dymazoo-flat.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto;
+        }
+    }
+
+    .pricing-special {
+        font-size: 24px;
+        font-weight: 600;
+        color: blue;
+
+        .coupon {
+            color: red;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @Signup page
+// -----------------------------------------------------------------------------------------------------
+signup {
     .plan-field {
         font-size: 1.25rem;
     }
@@ -1279,6 +1328,10 @@ a {
             .home-message-bottom {
                 max-width: 75%;
             }
+
+            .home-special {
+                max-width: 75%;
+            }
         }
     }
 
@@ -1379,8 +1432,13 @@ a {
             .home-message-bottom {
                 max-width: 85%;
             }
+
+            .home-special {
+                max-width: 85%;
+            }
         }
     }
+
     .card-container {
         display: flex !important;
         flex-direction: column;
@@ -1418,6 +1476,4 @@ a {
     .select-lanes {
         width: calc(95vw - 280px);
     }
-
 }
-

@@ -94,6 +94,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
 
         this.client.plan = this.plan;
+        this.client.coupon = '30DAYSFREE';
+        this.applyCoupon(this.client.coupon);
         this.getDetails(this.plan);
     }
 
@@ -260,8 +262,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     couponChange(event): void {
-        this.offer = '';
         const coupon = this.registerForm.controls['clientCoupon'].value;
+        this.applyCoupon(coupon);
+    }
+
+    applyCoupon(coupon): void {
+        this.offer = '';
         if (coupon.length > 0) {
             this.httpService.getEntity('coupon', coupon).subscribe(result => {
                 this.offer = result;
