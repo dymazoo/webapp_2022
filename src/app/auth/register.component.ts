@@ -405,8 +405,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 } else {
                     this.payableToday = 1;
                 }
-                this.nextBillingDate = moment().add(1 + freeMonths, 'month').format('LL');
-                this.client.nextBillingDate = moment().add(1 + freeMonths, 'month').format('YYYY-MM-DD');
+                this.nextBillingDate = moment().add(freeMonths , 'month').format('LL');
+                this.client.nextBillingDate = moment().add(freeMonths, 'month').format('YYYY-MM-DD');
             }
         } else {
             if (freeMonths === -1) {
