@@ -14,8 +14,6 @@ import { TranslocoService } from '@ngneat/transloco';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 
-declare const gtag: Function;
-
 @Component({
     selector: 'login',
     templateUrl: './login.component.html'

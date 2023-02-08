@@ -18,6 +18,14 @@
                                 mat-flat-button type="submit">Close
                         </button>
                     </div>
+                    <div *ngIf="buttons==='cookies'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-red-500"
+                                mat-flat-button type="button" (click)="onClearCookies()">Clear Cookie Settings
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Close
+                        </button>
+                    </div>
 
                     <p class="text-center font-bold">{{ confirmMessage }}</p>
                     <p class="text-center" *ngIf="informationMessage.length > 0" >{{ informationMessage }}</p>
@@ -42,6 +50,15 @@
                                 mat-flat-button type="submit">Close
                         </button>
                     </div>
+                    <div *ngIf="buttons==='cookies'" class="flex items-center justify-end">
+                        <button class="fuse-mat-button-large w-70 mt-2 bg-red-500"
+                                mat-flat-button type="button" (click)="onClearCookies()">Clear Cookie Settings
+                        </button>
+                        <button class="fuse-mat-button-large w-20 mt-2 bg-primary"
+                                mat-flat-button type="submit">Close
+                        </button>
+                    </div>
+
                 </form>
             </div>
         </div>

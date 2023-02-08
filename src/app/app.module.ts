@@ -12,6 +12,8 @@ import { mockApiServices } from 'app/mock-api';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
+import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+import { CookieModule } from 'ngx-cookie';
 
 // Shared and services
 import {HttpService} from 'app/shared/services/http.service';
@@ -32,6 +34,36 @@ const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
     scrollPositionRestoration: 'enabled'
 };
+
+const cookieConfig: NgcCookieConsentConfig = {
+    "cookie": {
+        "domain": "www.dymazoo.com"
+    },
+    "position": "bottom-left",
+    "theme": "classic",
+    "palette": {
+        "popup": {
+            "background": "#000000",
+            "text": "#ffffff",
+            "link": "#ffffff"
+        },
+        "button": {
+            "background": "#f1d600",
+            "text": "#000000",
+            "border": "transparent"
+        }
+    },
+    "type": "opt-out",
+    "content": {
+        "message": "Dymazoo uses cookies to ensure you get the best experience",
+        "dismiss": "Got it!",
+        "deny": "Refuse cookies",
+        "link": "Learn more",
+        "href": "https://www.dymazoo.com/home?cookies",
+        "policy": "Cookie Policy"
+    },
+    "autoOpen": false
+}
 
 @NgModule({
     declarations: [
@@ -63,7 +95,9 @@ const routerConfig: ExtraOptions = {
         DashboardModule,
 
         // 3rd party modules that require global configuration via forRoot
-        MarkdownModule.forRoot({})
+        MarkdownModule.forRoot({}),
+        NgcCookieConsentModule.forRoot(cookieConfig),
+        CookieModule.forRoot({})
     ],
     providers: [
         HttpService,

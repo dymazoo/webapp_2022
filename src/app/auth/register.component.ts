@@ -21,8 +21,6 @@ import {loadStripe} from '@stripe/stripe-js';
 import {environment} from '../../environments/environment';
 import * as moment from 'moment';
 
-declare const gtag: Function;
-
 @Component({
     selector: 'signup',
     templateUrl: './register.component.html'

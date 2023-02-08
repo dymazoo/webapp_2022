@@ -3,8 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {HttpService} from '../shared/services/http.service';
 import {TranslocoService} from '@ngneat/transloco';
 
-declare const gtag: Function;
-
 @Component({
     selector: 'home',
     templateUrl: './register_complete.component.html'

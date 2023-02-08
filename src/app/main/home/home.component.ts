@@ -7,8 +7,7 @@ import {FuseScrollbarDirective} from '@fuse/directives/scrollbar/scrollbar.direc
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
 import { DomSanitizer } from '@angular/platform-browser';
-
-declare const gtag: Function;
+import { CookieService } from 'ngx-cookie';
 
 @Component({
     selector: 'home',
@@ -30,7 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 public dialog: MatDialog,
-                private _sanitizer: DomSanitizer
+                private _sanitizer: DomSanitizer,
+                private cookieService: CookieService
     ) {
         if (!this.httpService.loggedIn) {
             this.setLoggedInView(false);
@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.cdpURL = this._sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/dKqG8h8o-0w');
 
         // Subscribe to config change
@@ -55,6 +54,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams.subscribe((param: any) => {
             if (param['login'] !== undefined) {
                 this.action = 'login';
+            }
+            if (param['cookies'] !== undefined) {
+                this.cookies()
             }
         });
         if (this.isLoggedIn) {
@@ -437,6 +439,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
+    removeCookie(key: string){
+        return this.cookieService.remove(key);
+    }
+
     public cookies(): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             minWidth: '75%',
@@ -457,11 +463,15 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'Site. Cookies are widely used by Site owners in order to make their Sites work, or to work ' +
                     'more efficiently, as well as to provide reporting information.<br/>' +
                     'Cookies set by the Site owner (in this case, Dymazoo) are called "first party cookies". Cookies set by ' +
-                    'parties other than the Site owner are called "third party cookies". We do not make use of any third party cookies.<br/>' +
+                    'parties other than the Site owner are called "third party cookies". We make use of third party cookies' +
+                    'to provide you with payment processing, technical support, and to track visitors to our site.<br/>' +
                     '<br/>' +
                     'WHY DO WE USE COOKIES?<br/>' +
-                    'We only use first party "essential" cookies. These are required for technical reasons, in order for our platform to operate ' +
+                    'We make use of first and third party "essential" cookies. These are required for technical reasons, in order for our platform to operate ' +
                     'and to allow us to track the usage of our platform so that we are able offer effective support. <br/>' +
+                    '<br/>' +
+                    'We make use of third party, "optional" cookies, to track visitors to our site and to give you the best experience possible. <br/>' +
+                    'You can opt out of these optional cookies. <br/>' +
                     '<br/>' +
                     'HOW CAN I CONTROL COOKIES?<br/>' +
                     '<br/>' +
@@ -494,9 +504,15 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'WIRRAL <br/>' +
                     'ENGLAND <br/>' +
                     'CH49 0AB ',
-                buttons: 'close2'
+                buttons: 'cookies'
             }
         });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result.action !== undefined && result.action ==='clear') {
+                this.removeCookie('opt-out');
+            }
+        });
+
     }
 
 }
