@@ -463,18 +463,17 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'Site. Cookies are widely used by Site owners in order to make their Sites work, or to work ' +
                     'more efficiently, as well as to provide reporting information.<br/>' +
                     'Cookies set by the Site owner (in this case, Dymazoo) are called "first party cookies". Cookies set by ' +
-                    'parties other than the Site owner are called "third party cookies". We make use of third party cookies' +
+                    'parties other than the Site owner are called "third party cookies". We make use of third party cookies ' +
                     'to provide you with payment processing, technical support, and to track visitors to our site.<br/>' +
                     '<br/>' +
                     'WHY DO WE USE COOKIES?<br/>' +
                     'We make use of first and third party "essential" cookies. These are required for technical reasons, in order for our platform to operate ' +
-                    'and to allow us to track the usage of our platform so that we are able offer effective support. <br/>' +
+                    'and so that we are able offer effective support. <br/>' +
                     '<br/>' +
                     'We make use of third party, "optional" cookies, to track visitors to our site and to give you the best experience possible. <br/>' +
-                    'You can opt out of these optional cookies. <br/>' +
+                    'You can opt out of these "optional" cookies. <br/>' +
                     '<br/>' +
                     'HOW CAN I CONTROL COOKIES?<br/>' +
-                    '<br/>' +
                     'You have the right to decide whether to accept or reject cookies. Essential cookies cannot be rejected as they ' +
                     'are strictly necessary to provide you with services.<br/>' +
                     '<br/>' +

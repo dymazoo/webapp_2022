@@ -60,7 +60,7 @@ const cookieConfig: NgcCookieConsentConfig = {
         "deny": "Refuse cookies",
         "link": "Learn more",
         "href": "https://www.dymazoo.com/home?cookies",
-        "policy": "Cookie Policy"
+        "policy": "Cookies"
     },
     "autoOpen": false
 }
