@@ -4,6 +4,9 @@ export class Person {
     public lastName: string='';
     public emails: [];
     public mobiles: [];
+    public dob: string='';
+    public sex: string='';
+    public primaryEmail: string='';
 
     public constructor(init?: Partial<Person>) {
         Object.assign(this, init);

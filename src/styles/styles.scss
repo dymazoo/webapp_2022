@@ -246,16 +246,6 @@ ul {
 }
 
 // -----------------------------------------------------------------------------------------------------
-// @Material Icon Buttons
-// -----------------------------------------------------------------------------------------------------
-
-.mat-icon-button-tight {
-    width: 24px !important;
-    height: 24px !important;
-    line-height: 24px !important;
-}
-
-// -----------------------------------------------------------------------------------------------------
 // @Material Buttons
 // -----------------------------------------------------------------------------------------------------
 .mat-raised-button {
@@ -1159,18 +1149,18 @@ fuse-sidebar.folded.unfolded navbar navbar-vertical-style-2 {
     border-style: solid;
     border-width: thin;
     border-radius: 5px;
-    height: 2.5rem;
+    height: 4rem;
     padding-left: 5px;
     padding-right: 5px;
 }
 
 .select-card-title {
     padding: 1px;
-    max-width: calc(100% - 160px);
-    min-width: calc(100% - 160px);
+    max-width: calc(100% - 100px);
+    min-width: calc(100% - 100px);
     text-align: center;
     text-overflow: ellipsis;
-    border-color: #d0e9c6;
+    border-color: #ffffff;
     border-style: solid;
     border-width: thin;
 }

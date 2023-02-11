@@ -1,4 +1,13 @@
-import {Component, Inject, OnDestroy, OnInit, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
+import {
+    Component,
+    Inject,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation,
+    ViewChild,
+    ElementRef,
+    AfterViewInit
+} from '@angular/core';
 import {Location} from '@angular/common';
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {NestedTreeControl} from '@angular/cdk/tree';
@@ -30,6 +39,7 @@ import {SourceSetting} from 'app/shared/models/sourceSetting';
 import {FuseConfigService} from '@fuse/services/config';
 import {FuseMediaWatcherService} from '@fuse/services/media-watcher';
 import {DataSources} from 'app/shared/models/sources/data-sources';
+import {Person} from '../../shared/models/person';
 
 interface SelectionNode {
     id: string;
@@ -686,6 +696,39 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         this.currentLaneId = laneId;
     }
 
+    previewLane(event, laneId): void {
+        const selections = [];
+        let selectionCard;
+        this.gettingCount = true;
+        this.selectionCards.forEach((card, index) => {
+            if (card.lane <= laneId) {
+                selectionCard = {
+                    cardId: card.id, selectionCardId: card.selectionCardId, title: card.title,
+                    selections: card.selections, invert: card.invert, lane: card.lane, sequence: card.sequence
+                };
+                selections.push(selectionCard);
+            }
+        });
+
+        const data = {
+            cards: selections, listId: ''
+        };
+
+        this.errors = [];
+        this.httpService.saveEntity('selection-preview', data)
+            .subscribe((saveResult) => {
+                const dialogRef = this.dialog.open(SegmentationPreviewDialogComponent, {
+                    minWidth: '70%',
+                    data: {'dialog': this.dialog, 'previewData': saveResult}
+                });
+                this.gettingCount = false;
+            }, (errors) => {
+                this.errors = errors;
+                this.gettingCount = false;
+            });
+    }
+
+
     addLane(event, laneId): void {
         this.addNewLane(laneId);
         event.stopPropagation();
@@ -835,6 +878,38 @@ export class SegmentationComponent implements OnInit, OnDestroy {
     selectCard(event, cardId, laneId): void {
         this.currentCardId = cardId;
         this.currentLaneId = laneId;
+    }
+
+    previewCard(event, cardId, laneId): void {
+        const selections = [];
+        let selectionCard;
+        this.gettingCount = true;
+        this.selectionCards.forEach((card, index) => {
+            if (card.lane < laneId || card.id === cardId) {
+                selectionCard = {
+                    cardId: card.id, selectionCardId: card.selectionCardId, title: card.title,
+                    selections: card.selections, invert: card.invert, lane: card.lane, sequence: card.sequence
+                };
+                selections.push(selectionCard);
+            }
+        });
+
+        const data = {
+            cards: selections, listId: ''
+        };
+
+        this.errors = [];
+        this.httpService.saveEntity('selection-preview', data)
+            .subscribe((saveResult) => {
+                const dialogRef = this.dialog.open(SegmentationPreviewDialogComponent, {
+                    minWidth: '70%',
+                    data: {'dialog': this.dialog, 'previewData': saveResult}
+                });
+                this.gettingCount = false;
+            }, (errors) => {
+                this.errors = errors;
+                this.gettingCount = false;
+            });
     }
 
     removeCard(event, cardId): void {
@@ -1716,6 +1791,93 @@ export class SegmentationOpenSegmentDialogComponent implements OnInit, OnDestroy
     }
 
     public filterLayouts = (value: string) => {
+        this.paginatedDataSource.filter = value.trim().toLocaleLowerCase();
+    }
+
+    clearErrors(): void {
+        this.errors = [];
+    }
+
+    getErrorMessage(control, name): string {
+        let returnVal = '';
+        if (control.hasError('required')) {
+            returnVal = name + ' is required!';
+        }
+        return returnVal;
+    }
+}
+
+
+@Component({
+    selector: 'segmentation-preview-dialog',
+    templateUrl: 'segmentation-preview.dialog.html',
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
+})
+export class SegmentationPreviewDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+
+    displayedColumns = ['email', 'firstName', 'lastName', 'dob', 'sex'];
+    public errors = [];
+    public previewForm: FormGroup;
+    public paginatedDataSource;
+    dialog: MatDialog;
+    previewData = [];
+    private _unsubscribeAll: Subject<any>;
+    private touchStart = 0;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('filter') filterElement: ElementRef;
+
+    constructor(
+        public dialogRef: MatDialogRef<SegmentationPreviewDialogComponent>,
+        private _formBuilder: FormBuilder,
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this._unsubscribeAll = new Subject();
+        this.dialog = data.dialog;
+        this.previewData = data.previewData;
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
+    }
+
+    ngOnInit(): void {
+        this.previewForm = this._formBuilder.group({});
+    }
+
+    ngAfterViewInit(): void {
+        if (this.previewData.length > 0) {
+            this.paginatedDataSource = new MatTableDataSource<Person>(this.previewData);
+            this.paginatedDataSource.paginator = this.paginator;
+            this.paginatedDataSource.sort = this.sort;
+            this.paginatedDataSource.sortingDataAccessor =
+                (data, sortHeaderId) => data[sortHeaderId].toLocaleLowerCase();
+            this.paginatedDataSource.filterPredicate =
+                (data: Person, filter: string) => this.previewFilterPredicate(data, filter);
+            this.filterElement.nativeElement.focus();
+        } else {
+            this.paginatedDataSource = undefined;
+        }
+    }
+
+     onCancel(): void {
+        this.dialogRef.close();
+    }
+
+    previewFilterPredicate(data: Person, filter: string): boolean {
+        let filterResult = false;
+        const filterCompare = filter.toLocaleLowerCase();
+        filterResult = filterResult || data.firstName.toLocaleLowerCase().indexOf(filterCompare) !== -1;
+        filterResult = filterResult || data.lastName.toLocaleLowerCase().indexOf(filterCompare) !== -1;
+        filterResult = filterResult || data.primaryEmail.toLocaleLowerCase().indexOf(filterCompare) !== -1;
+        return filterResult;
+    }
+
+
+    public filterPreview = (value: string) => {
         this.paginatedDataSource.filter = value.trim().toLocaleLowerCase();
     }
 

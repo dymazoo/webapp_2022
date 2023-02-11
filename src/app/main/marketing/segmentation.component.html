@@ -162,7 +162,8 @@
                                      (cdkDropListDropped)="laneDrop($event)"
                                      [cdkDropListData]="{laneId: lane.id}">
                                     <div class="select-lane-header {{getLaneHeaderClass()}}"
-                                         (click)="selectLane($event, lane.id)">
+                                         (click)="selectLane($event, lane.id)"
+                                    >
                                         <div class="select-lane-header-text">
                                             <mat-icon
                                                 matTooltip="Add new selection to filter group"
@@ -170,10 +171,11 @@
                                                 (click)="addCard($event, lane.id)">
                                                 playlist_add
                                             </mat-icon>
-                                            <ng-container *ngIf="lane.sequence == 1"><span class="font-bold">Filter everyone to match ...</span> [{{ lane.count }}]</ng-container>
-                                            <ng-container *ngIf="lane.sequence !== 1"><span class="font-bold">Then filter to match ...</span> [{{ lane.count }}]</ng-container>
+                                            <ng-container *ngIf="lane.sequence == 1"><span class="font-bold">Filter all to match...</span> [{{ lane.count }}]</ng-container>
+                                            <ng-container *ngIf="lane.sequence !== 1"><span class="font-bold">Now filter to match...</span> [{{ lane.count }}]</ng-container>
                                             <mat-icon
-                                                matTooltip="Insert filter group after" class="float-right cursor-pointer"
+                                                matTooltip="Insert filter group after"
+                                                class="float-right cursor-pointer"
                                                 (click)="addLane($event, lane.id)">
                                                 add_circle_outline
                                             </mat-icon>
@@ -183,6 +185,12 @@
                                                 (click)="removeLane($event, lane.id)">
                                                 remove_circle_outline
                                             </mat-icon>
+                                            <mat-icon
+                                                matTooltip="Preview"
+                                                class="float-right cursor-pointer"
+                                                (click)="previewLane($event, lane.id)">
+                                                remove_red_eye
+                                            </mat-icon>
                                         </div>
                                     </div>
                                     <div class="select-lane-cards">
@@ -191,43 +199,55 @@
                                              (click)="selectCard($event, card.id, lane.id)"
                                              cdkDrag [cdkDragData]="{laneId: lane.id, card: card}">
                                             <div
-                                                class="select-card-header {{getCardHeaderClass(card.id, card.invert)}}">
-                                                <button mat-icon-button [disabled]="card.title.length == 0"
-                                                        (click)="saveCard($event, card.id, false)"
-                                                        class="float-left cursor-pointer mat-icon-button-tight">
+                                                class="select-card-header {{getCardHeaderClass(card.id, card.invert)}}"
+                                            >
+                                                <div class="div-block" style="height: 2rem;">
                                                     <mat-icon
-                                                        matTooltip="Save selection">
+                                                        *ngIf="card.title.length > 0"
+                                                        matTooltip="Save selection"
+                                                        class="float-left cursor-pointer"
+                                                        (click)="saveCard($event, card.id, false)"
+                                                    >
                                                         save
                                                     </mat-icon>
-                                                </button>
-                                                <button mat-icon-button [disabled]="card.title.length == 0"
-                                                        (click)="saveCard($event, card.id, true)"
-                                                        class="float-left cursor-pointer mat-icon-button-tight">
                                                     <mat-icon
-                                                        matTooltip="Save as new selection">
+                                                        *ngIf="card.title.length > 0"
+                                                        matTooltip="Save as new selection"
+                                                        class="float-left cursor-pointer"
+                                                        (click)="saveCard($event, card.id, true)"
+                                                    >
                                                         queue
                                                     </mat-icon>
-                                                </button>
-                                                <input class="select-card-title"
-                                                       placeholder="Name selection"
-                                                       matTooltip="{{card.invert === 1 ? 'Excluded' : ''}}"
-                                                       [ngClass]="card.id == currentCardId ? card.invert === 1 ? 'red-200' : 'blue-200' : card.invert === 1 ? 'red-100' : 'blue-100'"
-                                                       value="{{card.title}}"
-                                                       (keyup)="cardTitle($event, card.id)"
-                                                       autocomplete="do-not-autofill"
-                                                >
-                                                [{{ card.count }}]
-                                                <mat-icon
-                                                    matTooltip="{{card.invert === 0 ? 'Exclude Selection' : 'Include Selection'}}"
-                                                    class="float-right cursor-pointer"
-                                                    (click)="invertCard($event, card.id)">
-                                                    {{card.invert === 1 ? "person_add" : "person_add_disabled"}}
-                                                </mat-icon>
-                                                <mat-icon
-                                                    matTooltip="Remove selection" class="float-right cursor-pointer"
-                                                    (click)="removeCard($event, card.id)">
-                                                    delete
-                                                </mat-icon>
+
+                                                    <mat-icon
+                                                        matTooltip="{{card.invert === 0 ? 'Exclude Selection' : 'Include Selection'}}"
+                                                        class="float-right cursor-pointer"
+                                                        (click)="invertCard($event, card.id)">
+                                                        {{card.invert === 1 ? "person_add" : "person_add_disabled"}}
+                                                    </mat-icon>
+                                                    <mat-icon
+                                                        matTooltip="Remove selection" class="float-right cursor-pointer"
+                                                        (click)="removeCard($event, card.id)">
+                                                        delete
+                                                    </mat-icon>
+                                                    <mat-icon
+                                                        matTooltip="Preview"
+                                                        class="float-right cursor-pointer"
+                                                        (click)="previewCard($event, card.id, lane.id)">
+                                                        remove_red_eye
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="div-block">
+                                                    <input class="select-card-title"
+                                                           placeholder="Selection Name"
+                                                           matTooltip="{{card.invert === 1 ? 'Excluded' : ''}}"
+                                                           [ngClass]="card.id == currentCardId ? card.invert === 1 ? 'red-200' : 'blue-200' : card.invert === 1 ? 'red-100' : 'blue-100'"
+                                                           value="{{card.title}}"
+                                                           (keyup)="cardTitle($event, card.id)"
+                                                           autocomplete="do-not-autofill"
+                                                    >
+                                                    [{{ card.count }}]
+                                                </div>
                                             </div>
                                             <div class="select-card-body"
                                                  id="card-{{card.id}}"
