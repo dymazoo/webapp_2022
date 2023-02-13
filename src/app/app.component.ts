@@ -10,6 +10,7 @@ import {NgcCookieConsentService,
 } from 'ngx-cookieconsent';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-root',
@@ -122,7 +123,7 @@ export class AppComponent {
     }
 
     setCookie(key: string, value: string){
-        return this.cookieService.put(key, value);
+        return this.cookieService.put(key, value, {'expires': moment().add(1, 'month').toISOString()});
     }
 
     removeCookie(key: string){
