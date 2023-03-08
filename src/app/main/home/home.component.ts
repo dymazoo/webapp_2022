@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     config: any;
     loginSubscription: Subscription;
-    action: string = 'none';
+    action: string = 'login';
     isLoggedIn: boolean = false;
     plan: string = 'standard';
     cdpURL: any;

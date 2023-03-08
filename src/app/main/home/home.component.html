@@ -2,12 +2,6 @@
     <div class="home-header">
         <a class="home-logo" href="https://www.dymazoo.com"></a>
         <div class="home-get-started">
-            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://youtube.com/@dymazoo" target="_blank">
-                Our&nbsp;Channel
-            </a>
-            <a *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" href="https://medium.com/@dymazoo" target="_blank">
-                Blog
-            </a>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link home-header-optional" (click)="gotoPricing()">
                 Pricing
             </span>
@@ -29,12 +23,6 @@
                 </div>
                 <div class="home-message-main">
                     A complete Customer Data Platform at a price you can afford
-                </div>
-                <div class="home-special">
-                    <p>
-                        FREE for 30 DAYS when you use coupon
-                    </p>
-                    <p class="coupon">30DAYSFREE</p>
                 </div>
                 <div class="home-message-bottom">
                     <p>Increase the effectiveness of your marketing by over 70%!</p>

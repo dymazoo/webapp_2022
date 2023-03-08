@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
 
         this.client.plan = this.plan;
-        this.client.coupon = '30DAYSFREE';
+        this.client.coupon = '';
         this.applyCoupon(this.client.coupon);
         this.getDetails(this.plan);
     }

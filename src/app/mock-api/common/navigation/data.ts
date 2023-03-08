@@ -137,18 +137,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'channel',
-                title: 'Our Channel',
+                title: 'Videos',
                 type : 'basic',
-                icon : 'heroicons_outline:video-camera',
+                icon : 'heroicons_outline:play',
                 externalLink : true,
-                link : 'https://youtube.com/@dymazoo',
+                link : 'https://www.dymazoo.com/videos',
                 target : '_blank'
             },
             {
                 id   : 'support',
                 title: 'Support',
                 type : 'basic',
-                icon : 'heroicons_outline:support',
+                icon : 'heroicons_outline:question-mark-circle',
                 externalLink : true,
                 link : 'https://dymazoo-support.freshdesk.com/',
                 target : '_blank'
