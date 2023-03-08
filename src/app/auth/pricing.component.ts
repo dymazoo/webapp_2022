@@ -77,5 +77,9 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.router.navigate(['/signup'], { queryParams: { plan: plan, currency: currency, billing: billing }});
     }
 
+    public gotoLogin(event): void {
+        this.router.navigate(['/home']);
+    }
+
 }
 

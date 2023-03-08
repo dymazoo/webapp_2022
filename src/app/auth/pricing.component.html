@@ -1,7 +1,11 @@
 <div id="register" class="relative flex flex-col flex-auto min-w-0 overflow-hidden" *transloco="let t">
     <div class="register-header">
         <a class="home-logo" href="https://www.dymazoo.com"></a>
-    </div>
+        <div class="register-get-started">
+            <span class="cursor-pointer home-header-link" (click)="gotoLogin($event)">
+                Log&nbsp;In
+            </span>
+        </div>
 
     <div class="register-body" fuseScrollbar [fuseScrollbarOptions]="{suppressScrollX: true}">
         <div>

@@ -697,13 +697,24 @@ pricing {
         }
     }
 
-    .pricing-special {
-        font-size: 24px;
-        font-weight: 600;
-        color: blue;
+    .register-get-started {
+        display: inline-block;
+        float: right;
+        color: #81D742;
+        font-size: 20px;
+        padding-top: 15px;
+        padding-right: 20px;
 
-        .coupon {
-            color: red;
+        .home-website {
+            a {
+                color: #81D742;
+                text-decoration: none !important;
+            }
+        }
+        .home-header-link {
+            padding-left: 15px;
+            padding-right: 15px;
+            text-decoration: none;
         }
     }
 }
@@ -730,6 +741,27 @@ signup {
             background-repeat: no-repeat;
             background-position: center center;
             background-size: auto;
+        }
+
+        .register-get-started {
+            display: inline-block;
+            float: right;
+            color: #81D742;
+            font-size: 20px;
+            padding-top: 15px;
+            padding-right: 20px;
+
+            .home-website {
+                a {
+                    color: #81D742;
+                    text-decoration: none !important;
+                }
+            }
+            .home-header-link {
+                padding-left: 15px;
+                padding-right: 15px;
+                text-decoration: none;
+            }
         }
     }
     .register-body {

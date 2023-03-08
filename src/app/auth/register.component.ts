@@ -550,5 +550,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     clearErrors(): void {
         this.errors = [];
     }
+
+    public gotoLogin(event): void {
+        this.router.navigate(['/home']);
+    }
+
+    public gotoPricing(event): void {
+        this.router.navigate(['/pricing']);
+    }
+
 }
 
