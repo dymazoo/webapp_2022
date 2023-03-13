@@ -680,7 +680,7 @@ home {
 // @Pricing page
 // -----------------------------------------------------------------------------------------------------
 pricing {
-    .register-header {
+    .pricing-header {
         height: 80px;
         width: 100%;
         background-color: #414f8c;
@@ -697,7 +697,7 @@ pricing {
         }
     }
 
-    .register-get-started {
+    .pricing-get-started {
         display: inline-block;
         float: right;
         color: #81D742;
@@ -716,6 +716,11 @@ pricing {
             padding-right: 15px;
             text-decoration: none;
         }
+    }
+
+    .pricing-body {
+        max-width: 100%;
+            max-height: calc(100vh - 90px);
     }
 }
 
