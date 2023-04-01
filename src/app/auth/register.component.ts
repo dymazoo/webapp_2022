@@ -75,6 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.client.coupon = '';
         this.activatedRoute.queryParams.subscribe((param: any) => {
             if (param['plan'] !== undefined) {
                 this.plan = param['plan'];
@@ -89,10 +90,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.yearlyBilling = true;
                 }
             }
+            if (param['coupon'] !== undefined) {
+                this.client.coupon = param['coupon'];
+            }
         });
 
         this.client.plan = this.plan;
-        this.client.coupon = '';
         this.applyCoupon(this.client.coupon);
         this.getDetails(this.plan);
     }
@@ -512,7 +515,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             //`Elements` instance that was used to create the Payment Element
             elements: this.elements,
             confirmParams: {
-                return_url: 'https://www.dymazoo.com/payment/' + this.clientId,
+                return_url: 'https://app.dymazoo.com/payment/' + this.clientId,
             },
         });
 

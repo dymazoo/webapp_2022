@@ -37,7 +37,7 @@ const routerConfig: ExtraOptions = {
 
 const cookieConfig: NgcCookieConsentConfig = {
     "cookie": {
-        "domain": "www.dymazoo.com"
+        "domain": "app.dymazoo.com"
     },
     "position": "bottom-left",
     "theme": "classic",
@@ -59,7 +59,7 @@ const cookieConfig: NgcCookieConsentConfig = {
         "dismiss": "Got it!",
         "deny": "Refuse cookies",
         "link": "Learn more",
-        "href": "https://www.dymazoo.com/home?cookies",
+        "href": "https://app.dymazoo.com/home?cookies",
         "policy": "Cookies"
     },
     "autoOpen": false

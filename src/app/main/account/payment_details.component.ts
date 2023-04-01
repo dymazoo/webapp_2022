@@ -161,7 +161,7 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy {
             //`Elements` instance that was used to create the Payment Element
             elements: this.elements,
             confirmParams: {
-                return_url: 'https://www.dymazoo.com/account/payment-details/' + this.clientId,
+                return_url: 'https://app.dymazoo.com/account/payment-details/' + this.clientId,
             },
         });
 
