@@ -419,14 +419,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 this.nextBillingDate = moment().add(1, 'year').format('LL');
                 this.client.nextBillingDate = moment().add(1, 'year').format('YYYY-MM-DD');
             }
-            monthlyPlanPrice = monthlyPlanPrice * 12;
-            yearlyPlanPrice = yearlyPlanPrice * 12;
-            profilePrice = profilePrice * 12;
-            optionsPrice = optionsPrice * 12;
-
-            monthlyPrice = monthlyPlanPrice + profilePrice + optionsPrice;
-            yearlyPrice = yearlyPlanPrice + profilePrice + optionsPrice;
-
         }
         this.monthlyPlanPrice = monthlyPlanPrice;
         this.yearlyPlanPrice = yearlyPlanPrice;
