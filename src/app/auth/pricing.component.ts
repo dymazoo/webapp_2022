@@ -33,7 +33,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     public user: User = new User();
     public client: Client = new Client();
     public yearlyBilling: boolean = true;
-    public usdCurrency: boolean = false;
+    public usdCurrency: boolean = true;
     public offer: string = '';
     public couponPlan: string = '';
     private clientId: string = '';
@@ -66,7 +66,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
 
     public gotoRegister(plan): void {
-        let currency = 'gbp';
+        let currency = 'usd';
         let billing = 'monthly';
         if (this.usdCurrency) {
             currency ='usd';

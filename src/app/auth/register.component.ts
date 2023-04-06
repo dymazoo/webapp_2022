@@ -34,13 +34,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     public registerForm: FormGroup;
     public formErrors: string[] = [];
-    public plan: string = 'consultant';
+    public plan: string = 'specialist';
     public errors = [];
     public user: User = new User();
     public client: Client = new Client();
     public action: string = 'details';
     public yearlyBilling: boolean = false;
-    public usdCurrency: boolean = false;
+    public usdCurrency: boolean = true;
     public separateDB: boolean = false;
     public fullHistory: boolean = false;
     public monthlyPlanPrice: number = 0;
