@@ -968,29 +968,29 @@ export class HttpService {
         return {
             'analystProfiles': 2000,
             'specialistProfiles': 5000,
-            'consultantProfiles': 10000,
-            'profileAddition': 2500,
+            'consultantProfiles': 2000,
+            'profileAddition': 1000,
             'usd': {
                 'analystMonthly': 24.99,
                 'analystYearly': 19.99,
                 'specialistMonthly': 34.99,
                 'specialistYearly': 27.99,
-                'consultantMonthly': 49.99,
-                'consultantYearly': 39.99,
-                'profileAdditionCost': 2.5,
+                'consultantMonthly': 29.99,
+                'consultantYearly': 24.99,
+                'profileAdditionCost': 1.0,
                 'optionsPrivate': 7.5,
-                'optionsPrivateFull': 15
+                'optionsPrivateFull': 10
             },
             'gbp': {
                 'analystMonthly': 19.99,
                 'analystYearly': 15.99,
                 'specialistMonthly': 26.99,
                 'specialistYearly': 21.99,
-                'consultantMonthly': 39.99,
-                'consultantYearly': 29.99,
-                'profileAdditionCost': 2.0,
+                'consultantMonthly': 24.99,
+                'consultantYearly': 19.99,
+                'profileAdditionCost': 0.75,
                 'optionsPrivate': 5,
-                'optionsPrivateFull': 10
+                'optionsPrivateFull': 7.5
             },
         };
     }

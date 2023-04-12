@@ -34,13 +34,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     public registerForm: FormGroup;
     public formErrors: string[] = [];
-    public plan: string = 'specialist';
+    public plan: string = 'consultant';
+    public usePackages: boolean = false;
     public errors = [];
     public user: User = new User();
     public client: Client = new Client();
     public action: string = 'details';
     public yearlyBilling: boolean = false;
-    public usdCurrency: boolean = true;
+    public usdCurrency: boolean = false;
     public separateDB: boolean = false;
     public fullHistory: boolean = false;
     public monthlyPlanPrice: number = 0;
@@ -77,9 +78,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.client.coupon = '';
         this.activatedRoute.queryParams.subscribe((param: any) => {
-            if (param['plan'] !== undefined) {
-                this.plan = param['plan'];
-            }
+//            if (param['plan'] !== undefined) {
+//                this.plan = param['plan'];
+//            }
             if (param['currency'] !== undefined) {
                 if (param['currency'] === 'usd') {
                     this.usdCurrency = true;
@@ -410,12 +411,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 this.client.nextBillingDate = moment().add(freeMonths, 'month').format('YYYY-MM-DD');
             }
         } else {
+            monthlyPrice = (monthlyPlanPrice + profilePrice + optionsPrice) * 12;
+            yearlyPrice = (yearlyPlanPrice + profilePrice + optionsPrice) * 12;
+
             if (freeMonths === -1) {
                 this.payableToday = 0;
                 this.nextBillingDate = 'Never';
                 this.client.nextBillingDate = 'never';
             } else {
-                this.payableToday = yearlyPrice * (12 - freeMonths) * ((100 - discount) / 100);
+                this.payableToday = (yearlyPlanPrice + profilePrice + optionsPrice) * (12 - freeMonths) * ((100 - discount) / 100);
                 this.nextBillingDate = moment().add(1, 'year').format('LL');
                 this.client.nextBillingDate = moment().add(1, 'year').format('YYYY-MM-DD');
             }

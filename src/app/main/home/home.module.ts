@@ -28,10 +28,10 @@ const routes = [
                 path: 'home',
                 component: HomeComponent
             },
-            {
-                path: 'pricing',
-                component: PricingComponent
-            },
+//            {
+//                path: 'pricing',
+//                component: PricingComponent
+//            },
             {
                 path: 'signup',
                 component: RegisterComponent

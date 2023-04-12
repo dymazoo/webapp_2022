@@ -42,6 +42,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
     public canClientAdmin = false;
     public client: Client;
     public hasData = false;
+    public usePackages: boolean = false;
 
     public monthlyPlanPrice: number = 0;
     public yearlyPlanPrice: number = 0;
@@ -139,7 +140,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
             timezone: [''],
             telephone: ['',  [Validators.compose([GlobalValidator.telephoneFormat])]],
             billing: ['', [Validators.required]],
-            plan: ['', [Validators.required]],
+//            plan: ['', [Validators.required]],
             profiles: [''],
         }, {});
 
@@ -154,7 +155,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         this.accountForm.controls['country'].setValue(this.client.country);
         this.accountForm.controls['timezone'].setValue(this.client.timeZone);
         this.accountForm.controls['billing'].setValue(this.client.billing);
-        this.accountForm.controls['plan'].setValue(this.client.plan);
+//        this.accountForm.controls['plan'].setValue(this.client.plan);
         this.accountForm.controls['profiles'].setValue(this.client.profiles);
         this.accountForm.controls['telephone'].setValue(this.client.telephone);
         this.doCalculate();
@@ -170,7 +171,8 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
         this.client.country = this.accountForm.controls['country'].value;
         this.client.timeZone = this.accountForm.controls['timezone'].value;
         this.client.billing = this.accountForm.controls['billing'].value;
-        this.client.plan = this.accountForm.controls['plan'].value;
+//        this.client.plan = this.accountForm.controls['plan'].value;
+        this.client.plan = 'consultant';
         this.client.profiles = this.accountForm.controls['profiles'].value;
         this.client.telephone = this.accountForm.controls['telephone'].value;
         this.client.payableToday = this.payableToday;
@@ -587,12 +589,12 @@ export class AccountManagementComponent implements OnInit, OnDestroy, AfterViewI
                 }
             }
         } else {
-            monthlyPlanPrice = monthlyPlanPrice * 12;
-            yearlyPlanPrice = yearlyPlanPrice * 12;
-            profilePrice = profilePrice * 12;
+            // monthlyPlanPrice = monthlyPlanPrice * 12;
+            // yearlyPlanPrice = yearlyPlanPrice * 12;
+            // profilePrice = profilePrice * 12;
 
-            monthlyPrice = monthlyPlanPrice + profilePrice;
-            yearlyPrice = yearlyPlanPrice + profilePrice;
+            monthlyPrice = (monthlyPlanPrice + profilePrice) * 12;
+            yearlyPrice = (yearlyPlanPrice + profilePrice) * 12;
 
             if (this.currentNextBillingDate !== 'never') {
                 if (this.currentBilling === 'yearly') {

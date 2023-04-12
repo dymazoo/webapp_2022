@@ -17,12 +17,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     @ViewChild(FuseScrollbarDirective) private fuseBar: FuseScrollbarDirective;
 
-    config: any;
-    loginSubscription: Subscription;
-    action: string = 'login';
-    isLoggedIn: boolean = false;
-    plan: string = 'standard';
-    cdpURL: any;
+    public config: any;
+    public loginSubscription: Subscription;
+    public action: string = 'login';
+    public isLoggedIn: boolean = false;
+    public usePackages: boolean = false;
+    public plan: string = 'consultant';
+    public cdpURL: any;
 
     constructor(private _fuseConfigService: FuseConfigService,
                 private httpService: HttpService,

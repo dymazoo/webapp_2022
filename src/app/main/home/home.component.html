@@ -2,7 +2,7 @@
     <div class="home-header">
         <a class="home-logo" href="https://www.dymazoo.com"></a>
         <div class="home-get-started">
-            <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link home-header-optional" (click)="gotoPricing()">
+            <span *ngIf="!isLoggedIn && usePackages" class="cursor-pointer home-header-link home-header-optional" (click)="gotoPricing()">
                 Pricing
             </span>
             <span *ngIf="!isLoggedIn" class="cursor-pointer home-header-link" (click)="gotoRegister()">

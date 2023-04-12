@@ -141,7 +141,7 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="flex flex-col gt-xs:flex-row">
+                            <div *ngIf="usePackages" class="flex flex-col gt-xs:flex-row">
                                 <mat-form-field class="flex-auto gt-xs:pr-3">
                                     <mat-label>Plan</mat-label>
                                     <mat-select formControlName="plan" required
