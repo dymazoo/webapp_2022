@@ -345,8 +345,30 @@ export class SourceSettingsValuesDialogComponent implements OnInit, OnDestroy {
                     }, (errors) => {
                         this.errors = errors;
                     });
-
-
+            } else if (this.sourceSetting.name === 'verticalresponse' && value.name === 'access_token') {
+                let apiDisplay = 'Access not yet approved';
+                let oauthRequired = 1;
+                if (value.value.length > 0) {
+                    apiDisplay = 'Access approved';
+                    oauthRequired = 0;
+                }
+                this.httpService.getEntity('verticalresponse-client-id', '')
+                    .subscribe(result => {
+                        const verticalresponseData = result;
+//                        const oauthUrl = 'https://' + verticalresponseData.url + '/oauth/authorize?client_id=' + verticalresponseData.key + '&redirect_uri=' + this.appUrl + '/integrations/verticalresponse-approve-api';
+                        const oauthUrl = 'https://' + verticalresponseData.url + '/oauth/authorize?client_id=' + verticalresponseData.key + '&redirect_uri=' + 'https://app.dymazoo.com' + '/integrations/verticalresponse-approve-api';
+                        (this.sourceSettingsForm.controls['values'] as FormArray).push(this._formBuilder.group({
+                            id: [value.id],
+                            description: [this.prettyName(value.name)],
+                            name: [value.name],
+                            value: apiDisplay,
+                            automatic: [value.automatic],
+                            oauth: oauthRequired,
+                            oauth_url: oauthUrl
+                        }));
+                    }, (errors) => {
+                        this.errors = errors;
+                    });
             } else {
                 (this.sourceSettingsForm.controls['values'] as FormArray).push(this._formBuilder.group({
                     id: [value.id],
