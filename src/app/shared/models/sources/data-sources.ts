@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Source} from './source';
 import {Mailchimp} from './mailchimp';
 import {Sendinblue} from './sendinblue';
-import {Verticalresponse} from './verticalresponse';
 import {Shopify} from './shopify';
 import {Woocommerce} from './woocommerce';
 import {Eventbrite} from './eventbrite';
@@ -41,7 +40,6 @@ export class DataSources {
     ) {
         this.sources.push(new Mailchimp());
         this.sources.push(new Sendinblue());
-        this.sources.push(new Verticalresponse());
         this.sources.push(new Shopify());
 //        this.sources.push(new Woocommerce());
         this.sources.push(new Eventbrite());
@@ -297,15 +295,6 @@ export class DataSources {
                 link: '/integrations/sendinblue'
             } as FuseNavigationItem);
 
-            const verticalresponseItem = ({
-                id: 'integrations.verticalresponse',
-                title: 'VerticalResponse',
-                type: 'basic',
-                disabled: !this.canClientAdmin,
-                icon: 'heroicons_outline:mail',
-                link: '/integrations/verticalresponse'
-            } as FuseNavigationItem);
-
             const shopifyItem = ({
                 id: 'integrations.shopify',
                 title: 'Shopify',
@@ -357,9 +346,6 @@ export class DataSources {
                 }
                 if (activeDescription.name === 'sendinblue') {
                     this.addIntegrationChild(integrationsItem, sendinblueItem);
-                }
-                if (activeDescription.name === 'verticalresponse') {
-                    this.addIntegrationChild(integrationsItem, verticalresponseItem);
                 }
                 if (activeDescription.name === 'shopify') {
                     this.addIntegrationChild(integrationsItem, shopifyItem);

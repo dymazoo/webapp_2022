@@ -8,8 +8,6 @@ import {AuthGuard} from '../../_guards/index';
 import {SourceSettingsComponent} from '../integrations/source-settings.component';
 import {MailchimpComponent} from '../integrations/mailchimp.component';
 import {SendinblueComponent} from '../integrations/sendinblue.component';
-import {VerticalresponseComponent} from '../integrations/verticalresponse.component';
-import {VerticalresponseApproveApiComponent} from './verticalresponse_approve_api.component';
 import {ShopifyComponent} from '../integrations/shopify.component';
 import {EventbriteComponent} from '../integrations/eventbrite.component';
 import {EventbriteApproveApiComponent} from './eventbrite_approve_api.component';
@@ -32,18 +30,6 @@ const routes: Routes = [
     {
         path: 'sendinblue',
         component: SendinblueComponent,
-        canActivate: [AuthGuard],
-        canDeactivate: [AuthGuard]
-    },
-    {
-        path: 'verticalresponse',
-        component: VerticalresponseComponent,
-        canActivate: [AuthGuard],
-        canDeactivate: [AuthGuard]
-    },
-    {
-        path: 'verticalresponse-approve-api',
-        component: VerticalresponseApproveApiComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]
     },
