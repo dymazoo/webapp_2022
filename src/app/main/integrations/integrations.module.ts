@@ -6,6 +6,7 @@ import {SharedModule} from 'app/shared/shared.module';
 import {SourceSettingsComponent, SourceSettingsValuesDialogComponent} from '../integrations/source-settings.component';
 import {MailchimpComponent} from '../integrations/mailchimp.component';
 import {SendinblueComponent} from '../integrations/sendinblue.component';
+import {InstillerComponent} from '../integrations/instiller.component';
 import {ShopifyComponent} from '../integrations/shopify.component';
 import {EventbriteComponent} from './eventbrite.component';
 import {EventbriteApproveApiComponent} from './eventbrite_approve_api.component';
@@ -18,6 +19,7 @@ import {DymazooApiComponent} from '../integrations/dymazoo-api.component';
         SourceSettingsValuesDialogComponent,
         MailchimpComponent,
         SendinblueComponent,
+        InstillerComponent,
         ShopifyComponent,
         EventbriteComponent,
         EventbriteApproveApiComponent,
@@ -33,6 +35,7 @@ import {DymazooApiComponent} from '../integrations/dymazoo-api.component';
         SourceSettingsValuesDialogComponent,
         MailchimpComponent,
         SendinblueComponent,
+        InstillerComponent,
         ShopifyComponent,
         EventbriteComponent,
         EventbriteApproveApiComponent,

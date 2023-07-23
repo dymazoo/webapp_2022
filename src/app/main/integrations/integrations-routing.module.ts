@@ -8,6 +8,7 @@ import {AuthGuard} from '../../_guards/index';
 import {SourceSettingsComponent} from '../integrations/source-settings.component';
 import {MailchimpComponent} from '../integrations/mailchimp.component';
 import {SendinblueComponent} from '../integrations/sendinblue.component';
+import {InstillerComponent} from '../integrations/instiller.component';
 import {ShopifyComponent} from '../integrations/shopify.component';
 import {EventbriteComponent} from '../integrations/eventbrite.component';
 import {EventbriteApproveApiComponent} from './eventbrite_approve_api.component';
@@ -30,6 +31,12 @@ const routes: Routes = [
     {
         path: 'sendinblue',
         component: SendinblueComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard]
+    },
+    {
+        path: 'instiller',
+        component: InstillerComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]
     },

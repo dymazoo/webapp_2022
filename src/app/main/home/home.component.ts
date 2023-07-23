@@ -160,7 +160,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     'To enforce our terms, conditions and policies for our business purposes and as legally required.<br/>' +
                     'To respond to legal requests and prevent harm as legally required. If we receive a subpoena or other legal request, we may need to inspect the data we hold to determine how to respond.<br/>' +
                     'For other Business Purposes. We may use your information for other Business Purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Site, products, services, marketing and your experience.<br/>' +
-                    'If you choose to link your account with us to a third party account (such as MailChimp, SendinBlue, Shopify or EventBrite), we use the information you allowed us to collect from those third parties to facilitate the supply the service.<br/>' +
+                    'If you choose to link your account with us to a third party account (such as MailChimp, Brevo(SendinBlue), Shopify or EventBrite), we use the information you allowed us to collect from those third parties to facilitate the supply the service.<br/>' +
                     '<br/>' +
                     'WILL YOUR INFORMATION BE SHARED WITH ANYONE?<br/>' +
                     'In Short: We only share information with your consent, to comply with laws, to protect your rights, or to fulfill business obligations.<br/>' +

@@ -129,10 +129,13 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         this.espSubscription = this.dataSources.getEsp().subscribe(esp => {
             this.esp = esp;
             if (esp === 'sendinblue') {
-                this.formalesp = 'Sendinblue';
+                this.formalesp = 'Brevo (Sendinblue)';
             }
             if (esp === 'mailchimp') {
                 this.formalesp = 'Mailchimp';
+            }
+            if (esp === 'instiller') {
+                this.formalesp = 'Instiller';
             }
         });
         this.dataSources.getCurrentDescriptions();

@@ -1,0 +1,190 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <fuse-card class="card-error" *ngIf="errors.length > 0">
+        <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+            <div class="flex">
+                <div class="items-center justify-center basis-11/12">
+                    <strong>Errors</strong>
+                </div>
+                <div class="justify-end flex basis-1/12">
+                    <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="items-center justify-center basis-11/12">
+                    <ul>
+                        <li *ngFor="let message of errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </fuse-card>
+
+    <div class="cards">
+        <fuse-card class="card-major-container">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary">{{t('integration-instiller')}}</div>
+            </div>
+            <div class="card-container">
+                <fuse-card class="card-form">
+                    <div class="p-4">
+                        <div class="h1 text-white bg-primary">{{t('integration-list-heading')}}</div>
+                    </div>
+
+                    <div class="major-item" fuseScrollbar>
+                        <div id="listforms" class="simple fullwidth">
+
+                            <div class="content p-3">
+                                <div class="flex items-center justify-end">
+                                    <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                                mat-flat-button type="button"
+                                                (click)="syncMembers()">
+                                            Sync Profiles
+                                        </button>
+                                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                                mat-flat-button type="button"
+                                                (click)="syncLists()">
+                                            {{ syncListsTitle }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gt-xs:flex-row p-2">
+                                    <div>
+                                        <table mat-table #listTable matSort #listSort="matSort"
+                                               [dataSource]="paginatedListsDataSource"
+                                               [@fadeIn]="true">
+                                            <ng-container matColumnDef="description">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                                <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="source">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+                                                <td mat-cell *matCellDef="let row"> {{row.source}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="count">
+                                                <th mat-header-cell *matHeaderCellDef>Count</th>
+                                                <td mat-cell *matCellDef="let row">{{row.count}}</td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedListColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedListColumns; let i=index;"
+                                                tabindex="999"
+                                                class="cursor-pointer"
+                                                (click)="onListSelect(row, i)"
+                                                (keydown.arrowdown)="onListArrowDown()"
+                                                (keydown.arrowup)="onListArrowUp()"
+                                                (keydown.enter)="onSelectList()"
+                                                [ngClass]="{'bg-primary-200' : row == selectedListsRow}"
+                                                matRipple [@fadeIn]="true">
+                                                >
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start start">
+                                    <mat-form-field class="basis-7/12">
+                                        <input matInput #listFilter type="text" (keyup)="filterLists($event.target.value)"
+                                               placeholder="Filter" autocomplete="do-not-autofill">
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex items-center justify-end">
+                                    <mat-paginator #listPaginator [pageSizeOptions]="[5, 10, 20]"
+                                                   showFirstLastButtons></mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fuse-card>
+
+                <fuse-card class="card-form">
+                    <div class="p-4">
+                        <div class="h1 text-white bg-primary">{{t('integration-campaign-heading')}}</div>
+                    </div>
+
+                    <div class="major-item">
+                        <div id="campaignforms" class="simple fullwidth">
+
+                            <div class="content p-3">
+                                <div class="flex items-center justify-end">
+                                    <div *ngIf="canClientAdmin" class="pull-right" align="right">
+                                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                                mat-flat-button type="button"
+                                                (click)="syncActivity()">
+                                            Sync Activity
+                                        </button>
+                                        <button class="fuse-mat-button-large w-50 mt-2 bg-primary-500"
+                                                mat-flat-button type="button"
+                                                (click)="syncCampaigns()">
+                                            {{ syncCampaignsTitle }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gt-xs:flex-row p-2">
+                                    <div>
+                                        <table mat-table #campaignTable matSort #campaignSort="matSort"
+                                               [dataSource]="paginatedCampaignsDataSource"
+                                               [@fadeIn]="true">
+                                            <ng-container matColumnDef="description">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                                <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="source">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+                                                <td mat-cell *matCellDef="let row"> {{row.source}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="campaignDate">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Campaign Date</th>
+                                                <td mat-cell *matCellDef="let row">{{row.campaignDate}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="sent">
+                                                <th mat-header-cell *matHeaderCellDef>Sent</th>
+                                                <td mat-cell *matCellDef="let row">{{row.sent}}</td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedCampaignColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedCampaignColumns; let i=index;"
+                                                tabindex="999"
+                                                class="cursor-pointer"
+                                                (click)="onCampaignSelect(row, i)"
+                                                (keydown.arrowdown)="onCampaignArrowDown()"
+                                                (keydown.arrowup)="onCampaignArrowUp()"
+                                                (keydown.enter)="onSelectCampaign()"
+                                                [ngClass]="{'bg-primary-200' : row == selectedCampaignsRow}"
+                                                matRipple [@fadeIn]="true">
+                                                >
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gt-xs:flex-row" fxLayoutAlign="start start">
+                                    <mat-form-field class="basis-7/12">
+                                        <input matInput #campaignFilter type="text"
+                                               (keyup)="filterCampaigns($event.target.value)"
+                                               placeholder="Filter" autocomplete="do-not-autofill">
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex items-center justify-end">
+                                    <mat-paginator #campaignPaginator [pageSizeOptions]="[5, 10, 20]"
+                                                   showFirstLastButtons></mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fuse-card>
+            </div>
+            <div class="flex items-center justify-end">
+                <button class="fuse-mat-button-large w-20 mt-2"
+                        mat-button
+                        type="button" (click)="onBack()">
+                    Back
+                </button>
+            </div>
+        </fuse-card>
+    </div>
+</div>
