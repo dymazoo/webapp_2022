@@ -1363,6 +1363,14 @@ export class SegmentationComponent implements OnInit, OnDestroy {
         }
     }
 
+    public hasSegments(): boolean {
+        if (this.esp !== 'instiller') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     protected checkCanSegment(): void {
         this.canSegment = false;
         const listId = this.selectionForm.controls['listId'];

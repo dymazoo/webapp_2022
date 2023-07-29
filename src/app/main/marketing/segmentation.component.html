@@ -292,13 +292,13 @@
                                                         <mat-label>Action</mat-label>
                                                         <mat-select (selectionChange)="segmentActionChange($event)"
                                                                     formControlName="action" required>
-                                                            <mat-option *ngIf="needsList() && esp === 'mailchimp'" value="segment">
+                                                            <mat-option *ngIf="hasSegments() && needsList() && esp === 'mailchimp'" value="segment">
                                                                 Segment existing {{ formalesp }} audience
                                                             </mat-option>
-                                                            <mat-option *ngIf="needsList() && esp !== 'mailchimp'" value="segment">
+                                                            <mat-option *ngIf="hasSegments() && needsList() && esp !== 'mailchimp'" value="segment">
                                                                 Segment existing {{ formalesp }} list
                                                             </mat-option>
-                                                            <mat-option *ngIf="!needsList()" value="segment">
+                                                            <mat-option *ngIf="hasSegments() && !needsList()" value="segment">
                                                                 Segment contacts in {{ formalesp }}
                                                             </mat-option>
                                                             <mat-option *ngIf="esp === 'mailchimp'" value="update">
