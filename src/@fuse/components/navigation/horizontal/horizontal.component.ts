@@ -31,7 +31,7 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseUtilsService: FuseUtilsService,
-        private dataSources: DataSources
+        private dataSources: DataSources,
     )
     {
     }
@@ -50,6 +50,8 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
         // Navigation
         if ( 'navigation' in changes )
         {
+            this.setNavigationEnabled();
+
             // Mark for check
             this._changeDetectorRef.markForCheck();
         }
@@ -69,7 +71,7 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
         // Register the navigation component
         this._fuseNavigationService.registerComponent(this.name, this);
 
-        this.dataSources.setIntegrations(this.navigation);
+        this.setNavigationEnabled();
     }
 
     /**
@@ -88,6 +90,9 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+    public setNavigationEnabled(): void {
+        this.dataSources.setIntegrations(this.navigation);
+    }
 
     /**
      * Refresh the component to apply the changes

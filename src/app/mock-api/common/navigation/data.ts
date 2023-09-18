@@ -29,7 +29,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'marketing.extract',
                 title: 'Extract New Marketing Universe',
                 type : 'basic',
-                disabled : false,
+                disabled : true,
                 icon : 'heroicons_outline:cube',
                 link : '/marketing/extract'
             }

@@ -6,6 +6,7 @@ import {formatDate} from '@angular/common';
 import { ApexOptions } from 'ng-apexcharts';
 import {Subject, Subscription} from 'rxjs';
 import {clone} from 'lodash-es';
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
     selector: 'dashboard',
@@ -51,21 +52,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
     config: any;
 
     private processingDashboard: boolean = false;
+    private navigationSubscription: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _fuseConfigService: FuseConfigService,
         private httpService: HttpService,
         private _translocoService: TranslocoService,
+        private _router: Router,
         @Inject(LOCALE_ID) protected locale: string
     ) {
+        this.navigationSubscription = this._router.events.subscribe((e: any) => {
+            // If it is a NavigationEnd event re-initalise the component
+            if (e instanceof NavigationEnd) {
+                if (this.httpService.dashboardData === undefined) {
+                    this.initDashboard();
+                }
+            }
+        });
     }
 
     ngOnInit(): void {
-        this.dashboardData = this.httpService.fetchDashboardData(false);
-        if (this.dashboardData !== undefined) {
-            this.processDashboardData(false);
-        }
+        this.initDashboard();
 
         this.dashboardSubscription = this.httpService.getDashboardData().subscribe(dashboardData => {
             this.dashboardData = dashboardData;
@@ -75,9 +83,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void
     {
+        this.dashboardSubscription.unsubscribe();
+        this.navigationSubscription.unsubscribe();
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+    }
+
+    public initDashboard(): void {
+        this.dashboardData = this.httpService.fetchDashboardData(false);
+        if (this.dashboardData !== undefined) {
+            this.processDashboardData(false);
+        }
     }
 
     public onDateSelect(value): void {

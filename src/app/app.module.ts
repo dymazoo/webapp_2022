@@ -32,7 +32,8 @@ import {DashboardModule} from 'app/main/dashboard/dashboard.module';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
-    scrollPositionRestoration: 'enabled'
+    scrollPositionRestoration: 'enabled',
+    onSameUrlNavigation: 'reload'
 };
 
 const cookieConfig: NgcCookieConsentConfig = {

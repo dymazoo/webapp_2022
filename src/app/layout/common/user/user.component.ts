@@ -12,9 +12,10 @@ import { Router } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import {HttpService} from 'app/shared/services/http.service';
 import {fuseAnimations} from '@fuse/animations';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
+import {ConfirmDialogComponent} from 'app/shared/components/confirm-dialog.component';
 
 @Component({
     selector       : 'user',
@@ -25,6 +26,8 @@ import { TranslocoService } from '@ngneat/transloco';
 })
 export class UserComponent implements OnInit, OnDestroy
 {
+    public errors = [];
+
     userData: any;
     userSubscription: Subscription;
 
@@ -33,6 +36,7 @@ export class UserComponent implements OnInit, OnDestroy
     startImpersonate: boolean = false;
     impersonateEmail: string = '';
     isImpersonating: boolean = false;
+    managedClients: any = [];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -44,9 +48,10 @@ export class UserComponent implements OnInit, OnDestroy
         private httpService: HttpService,
         private _translocoService: TranslocoService,
         public dialog: MatDialog,
-        private _router: Router
+        private _router: Router,
     ){
         this.userData = this.httpService.userData;
+        this.managedClients = this.userData.managedClients;
         if (this.userData.impersonateUserName.length > 0) {
             this.isImpersonating = true;
         }
@@ -56,6 +61,7 @@ export class UserComponent implements OnInit, OnDestroy
             // Check permissions
             this.canClientAdmin = this.httpService.hasPermission('client_admin');
             this.canImpersonate = this.httpService.hasPermission('impersonate');
+            this.managedClients = this.userData.managedClients;
         });
 
     }
@@ -114,6 +120,8 @@ export class UserComponent implements OnInit, OnDestroy
                 this.httpService.impersonate(user)
                     .subscribe((data: Response) => {
                         this.isImpersonating = true;
+                        this.httpService.clearDashboardData();
+                        this._router.navigate(['/dashboard']);
                     }, (errors) => {
                         this.isImpersonating = false;
                     });
@@ -125,8 +133,36 @@ export class UserComponent implements OnInit, OnDestroy
         this.httpService.leaveImpersonate()
             .subscribe((data: Response) => {
                 this.isImpersonating = false;
+                this.httpService.clearDashboardData();
+                this._router.navigate(['/dashboard']);
             }, (errors) => {
+                this.isImpersonating = false;
             });
+    }
+
+    public manageClient(clientId, clientName): void {
+        this.errors = [];
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            minWidth: '75%',
+            width: '300px',
+            data: {
+                confirmMessage: 'Switch to client account : ' + clientName + ' ?',
+                informationMessage: 'Any current actions will be lost and you will begin from the Client Dashboard'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                let user = {'agency-client-id': clientId};
+                this.httpService.impersonate(user)
+                    .subscribe((data: Response) => {
+                        this.isImpersonating = true;
+                        this.httpService.clearDashboardData();
+                        this._router.navigate(['/dashboard']);
+                    }, (errors) => {
+                        this.isImpersonating = false;
+                    });
+            }
+        });
     }
 
 
@@ -183,3 +219,4 @@ export class UserImpersonateDialogComponent implements OnInit, OnDestroy {
         return returnVal;
     }
 }
+

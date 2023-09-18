@@ -22,9 +22,9 @@ import {loadStripe} from '@stripe/stripe-js';
 
 import {HttpService} from 'app/shared/services/http.service';
 import {AbandonDialogService} from 'app/shared/services/abandon-dialog.service';
-import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog.component';
+import {ConfirmDialogComponent} from 'app/shared/components/confirm-dialog.component';
 import {Client} from 'app/shared/models/client';
-import {GlobalValidator} from '../../shared/global-validator';
+import {GlobalValidator} from 'app/shared/global-validator';
 import * as moment from 'moment';
 import {environment} from '../../../environments/environment';
 

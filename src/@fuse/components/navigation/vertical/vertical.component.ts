@@ -259,6 +259,8 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
         // Navigation
         if ( 'navigation' in changes )
         {
+            this.setNavigationEnabled();
+
             // Mark for check
             this._changeDetectorRef.markForCheck();
         }
@@ -302,7 +304,7 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
         // Register the navigation component
         this._fuseNavigationService.registerComponent(this.name, this);
 
-        this.dataSources.setIntegrations(this.navigation);
+        this.setNavigationEnabled();
 
         // Subscribe to the 'NavigationEnd' event
         this._router.events
@@ -393,6 +395,9 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+    public setNavigationEnabled(): void {
+        this.dataSources.setIntegrations(this.navigation);
+    }
 
     /**
      * Refresh the component to apply the changes

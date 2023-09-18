@@ -13,20 +13,32 @@
 <mat-menu
     [xPosition]="'before'"
     #userActions="matMenu">
-    <button mat-menu-item>
+    <button *ngIf="!isImpersonating" mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
             <span class="mt-1.5 text-md font-medium">{{userData.userName}}</span>
         </span>
     </button>
+    <button *ngIf="isImpersonating && userData.managedClientName.length > 0" mat-menu-item>
+        <span class="flex flex-col leading-none">
+            <span>Managing client</span>
+            <span class="mt-1.5 text-md font-medium">{{userData.managedClientName}}</span>
+        </span>
+    </button>
     <button *ngIf="isImpersonating" mat-menu-item>
         <span class="flex flex-col leading-none">
-            <span>Original user</span>
+            <span>Acting as</span>
+            <span class="mt-1.5 text-md font-medium">{{userData.userName}}</span>
+        </span>
+    </button>
+    <button *ngIf="isImpersonating" mat-menu-item>
+        <span class="flex flex-col leading-none">
+            <span>Original sign in</span>
             <span class="mt-1.5 text-md font-medium">{{userData.impersonateUserName}}</span>
         </span>
     </button>
     <mat-divider class="my-2"></mat-divider>
-    <button mat-menu-item
+    <button *ngIf="!isImpersonating || userData.managedClientName.length == 0" mat-menu-item
             (click)="profile()">
         <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
         <span>Profile</span>
@@ -44,11 +56,23 @@
         <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
         <span>Impersonate</span>
     </button>
-    <button mat-menu-item *ngIf="isImpersonating" (click)="leaveImpersonate()">
+    <button mat-menu-item *ngIf="isImpersonating && userData.managedClientName.length == 0" (click)="leaveImpersonate()">
         <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
         <span>Exit Impersonation</span>
     </button>
+    <button mat-menu-item *ngIf="isImpersonating && userData.managedClientName.length > 0" (click)="leaveImpersonate()">
+        <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+        <span>Exit Client Management</span>
+    </button>
     <mat-divider *ngIf="isImpersonating || canImpersonate" class="my-2"></mat-divider>
+    <span *ngIf="!isImpersonating && (managedClients | keyvalue)?.length" style="font-weight: bold; padding-left: 1rem;">Switch to Client:</span>
+    <ng-container *ngIf="!isImpersonating && (managedClients | keyvalue)?.length">
+        <button mat-menu-item *ngFor="let managedClient of managedClients | keyvalue" (click)="manageClient(managedClient.key, managedClient.value)">
+            <mat-icon [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
+            <span>{{ managedClient.value }}</span>
+        </button>
+    </ng-container>
+    <mat-divider *ngIf="!isImpersonating && (managedClients | keyvalue)?.length" class="my-2"></mat-divider>
     <button
         mat-menu-item
         (click)="signOut()">

@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiHost: 'http://dz2fe/api/',
+    apiHost: 'http://127.0.0.1/api/',
     stripeKey: 'pk_test_51Lr1tyJcqMwFQOnWwbYB4ChPf5Lt5hqa7UDrN3lKMLlmVe4h7zJ8xWqzC6qQ2EYsAaYLcg6xyoC7DP8lAgVdAKX500MXd5JjyQ'
 };
 

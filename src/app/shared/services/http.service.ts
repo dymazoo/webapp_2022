@@ -27,7 +27,10 @@ export class HttpService {
         'scheme': '',
         'theme': '',
         'plan': '',
-        'impersonateUserName': ''
+        'impersonateUserName': '',
+        'managedClients': [],
+        'managedClientId': '',
+        'managedClientName': ''
     };
     public impersonateUserData = {
         'userName': '',
@@ -37,7 +40,10 @@ export class HttpService {
         'scheme': '',
         'theme': '',
         'plan': '',
-        'impersonateUserName': ''
+        'impersonateUserName': '',
+        'managedClients': [],
+        'managedClientId': '',
+        'managedClientName': ''
     };
     public dashboardRecency: any;
     public dashboardData: any;
@@ -102,6 +108,10 @@ export class HttpService {
                         this.userData.scheme = data['scheme'];
                         this.userData.theme = data['theme'];
                         this.userData.plan = data['plan'];
+                        this.userData.managedClients = data['managedClients'];
+                        this.userData.managedClientId = data['managedClientId'];
+                        this.userData.managedClientName= data['managedClientName'];
+
                         this.userData.impersonateUserName = impersonateUsername;
                         this.setLoggedInState(true);
                         if (this.pendingRoute.length > 0) {
@@ -140,6 +150,10 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             this.userData.plan = '';
+            this.userData.managedClients = [];
+            this.userData.managedClientId = '';
+            this.userData.managedClientName= '';
+            this.storedDashboard = undefined;
             localStorage.removeItem('dymazooUser');
             localStorage.removeItem('dymazooDashboard');
             localStorage.removeItem('dymazooImpersonate');
@@ -233,6 +247,9 @@ export class HttpService {
                 this.userData.scheme = '';
                 this.userData.theme = '';
                 this.userData.plan = '';
+                this.userData.managedClients = [];
+                this.userData.managedClientId = '';
+                this.userData.managedClientName= '';
                 this.homeUrl = '/dashboard';
                 this.userData.permissions = [];
                 this.token = token;
@@ -294,6 +311,10 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             this.userData.plan = '';
+            this.userData.managedClients = [];
+            this.userData.managedClientId = '';
+            this.userData.managedClientName= '';
+            this.storedDashboard = undefined;
             localStorage.removeItem('dymazooUser');
             localStorage.removeItem('dymazooDashboard');
             localStorage.removeItem('dymazooImpersonate');
@@ -342,6 +363,9 @@ export class HttpService {
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
                     this.userData.plan = data['plan'];
+                    this.userData.managedClients = data['managedClients'];
+                    this.userData.managedClientId = '';
+                    this.userData.managedClientName= '';
                     this.setLoggedInState(true);
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
@@ -392,6 +416,7 @@ export class HttpService {
                 localStorage.removeItem('dymazooUser');
                 localStorage.removeItem('dymazooDashboard');
                 localStorage.removeItem('dymazooImpersonate');
+                this.storedDashboard = undefined;
                 if (error.name === 'TimeoutError') {
                     return observableThrowError(['Server timeout']);
                 }
@@ -589,6 +614,9 @@ export class HttpService {
                     this.userData.scheme = response['scheme'];
                     this.userData.theme = response['theme'];
                     this.userData.plan = response['plan'];
+                    this.userData.managedClients = [];
+                    this.userData.managedClientId = response['managedClientId'];
+                    this.userData.managedClientName= response['managedClientName'];
                     this.userData.impersonateUserName = this.impersonateUserData.userName;
                     // store email, oauth token and crc in local storage to keep user logged in between page refreshes
                     localStorage.setItem('dymazooUser', JSON.stringify({
@@ -675,6 +703,9 @@ export class HttpService {
                 'scheme': '',
                 'theme': '',
                 'plan': '',
+                'managedClients': [],
+                'managedClientId' : '',
+                'managedClientName' : '',
                 impersonateUserName: ''
             };
             this.impersonateToken = null;
@@ -691,6 +722,9 @@ export class HttpService {
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
                     this.userData.plan = data['plan'];
+                    this.userData.managedClients = data['managedClients'];
+                    this.userData.managedClientId = '';
+                    this.userData.managedClientName= '';
 
                     this.userSubject.next(this.userData);
 
@@ -912,6 +946,13 @@ export class HttpService {
                 monthYearA11yLabel: 'MMMM YYYY',
             },
         };
+    }
+
+    public clearDashboardData(): any {
+        this.dashboardData = undefined;
+        this.dashboardRecency = undefined;
+        this.storedDashboard = undefined;
+        localStorage.removeItem('dymazooDashboard');
     }
 
     public fetchDashboardData(force: boolean): any {
