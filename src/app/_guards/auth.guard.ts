@@ -97,6 +97,9 @@ export class AuthGuard implements OnDestroy, CanActivate, CanActivateChild, CanD
                 case '/account/user-management':
                     result = this.httpService.hasRoutePermission('user_management', url);
                     break;
+                case '/account/register-client':
+                    result = this.httpService.hasRoutePermission('agency', url);
+                    break;
                 case '/data/import':
                     result = this.httpService.hasRoutePermission('import', url);
                     break;

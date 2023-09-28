@@ -1,0 +1,300 @@
+<div class="relative flex flex-col flex-auto min-w-0 overflow-hidden component" *transloco="let t">
+    <div class="card-major">
+        <fuse-card class="card-error" *ngIf="errors.length > 0">
+            <div class="content p-3 alert alert-danger" (click)="clearErrors()">
+                <div class="flex">
+                    <div class="items-center justify-center basis-11/12">
+                        <strong>Errors</strong>
+                    </div>
+                    <div class="justify-end flex basis-1/12">
+                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="items-center justify-center basis-11/12">
+                        <ul>
+                            <li *ngFor="let message of errors">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </fuse-card>
+
+        <fuse-card class="card-major">
+            <div class="p-4">
+                <div class="h1 text-white bg-primary">{{t('account-register-client-heading')}}</div>
+            </div>
+
+            <div class="major-item" fuseScrollbar>
+
+                <div id="forms" class="simple fullwidth">
+
+                    <div class="content p-3">
+                        <form class="flex flex-col mt-1 p-1 pb-4 bg-card rounded-2xl shadow"
+                              name="registerForm" [formGroup]="registerForm"
+                              (submit)="save()">
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Contact name</mat-label>
+                                    <input matInput #name formControlName="name" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.name, 'Contact name')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Contact email address</mat-label>
+                                    <input matInput formControlName="email" autocomplete="do-not-autofill" required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.email, 'Contact email address')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput formControlName="password" autocomplete="do-not-autofill"
+                                           type="password" required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.password, 'Password')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Confirm Password</mat-label>
+                                    <input matInput formControlName="confirmPassword" autocomplete="do-not-autofill"
+                                           type="password"
+                                           required
+                                           [errorStateMatcher]="errorMatcher">
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.confirmPassword, 'Password confirmation')}}</mat-error>
+                                    <mat-error>{{ getErrorMessage(registerForm, '')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field
+                                    class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Company name</mat-label>
+                                    <input matInput #name formControlName="clientName" autocomplete="do-not-autofill"
+                                           required>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.clientName, 'Company name')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div *ngIf="usePackages" class="flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Plan</mat-label>
+                                    <mat-select formControlName="plan" required
+                                                (selectionChange)="setPlan($event)">
+                                        <mat-option [value]="'analyst'">
+                                            Analyst
+                                        </mat-option>
+                                        <mat-option [value]="'specialist'">
+                                            Specialist
+                                        </mat-option>
+                                        <mat-option [value]="'consultant'">
+                                            Consultant
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>{{ getErrorMessage(registerForm.controls.plan, 'Plan')}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-label>Maximum number of customer profiles</mat-label>
+                                <mat-slider
+                                    formControlName="clientProfiles"
+                                    thumbLabel
+                                    [displayWith]="formatSliderLabel"
+                                    tickInterval="1"
+                                    step={{this.pricingData.profileAddition}}
+                                    min="0"
+                                    max="200000"
+                                    aria-label="units"
+                                    (change)="onSliderChange($event)"></mat-slider>
+                            </div>
+                            <div class="flex gt-xs:flex-row">
+                                <div class="flex mr-3"></div>
+                                <div class="flex justify-evenly" style="flex:1">
+                                    <span>&nbsp;10k</span>
+                                    <span>&nbsp;20k</span>
+                                    <span>&nbsp;30k</span>
+                                    <span>&nbsp;40k</span>
+                                    <span>&nbsp;50k</span>
+                                    <span>&nbsp;60k</span>
+                                    <span>&nbsp;70k</span>
+                                    <span>&nbsp;80k</span>
+                                    <span>&nbsp;90k</span>
+                                    <span>100k</span>
+                                    <span>110k</span>
+                                    <span>120k</span>
+                                    <span>130k</span>
+                                    <span>140k</span>
+                                    <span>150k</span>
+                                    <span>160k</span>
+                                    <span>170k</span>
+                                    <span>180k</span>
+                                    <span>190k</span>
+                                </div>
+                                <div class="flex ml-3"></div>
+                            </div>
+
+                            <div *ngIf="plan === 'consultant'" class="flex justify-evenly gt-xs:flex-row mt-8">
+                                <div class="consultant-options">
+                                    <mat-label>Store your data in a <b>Fully Separated Database</b> for Maximum Performance?</mat-label>
+                                </div>
+                                <div
+                                    class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': !separateDB,
+                                'bg-transparent': separateDB}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setSeparateDB($event, 'no')"
+                                        disableRipple>
+                                        No
+                                    </button>
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': separateDB,
+                                'bg-transparent': !separateDB}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setSeparateDB($event,'yes')"
+                                        disableRipple>
+                                        Yes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="separateDB" class="flex justify-evenly gt-xs:flex-row">
+                                <div class="consultant-options">
+                                    <mat-label>Create a <b>Complete Data History</b> for every customer profile?</mat-label>
+                                </div>
+                                <div
+                                    class="flex items-center mb-2 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': !fullHistory,
+                                'bg-transparent': fullHistory}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setFullHistory($event, 'no')"
+                                        disableRipple>
+                                        No
+                                    </button>
+                                    <button
+                                        class="px-6"
+                                        [ngClass]="{'bg-card pointer-events-none shadow': fullHistory,
+                                'bg-transparent': !fullHistory}"
+                                        class="dark-text"
+                                        mat-flat-button
+                                        type="button"
+                                        (click)="setFullHistory($event,'yes')"
+                                        disableRipple>
+                                        Yes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-start gt-xs:flex-row">
+                                <div class="grid grid-cols-2 gap-x-2 account-prices">
+                                    <div class="flex flex-col">
+                                        <div class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            &nbsp;
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Base Plan:</span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Add profiles: </span><span
+                                            class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div *ngIf="optionsPrice > 0" class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Add options: </span><span
+                                            class="text-2xl">&nbsp;</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row">
+                                            <span class="text-md">Total (after applying agency pricing): </span><span class="text-2xl">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': !yearlyBilling}">
+                                        <div *ngIf="!yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Monthly
+                                        </div>
+                                        <div *ngIf="yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            If Billed Monthly
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{monthlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{profilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div *ngIf="optionsPrice > 0" class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{optionsPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{monthlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="yearlyBilling" class="flex flex-col rounded"
+                                         [ngClass]="{'ring-2 ring-primary': yearlyBilling}">
+                                        <div *ngIf="!yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            If Billed Yearly
+                                        </div>
+                                        <div *ngIf="yearlyBilling"
+                                             class="flex gt-xs:flex-row text-2xl font-bold justify-end">
+                                            Billed Yearly
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{yearlyPlanPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{profilePrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div *ngIf="optionsPrice > 0" class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{optionsPrice | number:'0.2'}}</span>
+                                        </div>
+                                        <div class="flex items-baseline gt-xs:flex-row justify-end">
+                                            <span class="text-2xl"> <ng-container *ngIf="usdCurrency">$</ng-container><ng-container *ngIf="!usdCurrency">£</ng-container> {{yearlyPrice | number:'0.2'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end">
+                                <button class="fuse-mat-button-large w-70 mt-2 bg-primary"
+                                        mat-flat-button
+                                        [disabled]="!registerForm.valid"
+                                        type="submit">
+                                    Register Client
+                                </button>
+                                <button class="fuse-mat-button-large w-20 mt-2"
+                                        mat-button
+                                        type="button" (click)="onBack()">
+                                    Back
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </fuse-card>
+
+    </div>
+</div>

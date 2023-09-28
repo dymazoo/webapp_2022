@@ -11,6 +11,7 @@
     "account-usermanagement": "User",
     "account-management-heading": "Account Management",
     "account-management-payment": "Account Payment Details",
+    "account-register-client-heading": "Register New Client",
 
     "auth-register-heading": "Sign Up",
     "auth-register-payment-status": "Payment Status",

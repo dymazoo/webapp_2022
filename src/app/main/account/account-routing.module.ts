@@ -9,6 +9,7 @@ import {ProfileComponent} from './profile.component';
 import {UserManagementComponent} from './usermanagement.component';
 import {AccountManagementComponent} from './accountmanagement.component';
 import {PaymentDetailsComponent} from './payment_details.component';
+import {RegisterClientComponent} from './register_client.component';
 
 const routes: Routes = [
     {
@@ -32,6 +33,12 @@ const routes: Routes = [
     {
         path: 'payment-details/:clientId',
         component: PaymentDetailsComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [AuthGuard]
+    },
+    {
+        path: 'register-client',
+        component: RegisterClientComponent,
         canActivate: [AuthGuard],
         canDeactivate: [AuthGuard]
     }

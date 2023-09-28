@@ -36,6 +36,7 @@ export class UserComponent implements OnInit, OnDestroy
     startImpersonate: boolean = false;
     impersonateEmail: string = '';
     isImpersonating: boolean = false;
+    isAgency: number = 0;
     managedClients: any = [];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -52,6 +53,7 @@ export class UserComponent implements OnInit, OnDestroy
     ){
         this.userData = this.httpService.userData;
         this.managedClients = this.userData.managedClients;
+        this.isAgency = this.userData.isAgency;
         if (this.userData.impersonateUserName.length > 0) {
             this.isImpersonating = true;
         }
@@ -62,6 +64,7 @@ export class UserComponent implements OnInit, OnDestroy
             this.canClientAdmin = this.httpService.hasPermission('client_admin');
             this.canImpersonate = this.httpService.hasPermission('impersonate');
             this.managedClients = this.userData.managedClients;
+            this.isAgency = this.userData.isAgency;
         });
 
     }
@@ -138,6 +141,10 @@ export class UserComponent implements OnInit, OnDestroy
             }, (errors) => {
                 this.isImpersonating = false;
             });
+    }
+
+    public registerClient(): void {
+        this._router.navigate(['/account/register-client']);
     }
 
     public manageClient(clientId, clientName): void {

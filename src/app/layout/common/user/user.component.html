@@ -64,6 +64,11 @@
         <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
         <span>Exit Client Management</span>
     </button>
+    <mat-divider *ngIf="!isImpersonating || isAgency === 1" class="my-2"></mat-divider>
+    <button mat-menu-item *ngIf="!isImpersonating && isAgency === 1" (click)="registerClient()">
+        <mat-icon [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
+        <span>Register new Client</span>
+    </button>
     <mat-divider *ngIf="isImpersonating || canImpersonate" class="my-2"></mat-divider>
     <span *ngIf="!isImpersonating && (managedClients | keyvalue)?.length" style="font-weight: bold; padding-left: 1rem;">Switch to Client:</span>
     <ng-container *ngIf="!isImpersonating && (managedClients | keyvalue)?.length">

@@ -27,6 +27,7 @@ export class HttpService {
         'scheme': '',
         'theme': '',
         'plan': '',
+        'isAgency': 0,
         'impersonateUserName': '',
         'managedClients': [],
         'managedClientId': '',
@@ -40,6 +41,7 @@ export class HttpService {
         'scheme': '',
         'theme': '',
         'plan': '',
+        'isAgency': 0,
         'impersonateUserName': '',
         'managedClients': [],
         'managedClientId': '',
@@ -108,6 +110,7 @@ export class HttpService {
                         this.userData.scheme = data['scheme'];
                         this.userData.theme = data['theme'];
                         this.userData.plan = data['plan'];
+                        this.userData.isAgency = data['isAgency'];
                         this.userData.managedClients = data['managedClients'];
                         this.userData.managedClientId = data['managedClientId'];
                         this.userData.managedClientName= data['managedClientName'];
@@ -150,6 +153,7 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             this.userData.plan = '';
+            this.userData.isAgency = 0;
             this.userData.managedClients = [];
             this.userData.managedClientId = '';
             this.userData.managedClientName= '';
@@ -247,6 +251,7 @@ export class HttpService {
                 this.userData.scheme = '';
                 this.userData.theme = '';
                 this.userData.plan = '';
+                this.userData.isAgency = 0;
                 this.userData.managedClients = [];
                 this.userData.managedClientId = '';
                 this.userData.managedClientName= '';
@@ -311,6 +316,7 @@ export class HttpService {
             this.userData.scheme = '';
             this.userData.theme = '';
             this.userData.plan = '';
+            this.userData.isAgency = 0;
             this.userData.managedClients = [];
             this.userData.managedClientId = '';
             this.userData.managedClientName= '';
@@ -363,6 +369,7 @@ export class HttpService {
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
                     this.userData.plan = data['plan'];
+                    this.userData.isAgency = data['isAgency'];
                     this.userData.managedClients = data['managedClients'];
                     this.userData.managedClientId = '';
                     this.userData.managedClientName= '';
@@ -703,6 +710,7 @@ export class HttpService {
                 'scheme': '',
                 'theme': '',
                 'plan': '',
+                'isAgency': 0,
                 'managedClients': [],
                 'managedClientId' : '',
                 'managedClientName' : '',
@@ -722,6 +730,7 @@ export class HttpService {
                     this.userData.scheme = data['scheme'];
                     this.userData.theme = data['theme'];
                     this.userData.plan = data['plan'];
+                    this.userData.isAgency = data['isAgency'];
                     this.userData.managedClients = data['managedClients'];
                     this.userData.managedClientId = '';
                     this.userData.managedClientName= '';

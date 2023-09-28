@@ -7,6 +7,7 @@ import {UserManagementComponent, UserManagementAdminDialogComponent, UserManagem
 import {AccountManagementComponent} from './accountmanagement.component';
 import {SharedModule} from '../../shared/shared.module';
 import {PaymentDetailsComponent} from './payment_details.component';
+import {RegisterClientComponent} from './register_client.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {PaymentDetailsComponent} from './payment_details.component';
         UserManagementAdminDialogComponent,
         UserManagementDialogComponent,
         AccountManagementComponent,
-        PaymentDetailsComponent
+        PaymentDetailsComponent,
+        RegisterClientComponent
     ],
     imports     : [
         AccountRoutingModule,
@@ -27,7 +29,8 @@ import {PaymentDetailsComponent} from './payment_details.component';
         ProfileComponent,
         UserManagementComponent,
         AccountManagementComponent,
-        PaymentDetailsComponent
+        PaymentDetailsComponent,
+        RegisterClientComponent
     ],
     entryComponents: [
         ProfilePasswordDialogComponent,
